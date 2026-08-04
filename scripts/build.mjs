@@ -14,7 +14,17 @@ const worker = `export default {
     const url = new URL(request.url);
     if (url.pathname === "/") url.pathname = "/index.html";
     const response = await env.ASSETS.fetch(new Request(url, request));
-    if (response.status !== 404) return response;
+    if (response.status !== 404) {
+      const headers = new Headers(response.headers);
+      if (url.pathname.endsWith(".html")) {
+        headers.set("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.set("CDN-Cache-Control", "no-store");
+        headers.set("Expires", "0");
+      } else if (url.pathname.endsWith(".js") || url.pathname.endsWith(".css")) {
+        headers.set("Cache-Control", "no-cache, must-revalidate");
+      }
+      return new Response(response.body, { status: response.status, statusText: response.statusText, headers });
+    }
     return new Response("Not Found", { status: 404 });
   }
 };

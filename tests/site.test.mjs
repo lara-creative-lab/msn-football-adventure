@@ -18,6 +18,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2022 卡塔尔·多哈海滨/);
   assert.match(html, /2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
+  assert.match(html, /no-cache, no-store, must-revalidate/);
+  assert.match(html, /game\.js\?v=16/);
   assert.doesNotMatch(html, /举办地|游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
   for (const city of ["罗马", "帕萨迪纳", "巴黎", "首尔", "横滨", "柏林", "开普敦", "里约", "莫斯科", "多哈", "墨西哥城", "多伦多", "旧金山"]) {
     assert.match(game, new RegExp(city));
@@ -39,5 +41,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.doesNotMatch(html, /musicSelect|Dai Dai|火影|海贼王/);
   await stat(new URL("../dist/client/game.js", import.meta.url));
   await stat(new URL("../dist/client/world-cup-stadium.wav", import.meta.url));
-  await stat(new URL("../dist/server/index.js", import.meta.url));
+  const worker = await readFile(new URL("../dist/server/index.js", import.meta.url), "utf8");
+  assert.match(worker, /CDN-Cache-Control/);
+  assert.match(worker, /no-cache, no-store, must-revalidate/);
 });
