@@ -23,6 +23,9 @@ test("build includes the playable game and worker entrypoint", async () => {
   }
   assert.match(game, /drawRoundedRect\(18, 17, 560, 78/);
   assert.match(game, /关卡进度/);
+  assert.match(game, /ctx\.textAlign = "center"; ctx\.textBaseline = "middle"/);
+  assert.match(game, /trioBoxX \+ trioBoxW \/ 2/);
+  assert.match(game, /trophyBoxX \+ trophyBoxW \/ 2/);
   assert.equal([...game.matchAll(/level\.scene ===/g)].length, 10);
   assert.equal([...game.matchAll(/routes: \{ main:/g)].length, 10);
   assert.doesNotMatch(game, /举办地历史街区|举办地城市广场|幻想森林层|晴海沙滩层|极光雪山层/);

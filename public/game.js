@@ -1380,18 +1380,22 @@
     ctx.fillStyle = "#cad3d2"; ctx.fillRect(108, 66, 445, 11);
     ctx.fillStyle = level.accent; ctx.fillRect(108, 66, 445 * progress, 11);
     ctx.strokeStyle = "#18212f"; ctx.lineWidth = 2; ctx.strokeRect(108, 66, 445, 11);
-    drawRoundedRect(W - 163, 17, 145, 48, 14, "rgba(255,247,223,.93)", "#18212f", 3);
-    ctx.fillStyle = msnStage === 3 ? "#a76b00" : "#2857a1"; ctx.font = "900 15px ui-rounded, sans-serif";
-    ctx.fillText(msnStage === 3 ? "🏆 大力神杯" : `🤝 MSN ${msnStage}/3`, W - 145, 47);
-    drawRoundedRect(W - 365, 17, 185, 48, 14, "rgba(255,247,223,.93)", "#18212f", 3);
-    ctx.fillStyle = msnStage === 3 ? "#a76b00" : "#475264"; ctx.font = "900 14px ui-rounded, sans-serif";
+    const trophyBoxX = W - 163; const trophyBoxW = 145;
+    const trioBoxX = W - 365; const trioBoxW = 185;
+    drawRoundedRect(trophyBoxX, 17, trophyBoxW, 48, 14, "rgba(255,247,223,.93)", "#18212f", 3);
+    drawRoundedRect(trioBoxX, 17, trioBoxW, 48, 14, "rgba(255,247,223,.93)", "#18212f", 3);
     const msnTarget = msnStage === 1 ? 500 : 1000;
-    ctx.fillText(msnStage === 3 ? "⚽ MSN三人齐聚" : `MSN成长 ${Math.min(msnTarget, rewardScore)} / ${msnTarget}`, W - 347, 39);
+    ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillStyle = msnStage === 3 ? "#a76b00" : "#2857a1"; ctx.font = "900 15px ui-rounded, sans-serif";
+    ctx.fillText(msnStage === 3 ? "🏆 大力神杯" : `🤝 MSN ${msnStage}/3`, trophyBoxX + trophyBoxW / 2, 41);
+    ctx.fillStyle = msnStage === 3 ? "#a76b00" : "#475264"; ctx.font = "900 14px ui-rounded, sans-serif";
+    ctx.fillText(msnStage === 3 ? "⚽ MSN三人齐聚" : `MSN成长 ${Math.min(msnTarget, rewardScore)} / ${msnTarget}`, trioBoxX + trioBoxW / 2, msnStage === 3 ? 41 : 34);
+    ctx.restore();
     if (msnStage < 3) {
-      ctx.fillStyle = "#d5d8d4"; ctx.fillRect(W - 347, 47, 149, 7);
+      ctx.fillStyle = "#d5d8d4"; ctx.fillRect(trioBoxX + 18, 47, 149, 7);
       const stageStart = msnStage === 1 ? 0 : 500;
       ctx.fillStyle = msnStage === 2 ? "#4c7bd1" : "#f5b83d";
-      ctx.fillRect(W - 347, 47, 149 * Math.min(1, (rewardScore - stageStart) / 500), 7);
+      ctx.fillRect(trioBoxX + 18, 47, 149 * Math.min(1, (rewardScore - stageStart) / 500), 7);
     }
   }
 
