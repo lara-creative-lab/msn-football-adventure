@@ -1187,35 +1187,35 @@
     } else if (form === "ninja") {
       // Backward baseball cap fitted to the crown. The lowest point stays near
       // -.855h, safely above the artwork's eyebrows and eye line around -.74h.
-      ctx.save(); ctx.translate(0, -displayHeight * .91); ctx.rotate(-.035);
+      ctx.save(); ctx.translate(0, -displayHeight * .895); ctx.rotate(-.025);
       ctx.shadowColor = "rgba(12,20,43,.3)"; ctx.shadowBlur = 4; ctx.shadowOffsetY = 2;
       ctx.fillStyle = "#151e39"; ctx.strokeStyle = "#e5bd43"; ctx.lineWidth = Math.max(1.5, displayHeight * .018);
       // Draw the brim first so it visibly projects behind the head instead of over the face.
       ctx.beginPath();
-      ctx.ellipse(displayWidth * .42, displayHeight * .018, displayWidth * .24, displayHeight * .035, .12, 0, Math.PI * 2);
+      ctx.ellipse(displayWidth * .3, displayHeight * .012, displayWidth * .16, displayHeight * .022, .1, 0, Math.PI * 2);
       ctx.fill(); ctx.stroke();
       ctx.fillStyle = "#202c50";
       ctx.beginPath();
-      ctx.moveTo(-displayWidth * .34, displayHeight * .018);
-      ctx.quadraticCurveTo(-displayWidth * .28, -displayHeight * .09, 0, -displayHeight * .115);
-      ctx.quadraticCurveTo(displayWidth * .27, -displayHeight * .085, displayWidth * .34, displayHeight * .018);
-      ctx.quadraticCurveTo(0, displayHeight * .052, -displayWidth * .34, displayHeight * .018);
+      ctx.moveTo(-displayWidth * .28, displayHeight * .012);
+      ctx.quadraticCurveTo(-displayWidth * .23, -displayHeight * .067, 0, -displayHeight * .085);
+      ctx.quadraticCurveTo(displayWidth * .22, -displayHeight * .065, displayWidth * .28, displayHeight * .012);
+      ctx.quadraticCurveTo(0, displayHeight * .033, -displayWidth * .28, displayHeight * .012);
       ctx.closePath(); ctx.fill(); ctx.stroke();
       ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
       // Backward-facing adjustment opening and strap sit over the hairline.
       ctx.strokeStyle = "#e5bd43"; ctx.lineWidth = Math.max(1.4, displayHeight * .015);
       ctx.beginPath();
-      ctx.arc(0, displayHeight * .022, displayWidth * .09, Math.PI, 0);
+      ctx.arc(0, displayHeight * .015, displayWidth * .07, Math.PI, 0);
       ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(-displayWidth * .15, displayHeight * .018); ctx.lineTo(displayWidth * .15, displayHeight * .018); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-displayWidth * .12, displayHeight * .012); ctx.lineTo(displayWidth * .12, displayHeight * .012); ctx.stroke();
       // Subtle panel seams and a compact “帅” badge keep the cap personal but clean.
       ctx.strokeStyle = "rgba(255,255,255,.32)"; ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(0, -displayHeight * .1); ctx.lineTo(0, -displayHeight * .025);
-      ctx.moveTo(-displayWidth * .27, -displayHeight * .035); ctx.quadraticCurveTo(0, -displayHeight * .07, displayWidth * .27, -displayHeight * .035); ctx.stroke();
-      drawRoundedRect(-displayWidth * .285, -displayHeight * .068, displayWidth * .19, displayHeight * .07, 2.5, "#f0cb57", "#fff1a3", 1);
-      ctx.fillStyle = "#151e39"; ctx.font = `1000 ${displayHeight * .05}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("帅", -displayWidth * .19, -displayHeight * .033);
+      ctx.moveTo(0, -displayHeight * .078); ctx.lineTo(0, -displayHeight * .018);
+      ctx.moveTo(-displayWidth * .22, -displayHeight * .026); ctx.quadraticCurveTo(0, -displayHeight * .052, displayWidth * .22, -displayHeight * .026); ctx.stroke();
+      drawRoundedRect(-displayWidth * .225, -displayHeight * .053, displayWidth * .145, displayHeight * .052, 2, "#f0cb57", "#fff1a3", 1);
+      ctx.fillStyle = "#151e39"; ctx.font = `1000 ${displayHeight * .041}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("帅", -displayWidth * .1525, -displayHeight * .027);
       ctx.restore();
     } else if (form === "spider") {
       ctx.fillStyle = "#d83f4d"; ctx.beginPath(); ctx.arc(displayWidth * .32, -displayHeight * .35, displayHeight * .09, 0, Math.PI * 2); ctx.fill();
@@ -1264,20 +1264,22 @@
     ctx.lineCap = "round";
     // Messi and Suárez reach from the sides while Neymar supports the base with both hands.
     const arms = [
-      { color: "#d89a72", fromX: -42, fromY: 0, toX: -8, toY: 4 },
-      { color: "#b9784d", fromX: -11, fromY: 17, toX: -5, toY: 14 },
-      { color: "#b9784d", fromX: 11, fromY: 17, toX: 5, toY: 14 },
-      { color: "#c17a50", fromX: 42, fromY: 0, toX: 8, toY: 4 },
+      { color: "#d89a72", fromX: -40, fromY: 0, toX: -6, toY: 3 },
+      { color: "#b9784d", fromX: -10, fromY: 15, toX: -3.5, toY: 10.5 },
+      { color: "#b9784d", fromX: 10, fromY: 15, toX: 3.5, toY: 10.5 },
+      { color: "#c17a50", fromX: 40, fromY: 0, toX: 6, toY: 3 },
     ];
     for (const arm of arms) {
-      ctx.strokeStyle = "rgba(23,33,51,.28)"; ctx.lineWidth = 6;
+      ctx.strokeStyle = "rgba(23,33,51,.28)"; ctx.lineWidth = 4.8;
       ctx.beginPath(); ctx.moveTo(arm.fromX, arm.fromY + 1); ctx.quadraticCurveTo(arm.fromX * .48, arm.fromY + 5, arm.toX, arm.toY + 1); ctx.stroke();
-      ctx.strokeStyle = arm.color; ctx.lineWidth = 4.2;
+      ctx.strokeStyle = arm.color; ctx.lineWidth = 3.3;
       ctx.beginPath(); ctx.moveTo(arm.fromX, arm.fromY); ctx.quadraticCurveTo(arm.fromX * .48, arm.fromY + 4, arm.toX, arm.toY); ctx.stroke();
       ctx.fillStyle = arm.color; ctx.strokeStyle = "#5c3b2f"; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(arm.toX, arm.toY, 3.1, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(arm.toX, arm.toY, 2.45, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
 
+    // At 72% scale the trophy is about one-third of Neymar's height instead of half.
+    ctx.save(); ctx.scale(.72, .72);
     ctx.shadowColor = "rgba(255,210,62,.8)"; ctx.shadowBlur = 9;
     const gold = ctx.createLinearGradient(-10, -24, 10, 22);
     gold.addColorStop(0, "#fff8bd");
@@ -1344,6 +1346,7 @@
     ctx.globalAlpha = glint; ctx.fillStyle = "#fffbe2";
     ctx.beginPath(); ctx.moveTo(-11, -19); ctx.lineTo(-9.8, -16.4); ctx.lineTo(-7.2, -15.2); ctx.lineTo(-9.8, -14); ctx.lineTo(-11, -11.4); ctx.lineTo(-12.2, -14); ctx.lineTo(-14.8, -15.2); ctx.lineTo(-12.2, -16.4); ctx.closePath(); ctx.fill();
     ctx.globalAlpha = 1;
+    ctx.restore();
     ctx.restore();
   }
 
