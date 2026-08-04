@@ -461,7 +461,7 @@
     } else if (type === "ronaldo") {
       ownedSkins.add("ninja"); equippedSkin = "ninja"; player.heroForm = "neymar";
       saveCosmetics(); updateShopUI();
-      showFootballReward("🎗️ C罗奖励！", "内马尔潮流头巾已加入橱窗并自动装备");
+      showFootballReward("🧢 C罗奖励！", "内马尔反戴潮帽已加入橱窗并自动装备");
     } else if (type === "dembele") {
       growPlayer();
     } else if (type === "vinicius") {
@@ -1109,11 +1109,10 @@
       ctx.fillStyle = "#d83d47"; ctx.fillRect(-radius, radius * .72, radius * 2, radius * .18);
     } else if (outfit === "ninja") {
       ctx.fillStyle = "#f1ca28"; ctx.fillRect(-radius, radius * .22, radius * 2, radius);
-      // Keep the band above the eye line in the compact fallback renderer.
-      ctx.fillStyle = "#17213b"; ctx.fillRect(-radius, -radius * .58, radius * 2, radius * .13);
-      ctx.fillStyle = "#d8aa32"; ctx.fillRect(-radius, -radius * .58, radius * 2, radius * .03);
-      ctx.fillRect(-radius, -radius * .48, radius * 2, radius * .03);
-      ctx.beginPath(); ctx.moveTo(radius * .72, -radius * .52); ctx.lineTo(radius * 1.26, -radius * .39); ctx.lineTo(radius * .86, -radius * .26); ctx.closePath(); ctx.fillStyle = "#17213b"; ctx.fill();
+      // Compact backward cap: crown on top, short brim behind the right side.
+      ctx.fillStyle = "#111a32"; ctx.strokeStyle = "#d8aa32"; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.ellipse(radius * .58, -radius * .51, radius * .48, radius * .11, .08, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, -radius * .47, radius * .61, Math.PI, 0); ctx.lineTo(radius * .5, -radius * .39); ctx.lineTo(-radius * .5, -radius * .39); ctx.closePath(); ctx.fill(); ctx.stroke();
     } else if (outfit === "starlight") {
       ctx.fillStyle = "#31559b"; ctx.fillRect(-radius, radius * .24, radius * 2, radius);
       ctx.fillStyle = "#ffd45b"; ctx.font = `900 ${radius * .6}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("★", 0, radius * .78);
@@ -1186,36 +1185,36 @@
       ctx.beginPath(); ctx.arc(-displayWidth * .42, -displayHeight * .42, displayHeight * .13, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       ctx.fillStyle = "#fff"; ctx.font = `900 ${displayHeight * .16}px sans-serif`; ctx.fillText("★", -displayWidth * .42, -displayHeight * .42);
     } else if (form === "ninja") {
-      // The eyes sit near -.74h in the Neymar artwork. Keep this narrow band
-      // centered on the hairline at -.865h so the full eye area stays clear.
-      ctx.save(); ctx.translate(0, -displayHeight * .865); ctx.rotate(-.025);
+      // Backward baseball cap fitted to the crown. The lowest point stays near
+      // -.855h, safely above the artwork's eyebrows and eye line around -.74h.
+      ctx.save(); ctx.translate(0, -displayHeight * .91); ctx.rotate(-.035);
       ctx.shadowColor = "rgba(12,20,43,.3)"; ctx.shadowBlur = 4; ctx.shadowOffsetY = 2;
       ctx.fillStyle = "#151e39"; ctx.strokeStyle = "#e5bd43"; ctx.lineWidth = Math.max(1.5, displayHeight * .018);
+      // Draw the brim first so it visibly projects behind the head instead of over the face.
       ctx.beginPath();
-      ctx.moveTo(-displayWidth * .3, -displayHeight * .018);
-      ctx.quadraticCurveTo(0, -displayHeight * .045, displayWidth * .3, -displayHeight * .014);
-      ctx.lineTo(displayWidth * .3, displayHeight * .026);
-      ctx.quadraticCurveTo(0, displayHeight * .005, -displayWidth * .3, displayHeight * .023);
+      ctx.ellipse(displayWidth * .42, displayHeight * .018, displayWidth * .24, displayHeight * .035, .12, 0, Math.PI * 2);
+      ctx.fill(); ctx.stroke();
+      ctx.fillStyle = "#202c50";
+      ctx.beginPath();
+      ctx.moveTo(-displayWidth * .34, displayHeight * .018);
+      ctx.quadraticCurveTo(-displayWidth * .28, -displayHeight * .09, 0, -displayHeight * .115);
+      ctx.quadraticCurveTo(displayWidth * .27, -displayHeight * .085, displayWidth * .34, displayHeight * .018);
+      ctx.quadraticCurveTo(0, displayHeight * .052, -displayWidth * .34, displayHeight * .018);
       ctx.closePath(); ctx.fill(); ctx.stroke();
       ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-      // Knot and short ribbons sit behind the right side of the head.
-      ctx.fillStyle = "#151e39"; ctx.strokeStyle = "#e5bd43";
-      ctx.beginPath(); ctx.arc(displayWidth * .305, displayHeight * .008, displayHeight * .035, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      // Backward-facing adjustment opening and strap sit over the hairline.
+      ctx.strokeStyle = "#e5bd43"; ctx.lineWidth = Math.max(1.4, displayHeight * .015);
       ctx.beginPath();
-      ctx.moveTo(displayWidth * .325, displayHeight * .02);
-      ctx.quadraticCurveTo(displayWidth * .46, displayHeight * .045, displayWidth * .53, displayHeight * .105);
-      ctx.lineTo(displayWidth * .43, displayHeight * .095);
-      ctx.quadraticCurveTo(displayWidth * .39, displayHeight * .055, displayWidth * .305, displayHeight * .04);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.arc(0, displayHeight * .022, displayWidth * .09, Math.PI, 0);
+      ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(-displayWidth * .15, displayHeight * .018); ctx.lineTo(displayWidth * .15, displayHeight * .018); ctx.stroke();
+      // Subtle panel seams and a small side number keep the cap detailed but clean.
+      ctx.strokeStyle = "rgba(255,255,255,.32)"; ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(displayWidth * .32, -displayHeight * .006);
-      ctx.quadraticCurveTo(displayWidth * .45, -displayHeight * .015, displayWidth * .51, displayHeight * .025);
-      ctx.lineTo(displayWidth * .41, displayHeight * .045);
-      ctx.quadraticCurveTo(displayWidth * .38, displayHeight * .02, displayWidth * .3, displayHeight * .018);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
-      // Small gold stitch at the center; no badge extends down toward the eyes.
-      ctx.strokeStyle = "#f7dc7b"; ctx.lineWidth = Math.max(1, displayHeight * .01);
-      ctx.beginPath(); ctx.moveTo(-displayWidth * .04, -displayHeight * .004); ctx.lineTo(displayWidth * .04, -displayHeight * .004); ctx.stroke();
+      ctx.moveTo(0, -displayHeight * .1); ctx.lineTo(0, -displayHeight * .025);
+      ctx.moveTo(-displayWidth * .27, -displayHeight * .035); ctx.quadraticCurveTo(0, -displayHeight * .07, displayWidth * .27, -displayHeight * .035); ctx.stroke();
+      ctx.fillStyle = "#f0cb57"; ctx.font = `1000 ${displayHeight * .046}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("10", -displayWidth * .23, -displayHeight * .028);
       ctx.restore();
     } else if (form === "spider") {
       ctx.fillStyle = "#d83f4d"; ctx.beginPath(); ctx.arc(displayWidth * .32, -displayHeight * .35, displayHeight * .09, 0, Math.PI * 2); ctx.fill();
