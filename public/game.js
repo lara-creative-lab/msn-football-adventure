@@ -24,16 +24,16 @@
   const keys = new Set();
 
   const LEVELS = [
-    { name: "阳光草原", scene: "meadow", difficulty: "轻松", width: 3000, gaps: [90, 105, 110], enemies: 4, speed: 65, sky: ["#55c6ff", "#e8fbff"], top: "#78dc52", base: "#ae6737", edge: "#593225", accent: "#ff7a37" },
-    { name: "魔法森林", scene: "forest", difficulty: "简单", width: 3250, gaps: [105, 115, 120, 110], enemies: 5, speed: 72, sky: ["#183f58", "#75c19b"], top: "#62c968", base: "#6a4a43", edge: "#26342e", accent: "#9d7bff" },
-    { name: "糖果王国", scene: "candy", difficulty: "简单+", width: 3450, gaps: [110, 125, 120, 130], enemies: 6, speed: 78, sky: ["#ffa7d3", "#fff0c8"], top: "#ffec74", base: "#e994bb", edge: "#683b68", accent: "#ff4f91" },
-    { name: "沙漠夜市", scene: "desert", difficulty: "普通", width: 3650, gaps: [120, 135, 125, 145, 120], enemies: 7, speed: 84, sky: ["#30275f", "#f39a67"], top: "#f5c35d", base: "#bd7043", edge: "#573144", accent: "#37d9d0" },
-    { name: "海底珊瑚", scene: "reef", difficulty: "普通", width: 3850, gaps: [125, 140, 135, 150, 130], enemies: 8, speed: 90, sky: ["#056aa6", "#52d8d0"], top: "#66e0bd", base: "#54779c", edge: "#183d62", accent: "#ff6d8a" },
-    { name: "冰雪宫殿", scene: "ice", difficulty: "进阶", width: 4050, gaps: [135, 145, 155, 140, 160], enemies: 8, speed: 98, sky: ["#5365b9", "#d9f7ff"], top: "#dffbff", base: "#72bada", edge: "#294d7d", accent: "#a6f6ff" },
-    { name: "幽灵庄园", scene: "haunted", difficulty: "进阶+", width: 4250, gaps: [140, 155, 150, 165, 145, 160], enemies: 9, speed: 104, sky: ["#17152f", "#665280"], top: "#8c74a5", base: "#49405d", edge: "#211c31", accent: "#b8ff75" },
-    { name: "天空群岛", scene: "sky", difficulty: "困难", width: 4450, gaps: [150, 165, 155, 170, 160, 175], enemies: 10, speed: 110, sky: ["#297ada", "#f3efff"], top: "#e9efff", base: "#8b75b8", edge: "#3f3970", accent: "#ffd652" },
-    { name: "巨龙火山", scene: "volcano", difficulty: "困难+", width: 4650, gaps: [155, 170, 165, 180, 170, 185], enemies: 11, speed: 118, sky: ["#42182c", "#e45e39"], top: "#ee6a38", base: "#63342f", edge: "#27181d", accent: "#ffd23f" },
-    { name: "星光城堡", scene: "castle", difficulty: "终极", width: 4900, gaps: [160, 175, 170, 185, 175, 190, 165], enemies: 12, speed: 126, sky: ["#100d37", "#5949a8"], top: "#d5b9ff", base: "#665595", edge: "#28214f", accent: "#ffe26c" },
+    { name: "1990 意大利·罗马斗兽场", scene: "italy90", difficulty: "轻松", width: 3000, gaps: [90, 105, 110], enemies: 4, speed: 65, sky: ["#5fc8ff", "#ffe3a8"], top: "#8bcf63", base: "#b97648", edge: "#5d3929", accent: "#d94a3a" },
+    { name: "1994 美国·玫瑰碗", scene: "usa94", difficulty: "简单", width: 3250, gaps: [105, 115, 120, 110], enemies: 5, speed: 72, sky: ["#4dbcf4", "#f9d8a7"], top: "#66c864", base: "#a56a43", edge: "#4f3429", accent: "#e94848" },
+    { name: "1998 法国·巴黎铁塔", scene: "france98", difficulty: "简单+", width: 3450, gaps: [110, 125, 120, 130], enemies: 6, speed: 78, sky: ["#6e9bd7", "#ffd9b7"], top: "#8bcf68", base: "#b87b58", edge: "#55413b", accent: "#f0c84b" },
+    { name: "2002 韩日·横滨港", scene: "koreajapan02", difficulty: "普通", width: 3650, gaps: [120, 135, 125, 145, 120], enemies: 7, speed: 84, sky: ["#57c2ee", "#f1d3dc"], top: "#67c6aa", base: "#4e8195", edge: "#234b61", accent: "#ef586c" },
+    { name: "2006 德国·勃兰登堡门", scene: "germany06", difficulty: "普通", width: 3850, gaps: [125, 140, 135, 150, 130], enemies: 8, speed: 90, sky: ["#6baad8", "#dce9f3"], top: "#71c86b", base: "#8d8272", edge: "#3c3a38", accent: "#f3ca3b" },
+    { name: "2010 南非·开普桌山", scene: "southafrica10", difficulty: "进阶", width: 4050, gaps: [135, 145, 155, 140, 160], enemies: 8, speed: 98, sky: ["#4dc8ee", "#ffd68d"], top: "#76bd5c", base: "#9e6c3e", edge: "#453629", accent: "#f4bd34" },
+    { name: "2014 巴西·里约热内卢", scene: "brazil14", difficulty: "进阶+", width: 4250, gaps: [140, 155, 150, 165, 145, 160], enemies: 9, speed: 104, sky: ["#3bc5ef", "#ffe59d"], top: "#65c951", base: "#ad7745", edge: "#4c3927", accent: "#f6d13c" },
+    { name: "2018 俄罗斯·圣瓦西里", scene: "russia18", difficulty: "困难", width: 4450, gaps: [150, 165, 155, 170, 160, 175], enemies: 10, speed: 110, sky: ["#263b77", "#e7b9c9"], top: "#d9edf3", base: "#6f7f91", edge: "#29394e", accent: "#f2ca46" },
+    { name: "2022 卡塔尔·多哈海滨", scene: "qatar22", difficulty: "困难+", width: 4650, gaps: [155, 170, 165, 180, 170, 185], enemies: 11, speed: 118, sky: ["#412053", "#f39c67"], top: "#e8bf67", base: "#a65f42", edge: "#4b2934", accent: "#f4e0a4" },
+    { name: "2026 北美三国·联合盛典", scene: "northamerica26", difficulty: "终极", width: 4900, gaps: [160, 175, 170, 185, 175, 190, 165], enemies: 12, speed: 126, sky: ["#15224f", "#6ca6dc"], top: "#68c85b", base: "#506b75", edge: "#202d3b", accent: "#ffd24f" },
   ];
   const PLAYER_META = {
     neymar: { name: "内马尔", number: 10, team: "巴西", numberColor: "#14703b" },
@@ -116,7 +116,7 @@
   themeAudio.loop = true;
   themeAudio.preload = "metadata";
   themeAudio.volume = .38;
-  const MUSIC = { file: "./world-cup-stadium.wav", label: "世界杯桑巴荣耀曲", fallback: "世界杯桑巴现场版" };
+  const MUSIC = { file: "./world-cup-stadium.wav", label: "世界杯荣耀曲", fallback: "世界杯现场版" };
 
   const player = {
     x: 120, y: 380, w: 42, h: 58,
@@ -755,10 +755,10 @@
     stopMusic();
     const finalLevel = currentLevel === LEVELS.length - 1;
     messageKicker.textContent = won ? (finalLevel ? "十关全通！" : "太棒了！") : "别灰心";
-    messageTitle.textContent = won ? (finalLevel ? "星光城堡已点亮" : `第 ${currentLevel + 1} 关完成`) : "冒险暂停";
+    messageTitle.textContent = won ? (finalLevel ? "世界杯时空之旅完成！" : `第 ${currentLevel + 1} 关完成`) : "冒险暂停";
     messageText.textContent = won
       ? (finalLevel
-        ? `你完成了全部十个世界，共收集 ${totalCoins + coins} 枚星币！`
+        ? `你走完了最近十届世界杯举办地，共收集 ${totalCoins + coins} 枚星币！`
         : `${LEVELS[currentLevel].name}完成：获得 ${coins} 点宝藏。下一站：${LEVELS[currentLevel + 1].name}。`)
       : `你在${LEVELS[currentLevel].name}收集了 ${coins} 枚星币，再试一次吧！`;
     document.querySelector("#playAgainButton").textContent = won && !finalLevel ? "进入下一关" : (won ? "从头再玩" : "重玩本关");
@@ -820,54 +820,70 @@
       }
     };
 
-    if (level.scene === "meadow") {
-      ctx.fillStyle = "#fff4a5"; ctx.beginPath(); ctx.arc(790, 95, 46, 0, Math.PI * 2); ctx.fill();
-      cloudBand("rgba(255,255,255,.88)", 105, .15, 1);
-      ctx.fillStyle = "#8bd378"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = 0; x <= W + 160; x += 160) ctx.quadraticCurveTo(x + 80, 292 + Math.sin((x + cameraX * .3) * .005) * 30, x + 160, H); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "#55b968"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = -90; x <= W + 120; x += 120) ctx.quadraticCurveTo(x + 60, 370, x + 120, H); ctx.closePath(); ctx.fill();
-    } else if (level.scene === "forest") {
-      stars("rgba(206,255,195,.72)", 26, .12);
-      ctx.fillStyle = "#173f43";
-      for (let i = -1; i < 9; i += 1) { const x = i * 145 - (cameraX * .22) % 145; ctx.fillRect(x + 45, 120, 38, 350); ctx.beginPath(); ctx.arc(x + 62, 115, 80, 0, Math.PI * 2); ctx.fill(); }
-      ctx.fillStyle = "rgba(100,225,146,.2)"; ctx.beginPath(); ctx.moveTo(100, 0); ctx.lineTo(360, H); ctx.lineTo(500, H); ctx.lineTo(270, 0); ctx.fill();
-    } else if (level.scene === "candy") {
-      cloudBand("rgba(255,255,255,.7)", 95, .13, 1.05);
-      ctx.fillStyle = "#f8a3c7";
-      for (let i = 0; i < 8; i += 1) { const x = i * 155 - (cameraX * .28) % 155; ctx.fillRect(x + 68, 275, 8, 190); ctx.beginPath(); ctx.arc(x + 72, 260, 37, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#fff7c7"; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(x + 72, 260, 20, 0, Math.PI * 1.5); ctx.stroke(); }
-      ctx.fillStyle = "#f8d6a2"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = 0; x <= W + 180; x += 180) ctx.quadraticCurveTo(x + 90, 330, x + 180, H); ctx.closePath(); ctx.fill();
-    } else if (level.scene === "desert") {
-      ctx.fillStyle = "#fff0bd"; ctx.beginPath(); ctx.arc(760, 92, 48, 0, Math.PI * 2); ctx.fill(); stars("rgba(255,240,189,.8)", 20);
-      ctx.fillStyle = "#8d5360"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = 0; x <= W + 230; x += 230) ctx.quadraticCurveTo(x + 115, 310, x + 230, H); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "#d98b5a"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = -120; x <= W + 180; x += 180) ctx.quadraticCurveTo(x + 90, 385, x + 180, H); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "#513654"; for (let i = 0; i < 7; i += 1) { const x = i * 155 - (cameraX * .18) % 155; ctx.fillRect(x + 25, 330, 100, 140); ctx.beginPath(); ctx.arc(x + 75, 330, 50, Math.PI, 0); ctx.fill(); }
-    } else if (level.scene === "reef") {
-      ctx.fillStyle = "rgba(210,255,251,.12)"; for (let i = 0; i < 7; i += 1) { ctx.beginPath(); ctx.moveTo(i * 155, 0); ctx.lineTo(i * 155 + 120, H); ctx.lineTo(i * 155 + 250, H); ctx.lineTo(i * 155 + 90, 0); ctx.fill(); }
-      ctx.strokeStyle = "rgba(230,255,255,.55)"; ctx.lineWidth = 3; for (let i = 0; i < 20; i += 1) { const x = (i * 97 - cameraX * .08) % W; const y = 45 + (i * 67) % 350; ctx.beginPath(); ctx.arc(x, y, 4 + i % 9, 0, Math.PI * 2); ctx.stroke(); }
-      ctx.fillStyle = "#ee6b8f"; for (let i = 0; i < 10; i += 1) { const x = i * 120 - (cameraX * .3) % 120; ctx.fillRect(x + 50, 350, 12, 120); ctx.beginPath(); ctx.arc(x + 40, 365, 20, 0, Math.PI * 2); ctx.arc(x + 72, 385, 18, 0, Math.PI * 2); ctx.fill(); }
-    } else if (level.scene === "ice") {
-      stars("rgba(255,255,255,.85)", 28, .1); cloudBand("rgba(255,255,255,.35)", 85, .11, .9);
-      ctx.fillStyle = "#9bd6eb"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = 0; x <= W + 180; x += 180) { ctx.lineTo(x + 90, 190 + (x % 360) / 4); ctx.lineTo(x + 180, H); } ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "#dffaff"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = -120; x <= W + 150; x += 150) { ctx.lineTo(x + 75, 300); ctx.lineTo(x + 150, H); } ctx.closePath(); ctx.fill();
-      ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 4; for (let i = 0; i < 6; i += 1) ctx.strokeRect(i * 190 - (cameraX * .18) % 190, 265, 70, 205);
-    } else if (level.scene === "haunted") {
-      ctx.fillStyle = "#d8d5a8"; ctx.beginPath(); ctx.arc(760, 105, 62, 0, Math.PI * 2); ctx.fill(); stars("rgba(218,255,180,.62)", 20);
-      ctx.fillStyle = "#26243c"; for (let i = -1; i < 11; i += 1) { const x = i * 105 - (cameraX * .3) % 105; ctx.beginPath(); ctx.moveTo(x + 52, 215); ctx.lineTo(x, 455); ctx.lineTo(x + 104, 455); ctx.closePath(); ctx.fill(); }
-      ctx.fillStyle = "#171624"; ctx.fillRect(345, 245, 280, 225); ctx.fillRect(430, 170, 108, 300); ctx.beginPath(); ctx.moveTo(400, 180); ctx.lineTo(484, 95); ctx.lineTo(568, 180); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "#c8ff6e"; ctx.fillRect(377, 285, 28, 40); ctx.fillRect(564, 285, 28, 40);
-    } else if (level.scene === "sky") {
-      cloudBand("rgba(255,255,255,.92)", 110, .18, 1.25); cloudBand("rgba(224,216,255,.62)", 285, .36, .82);
-      ctx.fillStyle = "#7a6db0"; for (let i = 0; i < 7; i += 1) { const x = i * 190 - (cameraX * .26) % 190; ctx.beginPath(); ctx.ellipse(x + 80, 345 + (i % 2) * 45, 72, 25, 0, 0, Math.PI * 2); ctx.fill(); ctx.beginPath(); ctx.moveTo(x + 20, 345); ctx.lineTo(x + 80, 440); ctx.lineTo(x + 140, 345); ctx.closePath(); ctx.fill(); }
-    } else if (level.scene === "volcano") {
-      stars("rgba(255,202,100,.72)", 18, .16);
-      ctx.fillStyle = "rgba(255,121,46,.75)"; for (let i = 0; i < 30; i += 1) { const x = (i * 83 - cameraX * .12) % W; const y = 40 + (i * 71) % 360; ctx.beginPath(); ctx.arc(x, y, 2 + i % 4, 0, Math.PI * 2); ctx.fill(); }
-      ctx.fillStyle = "#34212a"; ctx.beginPath(); ctx.moveTo(0, H); ctx.lineTo(170, 260); ctx.lineTo(290, 360); ctx.lineTo(480, 170); ctx.lineTo(650, 350); ctx.lineTo(820, 230); ctx.lineTo(W, H); ctx.closePath(); ctx.fill();
-      ctx.fillStyle = "#ff6a2b"; ctx.beginPath(); ctx.moveTo(450, 220); ctx.lineTo(480, 170); ctx.lineTo(515, 230); ctx.lineTo(495, 280); ctx.closePath(); ctx.fill();
+    if (level.scene === "italy90") {
+      ctx.fillStyle = "#ffe07c"; ctx.beginPath(); ctx.arc(810, 92, 44, 0, Math.PI * 2); ctx.fill();
+      cloudBand("rgba(255,255,255,.76)", 88, .12, .86);
+      ctx.fillStyle = "#b85d42"; ctx.beginPath(); ctx.ellipse(480, 350, 245, 142, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#d78b5b"; ctx.beginPath(); ctx.ellipse(480, 342, 208, 108, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#723e32"; ctx.beginPath(); ctx.ellipse(480, 340, 164, 70, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#d78b5b"; ctx.fillRect(250, 340, 460, 132);
+      ctx.fillStyle = "#56342e"; for (let row = 0; row < 2; row += 1) for (let i = 0; i < 11; i += 1) { const x = 270 + i * 40; const y = 360 + row * 55; ctx.beginPath(); ctx.roundRect(x, y, 24, 40, 12); ctx.fill(); }
+      ctx.fillStyle = "#5a9a55"; ctx.beginPath(); ctx.moveTo(0, H); ctx.quadraticCurveTo(220, 410, 430, H); ctx.quadraticCurveTo(700, 405, W, H); ctx.closePath(); ctx.fill();
+    } else if (level.scene === "usa94") {
+      cloudBand("rgba(255,255,255,.7)", 78, .11, .8);
+      ctx.fillStyle = "#7f92a3"; ctx.beginPath(); ctx.moveTo(0, 360); ctx.lineTo(120, 205); ctx.lineTo(235, 360); ctx.lineTo(365, 175); ctx.lineTo(520, 360); ctx.lineTo(690, 220); ctx.lineTo(W, 360); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#efe5d0"; ctx.beginPath(); ctx.ellipse(480, 377, 330, 118, 0, Math.PI, Math.PI * 2); ctx.fill(); ctx.fillRect(150, 370, 660, 98);
+      ctx.fillStyle = "#9d2d34"; ctx.fillRect(185, 385, 590, 20); ctx.fillRect(215, 420, 530, 12);
+      ctx.fillStyle = "#263c58"; for (let i = 0; i < 12; i += 1) ctx.fillRect(210 + i * 48, 442, 24, 26);
+      ctx.fillStyle = "#2e9c5c"; ctx.beginPath(); ctx.ellipse(480, 455, 230, 38, 0, Math.PI, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "#704737"; ctx.lineWidth = 9; for (const x of [110, 855]) { ctx.beginPath(); ctx.moveTo(x, 470); ctx.lineTo(x + 15, 315); ctx.stroke(); ctx.fillStyle = "#3f9d55"; for (let a = -2; a <= 2; a += 1) { ctx.beginPath(); ctx.ellipse(x + 15 + a * 8, 305 + Math.abs(a) * 5, 35, 8, a * .45, 0, Math.PI * 2); ctx.fill(); } }
+    } else if (level.scene === "france98") {
+      ctx.fillStyle = "#ffd88a"; ctx.beginPath(); ctx.arc(790, 92, 42, 0, Math.PI * 2); ctx.fill(); cloudBand("rgba(255,255,255,.62)", 90, .1, .8);
+      ctx.fillStyle = "#728a9b"; const tx = 500; ctx.beginPath(); ctx.moveTo(tx, 88); ctx.lineTo(tx - 32, 205); ctx.lineTo(tx - 94, 440); ctx.lineTo(tx - 58, 440); ctx.lineTo(tx - 28, 325); ctx.lineTo(tx + 28, 325); ctx.lineTo(tx + 58, 440); ctx.lineTo(tx + 94, 440); ctx.lineTo(tx + 32, 205); ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = "#d8e2e6"; ctx.lineWidth = 4; for (const y of [190, 250, 320, 380]) { ctx.beginPath(); ctx.moveTo(tx - (y - 105) * .28, y); ctx.lineTo(tx + (y - 105) * .28, y); ctx.stroke(); }
+      ctx.fillStyle = "#607b8d"; ctx.fillRect(0, 425, W, 45); ctx.fillStyle = "#86c7dc"; ctx.fillRect(0, 454, W, 30);
+      ctx.strokeStyle = "rgba(255,255,255,.7)"; ctx.lineWidth = 3; for (let x = 0; x < W; x += 75) { ctx.beginPath(); ctx.moveTo(x, 466); ctx.quadraticCurveTo(x + 18, 458, x + 38, 466); ctx.stroke(); }
+    } else if (level.scene === "koreajapan02") {
+      cloudBand("rgba(255,255,255,.72)", 70, .1, .78); ctx.fillStyle = "#5cbdd8"; ctx.fillRect(0, 382, W, 90);
+      ctx.fillStyle = "#315774"; ctx.fillRect(110, 252, 85, 130); ctx.fillStyle = "#89d7ef"; for (let y = 267; y < 370; y += 18) for (let x = 120; x < 188; x += 18) ctx.fillRect(x, y, 9, 8);
+      ctx.fillStyle = "#526b7d"; ctx.beginPath(); ctx.moveTo(300, 382); ctx.lineTo(330, 128); ctx.lineTo(360, 382); ctx.closePath(); ctx.fill(); ctx.fillStyle = "#e8f4f5"; ctx.fillRect(324, 145, 12, 228);
+      ctx.strokeStyle = "#e8edf1"; ctx.lineWidth = 8; ctx.beginPath(); ctx.arc(690, 285, 103, 0, Math.PI * 2); ctx.stroke(); ctx.lineWidth = 2; for (let i = 0; i < 12; i += 1) { const a = i * Math.PI / 6; ctx.beginPath(); ctx.moveTo(690, 285); ctx.lineTo(690 + Math.cos(a) * 103, 285 + Math.sin(a) * 103); ctx.stroke(); }
+      ctx.fillStyle = "#f04e61"; for (let i = 0; i < 12; i += 1) { const a = i * Math.PI / 6; ctx.beginPath(); ctx.arc(690 + Math.cos(a) * 103, 285 + Math.sin(a) * 103, 7, 0, Math.PI * 2); ctx.fill(); }
+      ctx.strokeStyle = "rgba(255,255,255,.62)"; ctx.lineWidth = 3; for (let y = 410; y < 470; y += 22) { ctx.beginPath(); for (let x = 0; x < W; x += 70) { ctx.moveTo(x, y); ctx.quadraticCurveTo(x + 18, y - 6, x + 36, y); } ctx.stroke(); }
+    } else if (level.scene === "germany06") {
+      cloudBand("rgba(255,255,255,.7)", 80, .1, .8); ctx.fillStyle = "#7f936b"; ctx.fillRect(0, 414, W, 58);
+      ctx.fillStyle = "#d6c8a9"; ctx.fillRect(265, 220, 430, 52); ctx.fillRect(285, 272, 390, 175); ctx.fillStyle = "#ece3ca"; for (let i = 0; i < 6; i += 1) ctx.fillRect(310 + i * 59, 270, 22, 177);
+      ctx.fillStyle = "#4c5660"; for (let i = 0; i < 5; i += 1) ctx.fillRect(340 + i * 59, 295, 32, 152);
+      ctx.fillStyle = "#c4b28e"; ctx.beginPath(); ctx.moveTo(242, 220); ctx.lineTo(480, 160); ctx.lineTo(718, 220); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#56626d"; ctx.fillRect(462, 125, 36, 40); ctx.beginPath(); ctx.arc(480, 115, 20, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#1b1d20"; ctx.fillRect(0, 455, W, 17); ctx.fillStyle = "#d54638"; ctx.fillRect(0, 462, W, 10); ctx.fillStyle = "#e8c642"; ctx.fillRect(0, 470, W, 12);
+    } else if (level.scene === "southafrica10") {
+      ctx.fillStyle = "#ffe47e"; ctx.beginPath(); ctx.arc(800, 88, 42, 0, Math.PI * 2); ctx.fill(); cloudBand("rgba(255,255,255,.66)", 78, .1, .8);
+      ctx.fillStyle = "#627c75"; ctx.beginPath(); ctx.moveTo(40, 405); ctx.lineTo(235, 205); ctx.lineTo(600, 205); ctx.lineTo(760, 405); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#8ca18e"; ctx.fillRect(236, 195, 365, 28); ctx.fillStyle = "rgba(255,255,255,.75)"; ctx.fillRect(248, 188, 340, 14);
+      const houses = ["#f05e5e", "#f4c44e", "#45b7c7", "#8b65c3", "#57ad62"]; for (let i = 0; i < 12; i += 1) { const x = 30 + i * 78; ctx.fillStyle = houses[i % houses.length]; ctx.fillRect(x, 390 - (i % 2) * 18, 62, 80); ctx.fillStyle = "#f7efe0"; ctx.beginPath(); ctx.moveTo(x - 5, 390 - (i % 2) * 18); ctx.lineTo(x + 31, 360 - (i % 2) * 18); ctx.lineTo(x + 67, 390 - (i % 2) * 18); ctx.closePath(); ctx.fill(); }
+    } else if (level.scene === "brazil14") {
+      ctx.fillStyle = "#ffe36e"; ctx.beginPath(); ctx.arc(790, 82, 44, 0, Math.PI * 2); ctx.fill(); cloudBand("rgba(255,255,255,.7)", 75, .1, .8);
+      ctx.fillStyle = "#397f5c"; ctx.beginPath(); ctx.moveTo(0, 430); ctx.quadraticCurveTo(170, 210, 330, 430); ctx.quadraticCurveTo(510, 165, 690, 430); ctx.quadraticCurveTo(820, 260, W, 430); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+      ctx.fillStyle = "#e8e4d3"; ctx.fillRect(480, 170, 12, 95); ctx.fillRect(449, 186, 74, 10); ctx.beginPath(); ctx.arc(486, 154, 17, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#e8e4d3"; ctx.lineWidth = 8; ctx.beginPath(); ctx.moveTo(486, 175); ctx.lineTo(453, 195); ctx.moveTo(486, 175); ctx.lineTo(519, 195); ctx.stroke();
+      ctx.fillStyle = "#209dcc"; ctx.fillRect(0, 424, W, 48); ctx.strokeStyle = "rgba(255,255,255,.7)"; ctx.lineWidth = 3; for (let x = 0; x < W; x += 70) { ctx.beginPath(); ctx.moveTo(x, 446); ctx.quadraticCurveTo(x + 18, 437, x + 38, 446); ctx.stroke(); }
+      ctx.fillStyle = "#f4d776"; ctx.fillRect(0, 465, W, 18);
+    } else if (level.scene === "russia18") {
+      stars("rgba(255,231,173,.9)", 28, .06); ctx.fillStyle = "#f4d07b"; ctx.beginPath(); ctx.arc(810, 88, 38, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#8f3d50"; ctx.fillRect(245, 292, 470, 178); ctx.fillStyle = "#d4bd9d"; for (let i = 0; i < 6; i += 1) ctx.fillRect(270 + i * 77, 320, 48, 150);
+      const domeX = [288, 365, 442, 519, 596, 673]; const domeColors = ["#3ca1a4", "#e2b840", "#d94c4f", "#4c9b63", "#5c6ec0", "#e7774d"]; domeX.forEach((x, i) => { ctx.fillStyle = domeColors[i]; ctx.beginPath(); ctx.moveTo(x - 28, 295); ctx.quadraticCurveTo(x - 38, 245, x, 205 - (i % 2) * 25); ctx.quadraticCurveTo(x + 38, 245, x + 28, 295); ctx.closePath(); ctx.fill(); ctx.fillStyle = "#f0ca55"; ctx.fillRect(x - 3, 188 - (i % 2) * 25, 6, 25); });
+      ctx.fillStyle = "#e8d6c8"; ctx.fillRect(0, 452, W, 25);
+    } else if (level.scene === "qatar22") {
+      stars("rgba(255,232,183,.82)", 24, .08); ctx.fillStyle = "#f6d487"; ctx.beginPath(); ctx.arc(805, 84, 42, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#69445a"; ctx.beginPath(); ctx.moveTo(0, 430); for (let x = 0; x <= W + 220; x += 220) ctx.quadraticCurveTo(x + 110, 330, x + 220, 430); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
+      const towers = [{x:135,w:58,h:170},{x:230,w:76,h:215},{x:350,w:52,h:155},{x:560,w:65,h:235},{x:680,w:80,h:190},{x:800,w:48,h:145}]; towers.forEach((t, i) => { ctx.fillStyle = i % 2 ? "#7cc3cb" : "#b6d9d8"; ctx.beginPath(); ctx.roundRect(t.x, 430 - t.h, t.w, t.h, i % 2 ? 24 : 8); ctx.fill(); ctx.fillStyle = "rgba(255,226,145,.8)"; for (let y = 450 - t.h; y < 414; y += 25) ctx.fillRect(t.x + 12, y, t.w - 24, 6); });
+      ctx.fillStyle = "#3e8ba5"; ctx.fillRect(0, 430, W, 44); ctx.fillStyle = "#e6bc72"; ctx.fillRect(0, 466, W, 18);
     } else {
-      stars("rgba(255,236,150,.95)", 40, .08); ctx.fillStyle = "#f8e29b"; ctx.beginPath(); ctx.arc(805, 90, 43, 0, Math.PI * 2); ctx.fill();
-      cloudBand("rgba(193,179,240,.23)", 250, .12, .85);
-      ctx.fillStyle = "#28204f"; ctx.fillRect(290, 245, 390, 225); ctx.fillRect(365, 155, 65, 315); ctx.fillRect(540, 125, 72, 345);
-      for (const x of [332, 397, 573, 637]) { ctx.beginPath(); ctx.moveTo(x - 28, 245); ctx.lineTo(x, 190); ctx.lineTo(x + 28, 245); ctx.closePath(); ctx.fill(); }
-      ctx.fillStyle = "#ffe26c"; for (const x of [390, 565]) { ctx.fillRect(x, 205, 16, 28); ctx.fillRect(x, 280, 16, 28); }
+      stars("rgba(255,232,157,.9)", 30, .07); cloudBand("rgba(255,255,255,.2)", 78, .1, .72);
+      ctx.fillStyle = "#bc7546"; for (let i = 0; i < 5; i += 1) { ctx.fillRect(45 + i * 42, 382 - i * 25, 190 - i * 84, 88 + i * 25); } ctx.fillStyle = "#f0ca66"; ctx.fillRect(34, 445, 220, 25);
+      ctx.fillStyle = "#d8e2e7"; ctx.beginPath(); ctx.moveTo(475, 105); ctx.lineTo(455, 430); ctx.lineTo(495, 430); ctx.closePath(); ctx.fill(); ctx.fillRect(438, 185, 74, 12); ctx.fillStyle = "#ef4444"; ctx.beginPath(); ctx.ellipse(475, 205, 45, 24, 0, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = "#e5564f"; ctx.lineWidth = 9; ctx.beginPath(); ctx.moveTo(650, 430); ctx.lineTo(704, 235); ctx.lineTo(758, 430); ctx.moveTo(785, 430); ctx.lineTo(839, 235); ctx.lineTo(893, 430); ctx.stroke(); ctx.strokeStyle = "#f2c35a"; ctx.lineWidth = 6; ctx.beginPath(); ctx.moveTo(704, 235); ctx.lineTo(839, 235); ctx.stroke(); ctx.strokeStyle = "rgba(255,255,255,.65)"; ctx.lineWidth = 2; for (let x = 720; x < 835; x += 22) { ctx.beginPath(); ctx.moveTo(x, 238); ctx.lineTo(x - 35, 430); ctx.stroke(); }
+      ctx.fillStyle = "#314e6b"; ctx.fillRect(0, 465, W, 18);
     }
   }
 

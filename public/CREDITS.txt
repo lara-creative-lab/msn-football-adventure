@@ -1,8 +1,7 @@
 Music
 -----
-"世界杯桑巴荣耀曲" was composed procedurally for this game as its sole
-original samba stadium-football soundtrack. It is bundled as
-world-cup-stadium.wav.
+"世界杯荣耀曲" was composed procedurally for this game as its sole original
+stadium-football soundtrack. It is bundled as world-cup-stadium.wav.
 
 Character Art
 -------------
