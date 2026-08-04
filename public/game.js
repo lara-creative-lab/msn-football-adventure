@@ -461,7 +461,7 @@
     } else if (type === "ronaldo") {
       ownedSkins.add("ninja"); equippedSkin = "ninja"; player.heroForm = "neymar";
       saveCosmetics(); updateShopUI();
-      showFootballReward("🧢 C罗奖励！", "内马尔反戴潮帽已加入橱窗并自动装备");
+      showFootballReward("🧢 C罗奖励！", "内马尔“帅”字反戴潮帽已加入橱窗并自动装备");
     } else if (type === "dembele") {
       growPlayer();
     } else if (type === "vinicius") {
@@ -1208,13 +1208,14 @@
       ctx.arc(0, displayHeight * .022, displayWidth * .09, Math.PI, 0);
       ctx.stroke();
       ctx.beginPath(); ctx.moveTo(-displayWidth * .15, displayHeight * .018); ctx.lineTo(displayWidth * .15, displayHeight * .018); ctx.stroke();
-      // Subtle panel seams and a small side number keep the cap detailed but clean.
+      // Subtle panel seams and a compact “帅” badge keep the cap personal but clean.
       ctx.strokeStyle = "rgba(255,255,255,.32)"; ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(0, -displayHeight * .1); ctx.lineTo(0, -displayHeight * .025);
       ctx.moveTo(-displayWidth * .27, -displayHeight * .035); ctx.quadraticCurveTo(0, -displayHeight * .07, displayWidth * .27, -displayHeight * .035); ctx.stroke();
-      ctx.fillStyle = "#f0cb57"; ctx.font = `1000 ${displayHeight * .046}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("10", -displayWidth * .23, -displayHeight * .028);
+      drawRoundedRect(-displayWidth * .285, -displayHeight * .068, displayWidth * .19, displayHeight * .07, 2.5, "#f0cb57", "#fff1a3", 1);
+      ctx.fillStyle = "#151e39"; ctx.font = `1000 ${displayHeight * .05}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("帅", -displayWidth * .19, -displayHeight * .033);
       ctx.restore();
     } else if (form === "spider") {
       ctx.fillStyle = "#d83f4d"; ctx.beginPath(); ctx.arc(displayWidth * .32, -displayHeight * .35, displayHeight * .09, 0, Math.PI * 2); ctx.fill();
@@ -1247,7 +1248,7 @@
     if (msnStage >= 2) drawCollectibleFigure("messi", centerX - 33, bottomY + 1, displayHeight * .82, player.facing, "default", .96);
     if (msnStage >= 3) drawCollectibleFigure("suarez", centerX + 34, bottomY + 1, displayHeight * .82, player.facing, "default", .96);
     drawCollectibleFigure("neymar", centerX, bottomY, displayHeight, player.facing, activeForm);
-    if (msnStage === 3) drawWorldCupTrophy(centerX, bottomY - displayHeight * .42, time);
+    if (msnStage === 3) drawWorldCupTrophy(centerX, bottomY - displayHeight * .31, time);
     ctx.save();
     const teamLabel = msnStage === 3 ? "🏆 MSN合捧大力神杯" : (msnStage === 2 ? "MSN 2/3 · 梅西加入" : "内马尔 · 10");
     const labelWidth = msnStage === 1 ? 78 : 124;
@@ -1258,29 +1259,91 @@
   }
 
   function drawWorldCupTrophy(x, y, time) {
-    const sway = Math.sin(time * 3) * .5;
+    const sway = Math.sin(time * 3) * .35;
     ctx.save(); ctx.translate(x, y + sway);
     ctx.lineCap = "round";
-    // Three pairs of arms reach in from Messi, Neymar and Suárez so the cup is visibly shared.
+    // Messi and Suárez reach from the sides while Neymar supports the base with both hands.
     const arms = [
-      { color: "#d89a72", fromX: -46, fromY: -3, toX: -12, toY: 1 },
-      { color: "#b9784d", fromX: -15, fromY: 17, toX: -7, toY: 10 },
-      { color: "#b9784d", fromX: 15, fromY: 17, toX: 7, toY: 10 },
-      { color: "#c17a50", fromX: 46, fromY: -3, toX: 12, toY: 1 },
+      { color: "#d89a72", fromX: -42, fromY: 0, toX: -8, toY: 4 },
+      { color: "#b9784d", fromX: -11, fromY: 17, toX: -5, toY: 14 },
+      { color: "#b9784d", fromX: 11, fromY: 17, toX: 5, toY: 14 },
+      { color: "#c17a50", fromX: 42, fromY: 0, toX: 8, toY: 4 },
     ];
     for (const arm of arms) {
-      ctx.strokeStyle = arm.color; ctx.lineWidth = 6;
-      ctx.beginPath(); ctx.moveTo(arm.fromX, arm.fromY); ctx.lineTo(arm.toX, arm.toY); ctx.stroke();
-      ctx.fillStyle = arm.color; ctx.strokeStyle = "#5c3b2f"; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.arc(arm.toX, arm.toY, 4.5, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = "rgba(23,33,51,.28)"; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(arm.fromX, arm.fromY + 1); ctx.quadraticCurveTo(arm.fromX * .48, arm.fromY + 5, arm.toX, arm.toY + 1); ctx.stroke();
+      ctx.strokeStyle = arm.color; ctx.lineWidth = 4.2;
+      ctx.beginPath(); ctx.moveTo(arm.fromX, arm.fromY); ctx.quadraticCurveTo(arm.fromX * .48, arm.fromY + 4, arm.toX, arm.toY); ctx.stroke();
+      ctx.fillStyle = arm.color; ctx.strokeStyle = "#5c3b2f"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(arm.toX, arm.toY, 3.1, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
-    ctx.shadowColor = "#ffe46c"; ctx.shadowBlur = 15;
-    const gold = ctx.createLinearGradient(-14, -23, 14, 23);
-    gold.addColorStop(0, "#fff3a1"); gold.addColorStop(.45, "#f4c53f"); gold.addColorStop(1, "#a96b12");
-    ctx.fillStyle = gold; ctx.strokeStyle = "#5c4017"; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.arc(0, -17, 12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(-10, -10); ctx.quadraticCurveTo(-18, 2, -8, 12); ctx.lineTo(-6, 23); ctx.lineTo(6, 23); ctx.lineTo(8, 12); ctx.quadraticCurveTo(18, 2, 10, -10); ctx.quadraticCurveTo(0, -3, -10, -10); ctx.closePath(); ctx.fill(); ctx.stroke();
-    ctx.fillRect(-13, 21, 26, 6); ctx.strokeRect(-13, 21, 26, 6);
+
+    ctx.shadowColor = "rgba(255,210,62,.8)"; ctx.shadowBlur = 9;
+    const gold = ctx.createLinearGradient(-10, -24, 10, 22);
+    gold.addColorStop(0, "#fff8bd");
+    gold.addColorStop(.2, "#f5d35d");
+    gold.addColorStop(.52, "#dca52a");
+    gold.addColorStop(.78, "#f3ca4e");
+    gold.addColorStop(1, "#9b6212");
+
+    // Two sculpted figures rise from the base and hold up the globe.
+    ctx.fillStyle = gold; ctx.strokeStyle = "#6f4a13"; ctx.lineWidth = 1.4;
+    ctx.beginPath();
+    ctx.moveTo(-5.8, 14);
+    ctx.quadraticCurveTo(-10.2, 7, -8.2, -1.2);
+    ctx.quadraticCurveTo(-7.3, -6.2, -3.9, -8.7);
+    ctx.lineTo(-1.2, -5.4);
+    ctx.quadraticCurveTo(-4.6, -1.4, -3.1, 5.2);
+    ctx.lineTo(-1.4, 14);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(5.8, 14);
+    ctx.quadraticCurveTo(10.2, 7, 8.2, -1.2);
+    ctx.quadraticCurveTo(7.3, -6.2, 3.9, -8.7);
+    ctx.lineTo(1.2, -5.4);
+    ctx.quadraticCurveTo(4.6, -1.4, 3.1, 5.2);
+    ctx.lineTo(1.4, 14);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Warm central core gives the thin trophy a solid, premium silhouette.
+    ctx.beginPath();
+    ctx.moveTo(-2.8, -5.5); ctx.quadraticCurveTo(-4.2, 4, -2.8, 14);
+    ctx.lineTo(2.8, 14); ctx.quadraticCurveTo(4.2, 4, 2.8, -5.5);
+    ctx.closePath(); ctx.fill(); ctx.stroke();
+
+    // Golden globe with subtle latitude, longitude and continent details.
+    const globe = ctx.createRadialGradient(-2.6, -16.8, 1, 0, -14.5, 8.7);
+    globe.addColorStop(0, "#fff9c4"); globe.addColorStop(.35, "#f6d45d"); globe.addColorStop(.72, "#d79b20"); globe.addColorStop(1, "#925811");
+    ctx.fillStyle = globe; ctx.strokeStyle = "#6c4711"; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(0, -14.5, 8.6, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.strokeStyle = "rgba(120,72,12,.58)"; ctx.lineWidth = .75;
+    ctx.beginPath(); ctx.ellipse(0, -14.5, 3.8, 8.1, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.ellipse(0, -14.5, 8.1, 3.4, 0, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = "rgba(133,78,12,.72)";
+    ctx.beginPath();
+    ctx.moveTo(-5.7, -18.4); ctx.quadraticCurveTo(-2.8, -21, -.6, -18.7);
+    ctx.lineTo(-1.5, -15.2); ctx.lineTo(-4.3, -14); ctx.lineTo(-6.2, -16.1); ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(1.1, -13.5); ctx.quadraticCurveTo(4.8, -14.8, 6.4, -12.1);
+    ctx.lineTo(4.1, -7.9); ctx.lineTo(1.7, -9.8); ctx.closePath(); ctx.fill();
+
+    // Malachite-green base and polished gold collars.
+    ctx.fillStyle = "#e7bb43"; ctx.strokeStyle = "#6f4a13"; ctx.lineWidth = 1.3;
+    ctx.beginPath(); ctx.ellipse(0, 14, 7.4, 2.2, 0, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    const green = ctx.createLinearGradient(-8, 15, 8, 23);
+    green.addColorStop(0, "#1d8f69"); green.addColorStop(.5, "#53c58d"); green.addColorStop(1, "#07533f");
+    ctx.fillStyle = green;
+    ctx.beginPath(); ctx.moveTo(-7, 15); ctx.lineTo(-8.8, 22.5); ctx.lineTo(8.8, 22.5); ctx.lineTo(7, 15); ctx.closePath(); ctx.fill(); ctx.stroke();
+    ctx.fillStyle = "#d9a935";
+    drawRoundedRect(-10, 21.3, 20, 4.8, 1.8, "#d9a935", "#6f4a13", 1.2);
+    ctx.fillStyle = "rgba(190,241,202,.55)"; ctx.fillRect(-4.8, 16.6, 1.2, 4.4);
+
+    // Small animated glints sell the metallic finish without overwhelming the characters.
+    const glint = .7 + Math.sin(time * 4) * .25;
+    ctx.globalAlpha = glint; ctx.fillStyle = "#fffbe2";
+    ctx.beginPath(); ctx.moveTo(-11, -19); ctx.lineTo(-9.8, -16.4); ctx.lineTo(-7.2, -15.2); ctx.lineTo(-9.8, -14); ctx.lineTo(-11, -11.4); ctx.lineTo(-12.2, -14); ctx.lineTo(-14.8, -15.2); ctx.lineTo(-12.2, -16.4); ctx.closePath(); ctx.fill();
+    ctx.globalAlpha = 1;
     ctx.restore();
   }
 
