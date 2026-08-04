@@ -461,7 +461,7 @@
     } else if (type === "ronaldo") {
       ownedSkins.add("ninja"); equippedSkin = "ninja"; player.heroForm = "neymar";
       saveCosmetics(); updateShopUI();
-      showFootballReward("🧢 C罗奖励！", "内马尔帅字潮帽已加入橱窗并自动装备");
+      showFootballReward("🎗️ C罗奖励！", "内马尔潮流头巾已加入橱窗并自动装备");
     } else if (type === "dembele") {
       growPlayer();
     } else if (type === "vinicius") {
@@ -1108,10 +1108,11 @@
       ctx.fillStyle = "#fff"; ctx.font = `900 ${radius * .72}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("★", 0, radius * .75);
       ctx.fillStyle = "#d83d47"; ctx.fillRect(-radius, radius * .72, radius * 2, radius * .18);
     } else if (outfit === "ninja") {
-      ctx.fillStyle = "#ec7b26"; ctx.fillRect(-radius, radius * .22, radius * 2, radius);
-      ctx.fillStyle = "#17213b"; ctx.fillRect(-radius, -radius * .37, radius * 2, radius * .24);
-      ctx.fillStyle = "#c7d1da"; ctx.fillRect(-radius * .42, -radius * .35, radius * .84, radius * .18);
-      ctx.fillStyle = "#17213b"; ctx.font = `900 ${radius * .4}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("帅", 0, radius * .74);
+      ctx.fillStyle = "#f1ca28"; ctx.fillRect(-radius, radius * .22, radius * 2, radius);
+      ctx.fillStyle = "#17213b"; ctx.fillRect(-radius, -radius * .39, radius * 2, radius * .2);
+      ctx.fillStyle = "#d8aa32"; ctx.fillRect(-radius, -radius * .39, radius * 2, radius * .045);
+      ctx.fillRect(-radius, -radius * .235, radius * 2, radius * .045);
+      ctx.beginPath(); ctx.moveTo(radius * .72, -radius * .29); ctx.lineTo(radius * 1.3, -radius * .1); ctx.lineTo(radius * .86, radius * .08); ctx.closePath(); ctx.fillStyle = "#17213b"; ctx.fill();
     } else if (outfit === "starlight") {
       ctx.fillStyle = "#31559b"; ctx.fillRect(-radius, radius * .24, radius * 2, radius);
       ctx.fillStyle = "#ffd45b"; ctx.font = `900 ${radius * .6}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("★", 0, radius * .78);
@@ -1184,14 +1185,36 @@
       ctx.beginPath(); ctx.arc(-displayWidth * .42, -displayHeight * .42, displayHeight * .13, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
       ctx.fillStyle = "#fff"; ctx.font = `900 ${displayHeight * .16}px sans-serif`; ctx.fillText("★", -displayWidth * .42, -displayHeight * .42);
     } else if (form === "ninja") {
-      // Neymar-inspired fashion cap: tilted and worn backward, with a visible “帅” patch.
-      ctx.save(); ctx.translate(0, -displayHeight * .83); ctx.rotate(-.12);
-      ctx.fillStyle = "#171d32"; ctx.strokeStyle = "#f1c84b"; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.ellipse(0, 0, displayWidth * .34, displayHeight * .105, 0, Math.PI, 0); ctx.fill(); ctx.stroke();
-      ctx.beginPath(); ctx.ellipse(-displayWidth * .3, displayHeight * .02, displayWidth * .25, displayHeight * .045, -.16, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      drawRoundedRect(-displayWidth * .17, -displayHeight * .065, displayWidth * .34, displayHeight * .13, 5, "#d8a92d", "#171d32", 2);
-      ctx.fillStyle = "#171d32"; ctx.font = `1000 ${displayHeight * .085}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("帅", 0, 0);
+      // Low-profile Neymar-inspired bandana: fitted across the forehead and tied behind the head.
+      ctx.save(); ctx.translate(0, -displayHeight * .76); ctx.rotate(-.045);
+      ctx.shadowColor = "rgba(12,20,43,.3)"; ctx.shadowBlur = 4; ctx.shadowOffsetY = 2;
+      ctx.fillStyle = "#151e39"; ctx.strokeStyle = "#e5bd43"; ctx.lineWidth = Math.max(1.5, displayHeight * .018);
+      ctx.beginPath();
+      ctx.moveTo(-displayWidth * .34, -displayHeight * .045);
+      ctx.quadraticCurveTo(0, -displayHeight * .09, displayWidth * .34, -displayHeight * .035);
+      ctx.lineTo(displayWidth * .33, displayHeight * .045);
+      ctx.quadraticCurveTo(0, displayHeight * .005, -displayWidth * .33, displayHeight * .04);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
+      // Knot and short ribbons sit behind the right side of the head.
+      ctx.fillStyle = "#151e39"; ctx.strokeStyle = "#e5bd43";
+      ctx.beginPath(); ctx.arc(displayWidth * .34, displayHeight * .008, displayHeight * .055, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(displayWidth * .37, displayHeight * .025);
+      ctx.quadraticCurveTo(displayWidth * .55, displayHeight * .07, displayWidth * .61, displayHeight * .15);
+      ctx.lineTo(displayWidth * .48, displayHeight * .13);
+      ctx.quadraticCurveTo(displayWidth * .43, displayHeight * .08, displayWidth * .34, displayHeight * .06);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(displayWidth * .36, -displayHeight * .005);
+      ctx.quadraticCurveTo(displayWidth * .52, -displayHeight * .02, displayWidth * .59, displayHeight * .04);
+      ctx.lineTo(displayWidth * .46, displayHeight * .065);
+      ctx.quadraticCurveTo(displayWidth * .42, displayHeight * .03, displayWidth * .34, displayHeight * .025);
+      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // A slim gold center detail keeps it fashionable without looking like a hat.
+      drawRoundedRect(-displayWidth * .075, -displayHeight * .05, displayWidth * .15, displayHeight * .075, 3, "#d7aa32", "#fff2ad", 1);
+      ctx.fillStyle = "#151e39"; ctx.font = `1000 ${displayHeight * .045}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("N10", 0, -displayHeight * .011);
       ctx.restore();
     } else if (form === "spider") {
       ctx.fillStyle = "#d83f4d"; ctx.beginPath(); ctx.arc(displayWidth * .32, -displayHeight * .35, displayHeight * .09, 0, Math.PI * 2); ctx.fill();
