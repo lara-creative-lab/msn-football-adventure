@@ -9,7 +9,6 @@
   const messageTitle = document.querySelector("#messageTitle");
   const messageText = document.querySelector("#messageText");
   const soundButton = document.querySelector("#soundButton");
-  const musicSelect = document.querySelector("#musicSelect");
   const rewardToast = document.querySelector("#rewardToast");
   const rewardTitle = document.querySelector("#rewardTitle");
   const rewardDescription = document.querySelector("#rewardDescription");
@@ -117,12 +116,7 @@
   themeAudio.loop = true;
   themeAudio.preload = "metadata";
   themeAudio.volume = .38;
-  const MUSIC = {
-    adventure: { file: "./world-cup-stadium.wav", label: "世界杯荣耀曲", fallback: "世界杯现场版" },
-    dai: { file: "./dai-dai.mp3", label: "Dai Dai", fallback: "世界杯原创版" },
-    naruto: { file: "./naruto-theme.mp3", label: "火影主题", fallback: "原创忍者版" },
-    onepiece: { file: "./one-piece-theme.mp3", label: "海贼王主题", fallback: "原创航海版" },
-  };
+  const MUSIC = { file: "./world-cup-stadium.wav", label: "世界杯荣耀曲", fallback: "世界杯现场版" };
 
   const player = {
     x: 120, y: 380, w: 42, h: 58,
@@ -266,47 +260,39 @@
     osc.start(at); osc.stop(at + duration);
   }
 
-  // Plays user-supplied licensed tracks when present. Missing files fall back
-  // to original loops that evoke the genre without copying protected melodies.
+  // The game has one original World Cup-style track. If it cannot load, a
+  // lightweight stadium loop keeps the match atmosphere going.
   function startMusic() {
     stopMusic();
     if (!soundOn) return;
-    const key = musicSelect.value;
-    const choice = MUSIC[key] || MUSIC.dai;
     const attempt = musicAttempt;
-    themeAudio.src = choice.file;
+    themeAudio.src = MUSIC.file;
     themeAudio.currentTime = 0;
     const playback = themeAudio.play();
     if (playback && typeof playback.then === "function") {
       playback.then(() => {
-        if (attempt === musicAttempt && soundOn) soundButton.textContent = `音乐：${choice.label}`;
+        if (attempt === musicAttempt && soundOn) soundButton.textContent = `音乐：${MUSIC.label}`;
       }).catch(() => {
-        if (attempt === musicAttempt && soundOn) startFallbackMusic(key);
+        if (attempt === musicAttempt && soundOn) startFallbackMusic();
       });
       return;
     }
-    startFallbackMusic(key);
+    startFallbackMusic();
   }
 
-  function startFallbackMusic(key) {
-    const choice = MUSIC[key] || MUSIC.dai;
-    soundButton.textContent = `音乐：${choice.fallback}`;
+  function startFallbackMusic() {
+    soundButton.textContent = `音乐：${MUSIC.fallback}`;
     musicStep = 0;
-    const arrangements = {
-      dai: { lead: [392, 0, 523, 0, 587, 523, 440, 0, 392, 440, 523, 0, 659, 587, 523, 0], bass: [98, 98, 131, 131, 110, 110, 147, 147], tempo: 190, wave: "triangle" },
-      naruto: { lead: [440, 523, 659, 0, 587, 523, 440, 392, 440, 659, 784, 659, 587, 0, 523, 440], bass: [110, 110, 147, 147, 98, 98, 131, 131], tempo: 158, wave: "square" },
-      onepiece: { lead: [392, 493, 587, 659, 587, 493, 440, 0, 523, 659, 784, 740, 659, 587, 523, 0], bass: [98, 123, 147, 123, 110, 131, 165, 131], tempo: 205, wave: "triangle" },
-    };
-    const arrangement = arrangements[key] || arrangements.dai;
+    const arrangement = { lead: [392, 0, 523, 0, 587, 523, 440, 0, 392, 440, 523, 0, 659, 587, 523, 0], bass: [98, 98, 131, 131, 110, 110, 147, 147], tempo: 190, wave: "triangle" };
     const tick = () => {
       if (!soundOn || !running || finished) return;
       const note = arrangement.lead[musicStep % arrangement.lead.length];
-      if (note) beep(note, key === "naruto" ? .11 : .16, arrangement.wave, .016);
+      if (note) beep(note, .16, arrangement.wave, .016);
       if (musicStep % 2 === 0) beep(arrangement.bass[(musicStep / 2) % arrangement.bass.length], .18, "sine", .02);
-      beep(musicStep % 4 === 0 ? (key === "naruto" ? 78 : 90) : 160, .035, "square", .011);
+      beep(musicStep % 4 === 0 ? 90 : 160, .035, "square", .011);
       if (musicStep % 8 === 6) {
-        beep(key === "onepiece" ? 880 : 784, .08, "triangle", .011);
-        beep(key === "naruto" ? 1175 : 988, .08, "triangle", .009, .08);
+        beep(784, .08, "triangle", .011);
+        beep(988, .08, "triangle", .009, .08);
       }
       musicStep += 1;
     };
@@ -1360,14 +1346,9 @@
   });
   soundButton.addEventListener("click", () => {
     soundOn = !soundOn;
-    soundButton.textContent = `音乐：${soundOn ? (MUSIC[musicSelect.value] || MUSIC.dai).label : "关"}`;
+    soundButton.textContent = `音乐：${soundOn ? MUSIC.label : "关"}`;
     if (soundOn) { beep(440, .08); if (running && !finished) startMusic(); }
     else stopMusic();
-  });
-  musicSelect.addEventListener("change", () => {
-    if (!soundOn) return;
-    soundButton.textContent = `音乐：${(MUSIC[musicSelect.value] || MUSIC.dai).label}`;
-    if (running && !finished) startMusic();
   });
   document.querySelector("#shopButton").addEventListener("click", openShop);
   document.querySelector("#closeShopButton").addEventListener("click", closeShop);

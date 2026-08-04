@@ -1,11 +1,7 @@
 Music
 -----
-"世界杯荣耀曲" was composed procedurally for this game as an original
-stadium-football instrumental. It is bundled as world-cup-stadium.wav and is
-the default game music.
-
-The former CC0 track remains bundled as adventure-theme.ogg for archive
-compatibility but is no longer selected by the game.
+"世界杯荣耀曲" was composed procedurally for this game as its sole original
+stadium-football soundtrack. It is bundled as world-cup-stadium.wav.
 
 Character Art
 -------------
