@@ -774,30 +774,6 @@
 
   function drawBackground() {
     const level = LEVELS[currentLevel];
-    if (inBonus) {
-      if (layerScene === "forest") {
-        const forestSky = ctx.createLinearGradient(0, 0, 0, H); forestSky.addColorStop(0, "#112d45"); forestSky.addColorStop(1, "#62b887"); ctx.fillStyle = forestSky; ctx.fillRect(0, 0, W, H);
-        ctx.fillStyle = "rgba(155,255,205,.16)"; ctx.beginPath(); ctx.moveTo(60, 0); ctx.lineTo(320, H); ctx.lineTo(470, H); ctx.lineTo(250, 0); ctx.fill();
-        ctx.fillStyle = "#173f3e"; for (let i = -1; i < 10; i += 1) { const x = i * 125 - (cameraX * .2) % 125; ctx.fillRect(x + 47, 130, 28, 340); ctx.beginPath(); ctx.arc(x + 61, 120, 68, 0, Math.PI * 2); ctx.fill(); }
-        ctx.fillStyle = "#4fe1aa"; for (let i = 0; i < 22; i += 1) { const x = (i * 97 - cameraX * .1) % (W + 60); const y = 45 + (i * 71) % 330; ctx.beginPath(); ctx.arc(x, y, 2 + i % 3, 0, Math.PI * 2); ctx.fill(); }
-        ctx.fillStyle = "#2f7455"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = 0; x <= W + 120; x += 120) ctx.quadraticCurveTo(x + 60, 365, x + 120, H); ctx.closePath(); ctx.fill();
-      } else if (layerScene === "beach") {
-        const beachSky = ctx.createLinearGradient(0, 0, 0, H); beachSky.addColorStop(0, "#54cfff"); beachSky.addColorStop(.58, "#c4f5ff"); beachSky.addColorStop(.59, "#21a8d7"); beachSky.addColorStop(1, "#086a9f"); ctx.fillStyle = beachSky; ctx.fillRect(0, 0, W, H);
-        ctx.fillStyle = "#fff09c"; ctx.beginPath(); ctx.arc(790, 88, 48, 0, Math.PI * 2); ctx.fill();
-        ctx.fillStyle = "rgba(255,255,255,.78)"; for (let i = 0; i < 5; i += 1) { const x = i * 240 - (cameraX * .12) % 240; ctx.beginPath(); ctx.arc(x, 105 + i % 2 * 40, 28, Math.PI, 0); ctx.arc(x + 42, 95 + i % 2 * 40, 38, Math.PI, 0); ctx.arc(x + 82, 105 + i % 2 * 40, 25, Math.PI, 0); ctx.fill(); }
-        ctx.strokeStyle = "rgba(255,255,255,.55)"; ctx.lineWidth = 3; for (let y = 340; y < 455; y += 26) { ctx.beginPath(); for (let x = 0; x < W; x += 80) { ctx.moveTo(x, y); ctx.quadraticCurveTo(x + 20, y - 7, x + 40, y); } ctx.stroke(); }
-        ctx.fillStyle = "#e9bf68"; ctx.beginPath(); ctx.moveTo(0, H); ctx.quadraticCurveTo(220, 405, 440, H); ctx.quadraticCurveTo(690, 390, W, H); ctx.closePath(); ctx.fill();
-        ctx.strokeStyle = "#6a4c2b"; ctx.lineWidth = 12; for (let i = 0; i < 5; i += 1) { const x = i * 260 - (cameraX * .25) % 260; ctx.beginPath(); ctx.moveTo(x + 70, 435); ctx.quadraticCurveTo(x + 60, 340, x + 92, 270); ctx.stroke(); ctx.fillStyle = "#42a95f"; for (let a = -2; a <= 2; a += 1) { ctx.beginPath(); ctx.ellipse(x + 92 + a * 8, 270 + Math.abs(a) * 4, 42, 10, a * .45, 0, Math.PI * 2); ctx.fill(); } }
-      } else {
-        const snowSky = ctx.createLinearGradient(0, 0, 0, H); snowSky.addColorStop(0, "#182450"); snowSky.addColorStop(.52, "#687fc0"); snowSky.addColorStop(1, "#dff9ff"); ctx.fillStyle = snowSky; ctx.fillRect(0, 0, W, H);
-        ctx.fillStyle = "rgba(113,255,219,.18)"; ctx.beginPath(); ctx.moveTo(0, 70); ctx.bezierCurveTo(180, 0, 250, 170, 430, 55); ctx.bezierCurveTo(600, -20, 720, 135, W, 25); ctx.lineTo(W, 115); ctx.bezierCurveTo(700, 195, 530, 45, 380, 145); ctx.bezierCurveTo(190, 245, 110, 90, 0, 165); ctx.closePath(); ctx.fill();
-        ctx.fillStyle = "#9dc9e6"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = 0; x <= W + 180; x += 180) { ctx.lineTo(x + 90, 195 + (x % 360) / 4); ctx.lineTo(x + 180, H); } ctx.closePath(); ctx.fill();
-        ctx.fillStyle = "#eefcff"; ctx.beginPath(); ctx.moveTo(0, H); for (let x = -120; x <= W + 150; x += 150) { ctx.lineTo(x + 75, 310); ctx.lineTo(x + 150, H); } ctx.closePath(); ctx.fill();
-        ctx.fillStyle = "rgba(255,255,255,.88)"; for (let i = 0; i < 34; i += 1) { const x = (i * 89 - cameraX * .08) % (W + 40); const y = 25 + (i * 67) % 400; ctx.beginPath(); ctx.arc(x, y, 2 + i % 3, 0, Math.PI * 2); ctx.fill(); }
-        ctx.fillStyle = "#315a66"; for (let i = 0; i < 8; i += 1) { const x = i * 145 - (cameraX * .3) % 145; ctx.beginPath(); ctx.moveTo(x + 60, 285); ctx.lineTo(x + 15, 445); ctx.lineTo(x + 105, 445); ctx.closePath(); ctx.fill(); }
-      }
-      return;
-    }
     const grad = ctx.createLinearGradient(0, 0, 0, H);
     grad.addColorStop(0, level.sky[0]); grad.addColorStop(1, level.sky[1]);
     ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
@@ -998,7 +974,7 @@
     drawRoundedRect(x, pipe.y, pipe.w, 22, 6, colors[0], colors[1], 4);
     ctx.fillStyle = `rgba(220,255,230,${glow})`; ctx.fillRect(x + 9, pipe.y + 5, 8, pipe.h - 12);
     ctx.shadowBlur = 0; ctx.font = "900 12px ui-rounded, sans-serif"; ctx.textAlign = "center";
-    const labels = { forest: "↓ 森林", beach: "↓ 沙滩", snow: "↓ 雪山", main: "↑ 返回" };
+    const labels = { forest: "↓ 老城", beach: "↓ 广场", snow: "↓ 球迷村", main: "↑ 返回" };
     drawRoundedRect(x - 13, pipe.y - 27, 84, 21, 8, "rgba(255,247,223,.92)", colors[1], 2);
     ctx.fillStyle = colors[1]; ctx.fillText(labels[pipe.target] || "↓ 场景", x + pipe.w / 2, pipe.y - 12);
     ctx.restore();
@@ -1381,7 +1357,7 @@
 
   function drawHud() {
     const level = LEVELS[currentLevel];
-    const layerNames = { forest: "幻想森林层", beach: "晴海沙滩层", snow: "极光雪山层" };
+    const layerNames = { forest: "举办地历史街区", beach: "举办地城市广场", snow: "世界杯球迷庆典" };
     const rewardScore = totalCoins + coins;
     drawRoundedRect(18, 17, 475, 58, 15, "rgba(255,247,223,.93)", "#18212f", 3);
     ctx.fillStyle = "#18212f"; ctx.font = "900 19px ui-rounded, sans-serif"; ctx.textAlign = "left";

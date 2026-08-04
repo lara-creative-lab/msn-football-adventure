@@ -16,6 +16,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2018 俄罗斯·圣瓦西里/);
   assert.match(html, /2022 卡塔尔·多哈海滨/);
   assert.match(html, /2026 北美三国·联合盛典/);
+  assert.doesNotMatch(html, /游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
   assert.match(html, /世界杯金靴套装/);
   assert.match(html, /世界杯冠军奖牌/);
   assert.match(html, /内马尔“帅”字队长袖标/);
