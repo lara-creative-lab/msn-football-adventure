@@ -35,7 +35,7 @@
     { name: "2014 巴西·里约热内卢", scene: "brazil14", difficulty: "进阶+", routes: { main: "里约地标主线", forest: "里约历史街区", beach: "里约城市广场", snow: "里约球迷庆典" }, width: 4250, gaps: [140, 155, 150, 165, 145, 160], enemies: 9, speed: 104, sky: ["#3bc5ef", "#ffe59d"], top: "#65c951", base: "#ad7745", edge: "#4c3927", accent: "#f6d13c" },
     { name: "2018 俄罗斯·圣瓦西里", scene: "russia18", difficulty: "困难", routes: { main: "莫斯科地标主线", forest: "莫斯科历史街区", beach: "莫斯科红场", snow: "莫斯科球迷庆典" }, width: 4450, gaps: [150, 165, 155, 170, 160, 175], enemies: 10, speed: 110, sky: ["#263b77", "#e7b9c9"], top: "#d9edf3", base: "#6f7f91", edge: "#29394e", accent: "#f2ca46" },
     { name: "2022 卡塔尔·多哈海滨", scene: "qatar22", difficulty: "困难+", routes: { main: "多哈地标主线", forest: "多哈历史街区", beach: "多哈海滨广场", snow: "多哈球迷庆典" }, width: 4650, gaps: [155, 170, 165, 180, 170, 185], enemies: 11, speed: 118, sky: ["#412053", "#f39c67"], top: "#e8bf67", base: "#a65f42", edge: "#4b2934", accent: "#f4e0a4" },
-    { name: "2026 北美三国·联合盛典", scene: "northamerica26", difficulty: "终极", routes: { main: "墨西哥城·多伦多·旧金山", forest: "墨西哥城历史街区", beach: "多伦多城市广场", snow: "旧金山球迷庆典" }, width: 4900, gaps: [160, 175, 170, 185, 175, 190, 165], enemies: 12, speed: 126, sky: ["#15224f", "#6ca6dc"], top: "#68c85b", base: "#506b75", edge: "#202d3b", accent: "#ffd24f" },
+    { name: "2026 美加墨·联合盛典", scene: "northamerica26", difficulty: "终极", routes: { main: "墨西哥城·多伦多·旧金山", forest: "墨西哥城历史街区", beach: "多伦多城市广场", snow: "旧金山球迷庆典" }, width: 4900, gaps: [160, 175, 170, 185, 175, 190, 165], enemies: 12, speed: 126, sky: ["#15224f", "#6ca6dc"], top: "#68c85b", base: "#506b75", edge: "#202d3b", accent: "#ffd24f" },
   ];
 
   function updateSceneOptions(index = Number(levelSelect.value) || 0) {

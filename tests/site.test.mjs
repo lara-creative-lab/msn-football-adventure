@@ -16,7 +16,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2014 巴西·里约热内卢/);
   assert.match(html, /2018 俄罗斯·圣瓦西里/);
   assert.match(html, /2022 卡塔尔·多哈海滨/);
-  assert.match(html, /2026 北美三国·联合盛典/);
+  assert.match(html, /2026 美加墨·联合盛典/);
+  assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.doesNotMatch(html, /举办地|游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
   for (const city of ["罗马", "帕萨迪纳", "巴黎", "首尔", "横滨", "柏林", "开普敦", "里约", "莫斯科", "多哈", "墨西哥城", "多伦多", "旧金山"]) {
     assert.match(game, new RegExp(city));
