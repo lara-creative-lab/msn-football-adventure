@@ -116,7 +116,7 @@
   themeAudio.loop = true;
   themeAudio.preload = "metadata";
   themeAudio.volume = .38;
-  const MUSIC = { file: "./world-cup-stadium.wav", label: "世界杯荣耀曲", fallback: "世界杯现场版" };
+  const MUSIC = { file: "./world-cup-stadium.wav", label: "世界杯桑巴荣耀曲", fallback: "世界杯桑巴现场版" };
 
   const player = {
     x: 120, y: 380, w: 42, h: 58,

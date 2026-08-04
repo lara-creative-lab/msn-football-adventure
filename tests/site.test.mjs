@@ -5,7 +5,7 @@ import test from "node:test";
 test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
-  assert.match(html, /音乐：世界杯荣耀曲/);
+  assert.match(html, /音乐：世界杯桑巴荣耀曲/);
   assert.match(html, /世界杯金靴套装/);
   assert.match(html, /世界杯冠军奖牌/);
   assert.match(html, /内马尔“帅”字队长袖标/);
