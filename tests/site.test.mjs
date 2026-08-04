@@ -4,6 +4,7 @@ import test from "node:test";
 
 test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
+  const game = await readFile(new URL("../dist/client/game.js", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
   assert.match(html, /音乐：世界杯荣耀曲/);
   assert.match(html, /1990 意大利·罗马斗兽场/);
@@ -16,7 +17,15 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2018 俄罗斯·圣瓦西里/);
   assert.match(html, /2022 卡塔尔·多哈海滨/);
   assert.match(html, /2026 北美三国·联合盛典/);
-  assert.doesNotMatch(html, /游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
+  assert.doesNotMatch(html, /举办地|游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
+  for (const city of ["罗马", "帕萨迪纳", "巴黎", "首尔", "横滨", "柏林", "开普敦", "里约", "莫斯科", "多哈", "墨西哥城", "多伦多", "旧金山"]) {
+    assert.match(game, new RegExp(city));
+  }
+  assert.match(game, /drawRoundedRect\(18, 17, 560, 78/);
+  assert.match(game, /关卡进度/);
+  assert.equal([...game.matchAll(/level\.scene ===/g)].length, 10);
+  assert.equal([...game.matchAll(/routes: \{ main:/g)].length, 10);
+  assert.doesNotMatch(game, /举办地历史街区|举办地城市广场|幻想森林层|晴海沙滩层|极光雪山层/);
   assert.match(html, /世界杯金靴套装/);
   assert.match(html, /世界杯冠军奖牌/);
   assert.match(html, /内马尔“帅”字队长袖标/);

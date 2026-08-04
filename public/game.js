@@ -16,6 +16,8 @@
   const walletAmount = document.querySelector("#walletAmount");
   const cardGrid = document.querySelector("#cardGrid");
   const cardCount = document.querySelector("#cardCount");
+  const levelSelect = document.querySelector("#levelSelect");
+  const sceneSelect = document.querySelector("#sceneSelect");
 
   const W = canvas.width;
   const H = canvas.height;
@@ -24,17 +26,22 @@
   const keys = new Set();
 
   const LEVELS = [
-    { name: "1990 意大利·罗马斗兽场", scene: "italy90", difficulty: "轻松", width: 3000, gaps: [90, 105, 110], enemies: 4, speed: 65, sky: ["#5fc8ff", "#ffe3a8"], top: "#8bcf63", base: "#b97648", edge: "#5d3929", accent: "#d94a3a" },
-    { name: "1994 美国·玫瑰碗", scene: "usa94", difficulty: "简单", width: 3250, gaps: [105, 115, 120, 110], enemies: 5, speed: 72, sky: ["#4dbcf4", "#f9d8a7"], top: "#66c864", base: "#a56a43", edge: "#4f3429", accent: "#e94848" },
-    { name: "1998 法国·巴黎铁塔", scene: "france98", difficulty: "简单+", width: 3450, gaps: [110, 125, 120, 130], enemies: 6, speed: 78, sky: ["#6e9bd7", "#ffd9b7"], top: "#8bcf68", base: "#b87b58", edge: "#55413b", accent: "#f0c84b" },
-    { name: "2002 韩日·横滨港", scene: "koreajapan02", difficulty: "普通", width: 3650, gaps: [120, 135, 125, 145, 120], enemies: 7, speed: 84, sky: ["#57c2ee", "#f1d3dc"], top: "#67c6aa", base: "#4e8195", edge: "#234b61", accent: "#ef586c" },
-    { name: "2006 德国·勃兰登堡门", scene: "germany06", difficulty: "普通", width: 3850, gaps: [125, 140, 135, 150, 130], enemies: 8, speed: 90, sky: ["#6baad8", "#dce9f3"], top: "#71c86b", base: "#8d8272", edge: "#3c3a38", accent: "#f3ca3b" },
-    { name: "2010 南非·开普桌山", scene: "southafrica10", difficulty: "进阶", width: 4050, gaps: [135, 145, 155, 140, 160], enemies: 8, speed: 98, sky: ["#4dc8ee", "#ffd68d"], top: "#76bd5c", base: "#9e6c3e", edge: "#453629", accent: "#f4bd34" },
-    { name: "2014 巴西·里约热内卢", scene: "brazil14", difficulty: "进阶+", width: 4250, gaps: [140, 155, 150, 165, 145, 160], enemies: 9, speed: 104, sky: ["#3bc5ef", "#ffe59d"], top: "#65c951", base: "#ad7745", edge: "#4c3927", accent: "#f6d13c" },
-    { name: "2018 俄罗斯·圣瓦西里", scene: "russia18", difficulty: "困难", width: 4450, gaps: [150, 165, 155, 170, 160, 175], enemies: 10, speed: 110, sky: ["#263b77", "#e7b9c9"], top: "#d9edf3", base: "#6f7f91", edge: "#29394e", accent: "#f2ca46" },
-    { name: "2022 卡塔尔·多哈海滨", scene: "qatar22", difficulty: "困难+", width: 4650, gaps: [155, 170, 165, 180, 170, 185], enemies: 11, speed: 118, sky: ["#412053", "#f39c67"], top: "#e8bf67", base: "#a65f42", edge: "#4b2934", accent: "#f4e0a4" },
-    { name: "2026 北美三国·联合盛典", scene: "northamerica26", difficulty: "终极", width: 4900, gaps: [160, 175, 170, 185, 175, 190, 165], enemies: 12, speed: 126, sky: ["#15224f", "#6ca6dc"], top: "#68c85b", base: "#506b75", edge: "#202d3b", accent: "#ffd24f" },
+    { name: "1990 意大利·罗马斗兽场", scene: "italy90", difficulty: "轻松", routes: { main: "罗马地标主线", forest: "罗马历史街区", beach: "罗马城市广场", snow: "罗马球迷庆典" }, width: 3000, gaps: [90, 105, 110], enemies: 4, speed: 65, sky: ["#5fc8ff", "#ffe3a8"], top: "#8bcf63", base: "#b97648", edge: "#5d3929", accent: "#d94a3a" },
+    { name: "1994 美国·玫瑰碗", scene: "usa94", difficulty: "简单", routes: { main: "帕萨迪纳地标主线", forest: "帕萨迪纳历史街区", beach: "帕萨迪纳城市广场", snow: "帕萨迪纳球迷庆典" }, width: 3250, gaps: [105, 115, 120, 110], enemies: 5, speed: 72, sky: ["#4dbcf4", "#f9d8a7"], top: "#66c864", base: "#a56a43", edge: "#4f3429", accent: "#e94848" },
+    { name: "1998 法国·巴黎铁塔", scene: "france98", difficulty: "简单+", routes: { main: "巴黎地标主线", forest: "巴黎历史街区", beach: "巴黎城市广场", snow: "巴黎球迷庆典" }, width: 3450, gaps: [110, 125, 120, 130], enemies: 6, speed: 78, sky: ["#6e9bd7", "#ffd9b7"], top: "#8bcf68", base: "#b87b58", edge: "#55413b", accent: "#f0c84b" },
+    { name: "2002 韩日·横滨港", scene: "koreajapan02", difficulty: "普通", routes: { main: "横滨港地标主线", forest: "首尔历史街区", beach: "横滨城市广场", snow: "首尔球迷庆典" }, width: 3650, gaps: [120, 135, 125, 145, 120], enemies: 7, speed: 84, sky: ["#57c2ee", "#f1d3dc"], top: "#67c6aa", base: "#4e8195", edge: "#234b61", accent: "#ef586c" },
+    { name: "2006 德国·勃兰登堡门", scene: "germany06", difficulty: "普通", routes: { main: "柏林地标主线", forest: "柏林历史街区", beach: "柏林城市广场", snow: "柏林球迷庆典" }, width: 3850, gaps: [125, 140, 135, 150, 130], enemies: 8, speed: 90, sky: ["#6baad8", "#dce9f3"], top: "#71c86b", base: "#8d8272", edge: "#3c3a38", accent: "#f3ca3b" },
+    { name: "2010 南非·开普桌山", scene: "southafrica10", difficulty: "进阶", routes: { main: "开普敦地标主线", forest: "开普敦历史街区", beach: "开普敦城市广场", snow: "开普敦球迷庆典" }, width: 4050, gaps: [135, 145, 155, 140, 160], enemies: 8, speed: 98, sky: ["#4dc8ee", "#ffd68d"], top: "#76bd5c", base: "#9e6c3e", edge: "#453629", accent: "#f4bd34" },
+    { name: "2014 巴西·里约热内卢", scene: "brazil14", difficulty: "进阶+", routes: { main: "里约地标主线", forest: "里约历史街区", beach: "里约城市广场", snow: "里约球迷庆典" }, width: 4250, gaps: [140, 155, 150, 165, 145, 160], enemies: 9, speed: 104, sky: ["#3bc5ef", "#ffe59d"], top: "#65c951", base: "#ad7745", edge: "#4c3927", accent: "#f6d13c" },
+    { name: "2018 俄罗斯·圣瓦西里", scene: "russia18", difficulty: "困难", routes: { main: "莫斯科地标主线", forest: "莫斯科历史街区", beach: "莫斯科红场", snow: "莫斯科球迷庆典" }, width: 4450, gaps: [150, 165, 155, 170, 160, 175], enemies: 10, speed: 110, sky: ["#263b77", "#e7b9c9"], top: "#d9edf3", base: "#6f7f91", edge: "#29394e", accent: "#f2ca46" },
+    { name: "2022 卡塔尔·多哈海滨", scene: "qatar22", difficulty: "困难+", routes: { main: "多哈地标主线", forest: "多哈历史街区", beach: "多哈海滨广场", snow: "多哈球迷庆典" }, width: 4650, gaps: [155, 170, 165, 180, 170, 185], enemies: 11, speed: 118, sky: ["#412053", "#f39c67"], top: "#e8bf67", base: "#a65f42", edge: "#4b2934", accent: "#f4e0a4" },
+    { name: "2026 北美三国·联合盛典", scene: "northamerica26", difficulty: "终极", routes: { main: "墨西哥城·多伦多·旧金山", forest: "墨西哥城历史街区", beach: "多伦多城市广场", snow: "旧金山球迷庆典" }, width: 4900, gaps: [160, 175, 170, 185, 175, 190, 165], enemies: 12, speed: 126, sky: ["#15224f", "#6ca6dc"], top: "#68c85b", base: "#506b75", edge: "#202d3b", accent: "#ffd24f" },
   ];
+
+  function updateSceneOptions(index = Number(levelSelect.value) || 0) {
+    const routes = LEVELS[index].routes;
+    for (const option of sceneSelect.options) option.textContent = routes[option.value];
+  }
   const PLAYER_META = {
     neymar: { name: "内马尔", number: 10, team: "巴西", numberColor: "#14703b" },
     messi: { name: "梅西", number: 10, team: "阿根廷", numberColor: "#171d27" },
@@ -215,11 +222,11 @@
   }
 
   function startGame() {
-    currentLevel = Number(document.querySelector("#levelSelect").value) || 0;
+    currentLevel = Number(levelSelect.value) || 0;
     totalCoins = 0;
     msnStage = 1;
     resetLevel();
-    const requestedScene = document.querySelector("#sceneSelect").value;
+    const requestedScene = sceneSelect.value;
     if (requestedScene !== "main") enterLayer(requestedScene, { x: 40 });
     running = true;
     startScreen.classList.add("hidden");
@@ -758,7 +765,7 @@
     messageTitle.textContent = won ? (finalLevel ? "世界杯时空之旅完成！" : `第 ${currentLevel + 1} 关完成`) : "冒险暂停";
     messageText.textContent = won
       ? (finalLevel
-        ? `你走完了最近十届世界杯举办地，共收集 ${totalCoins + coins} 枚星币！`
+        ? `你走完了最近十届世界杯城市，共收集 ${totalCoins + coins} 枚星币！`
         : `${LEVELS[currentLevel].name}完成：获得 ${coins} 点宝藏。下一站：${LEVELS[currentLevel + 1].name}。`)
       : `你在${LEVELS[currentLevel].name}收集了 ${coins} 枚星币，再试一次吧！`;
     document.querySelector("#playAgainButton").textContent = won && !finalLevel ? "进入下一关" : (won ? "从头再玩" : "重玩本关");
@@ -854,7 +861,7 @@
       ctx.fillStyle = "#69445a"; ctx.beginPath(); ctx.moveTo(0, 430); for (let x = 0; x <= W + 220; x += 220) ctx.quadraticCurveTo(x + 110, 330, x + 220, 430); ctx.lineTo(W, H); ctx.lineTo(0, H); ctx.closePath(); ctx.fill();
       const towers = [{x:135,w:58,h:170},{x:230,w:76,h:215},{x:350,w:52,h:155},{x:560,w:65,h:235},{x:680,w:80,h:190},{x:800,w:48,h:145}]; towers.forEach((t, i) => { ctx.fillStyle = i % 2 ? "#7cc3cb" : "#b6d9d8"; ctx.beginPath(); ctx.roundRect(t.x, 430 - t.h, t.w, t.h, i % 2 ? 24 : 8); ctx.fill(); ctx.fillStyle = "rgba(255,226,145,.8)"; for (let y = 450 - t.h; y < 414; y += 25) ctx.fillRect(t.x + 12, y, t.w - 24, 6); });
       ctx.fillStyle = "#3e8ba5"; ctx.fillRect(0, 430, W, 44); ctx.fillStyle = "#e6bc72"; ctx.fillRect(0, 466, W, 18);
-    } else {
+    } else if (level.scene === "northamerica26") {
       stars("rgba(255,232,157,.9)", 30, .07); cloudBand("rgba(255,255,255,.2)", 78, .1, .72);
       ctx.fillStyle = "#bc7546"; for (let i = 0; i < 5; i += 1) { ctx.fillRect(45 + i * 42, 382 - i * 25, 190 - i * 84, 88 + i * 25); } ctx.fillStyle = "#f0ca66"; ctx.fillRect(34, 445, 220, 25);
       ctx.fillStyle = "#d8e2e7"; ctx.beginPath(); ctx.moveTo(475, 105); ctx.lineTo(455, 430); ctx.lineTo(495, 430); ctx.closePath(); ctx.fill(); ctx.fillRect(438, 185, 74, 12); ctx.fillStyle = "#ef4444"; ctx.beginPath(); ctx.ellipse(475, 205, 45, 24, 0, 0, Math.PI * 2); ctx.fill();
@@ -974,9 +981,12 @@
     drawRoundedRect(x, pipe.y, pipe.w, 22, 6, colors[0], colors[1], 4);
     ctx.fillStyle = `rgba(220,255,230,${glow})`; ctx.fillRect(x + 9, pipe.y + 5, 8, pipe.h - 12);
     ctx.shadowBlur = 0; ctx.font = "900 12px ui-rounded, sans-serif"; ctx.textAlign = "center";
-    const labels = { forest: "↓ 老城", beach: "↓ 广场", snow: "↓ 球迷村", main: "↑ 返回" };
-    drawRoundedRect(x - 13, pipe.y - 27, 84, 21, 8, "rgba(255,247,223,.92)", colors[1], 2);
-    ctx.fillStyle = colors[1]; ctx.fillText(labels[pipe.target] || "↓ 场景", x + pipe.w / 2, pipe.y - 12);
+    const routeName = LEVELS[currentLevel].routes[pipe.target] || "城市支线";
+    const label = `${pipe.target === "main" ? "↑" : "↓"} ${routeName}`;
+    const labelWidth = Math.min(190, Math.max(100, ctx.measureText(label).width + 22));
+    const labelX = Math.max(4, Math.min(W - labelWidth - 4, x + pipe.w / 2 - labelWidth / 2));
+    drawRoundedRect(labelX, pipe.y - 27, labelWidth, 21, 8, "rgba(255,247,223,.92)", colors[1], 2);
+    ctx.fillStyle = colors[1]; ctx.fillText(label, labelX + labelWidth / 2, pipe.y - 12);
     ctx.restore();
   }
 
@@ -1357,19 +1367,19 @@
 
   function drawHud() {
     const level = LEVELS[currentLevel];
-    const layerNames = { forest: "举办地历史街区", beach: "举办地城市广场", snow: "世界杯球迷庆典" };
     const rewardScore = totalCoins + coins;
-    drawRoundedRect(18, 17, 475, 58, 15, "rgba(255,247,223,.93)", "#18212f", 3);
+    drawRoundedRect(18, 17, 560, 78, 15, "rgba(255,247,223,.93)", "#18212f", 3);
     ctx.fillStyle = "#18212f"; ctx.font = "900 19px ui-rounded, sans-serif"; ctx.textAlign = "left";
-    ctx.fillText(`第${currentLevel + 1}关`, 36, 52);
-    ctx.fillText(`★ ${String(coins).padStart(2, "0")}`, 112, 52);
-    ctx.fillText(`♥ ${lives}`, 207, 52);
-    ctx.font = "800 14px ui-rounded, sans-serif";
-    ctx.fillText(inBonus ? layerNames[layerScene] : `${level.name} · ${level.difficulty}`, 282, 51);
+    ctx.fillText(`第${currentLevel + 1}关`, 36, 49);
+    ctx.fillText(`★ ${String(coins).padStart(2, "0")}`, 112, 49);
+    ctx.fillText(`♥ ${lives}`, 207, 49);
+    ctx.font = "800 13px ui-rounded, sans-serif";
+    ctx.fillText(inBonus ? level.routes[layerScene] : `${level.name} · ${level.difficulty}`, 282, 48);
     const progress = Math.min(1, player.x / goalX);
-    ctx.fillStyle = "#cad3d2"; ctx.fillRect(392, 34, 76, 13);
-    ctx.fillStyle = level.accent; ctx.fillRect(392, 34, 76 * progress, 13);
-    ctx.strokeStyle = "#18212f"; ctx.lineWidth = 3; ctx.strokeRect(392, 34, 76, 13);
+    ctx.fillStyle = "#56606d"; ctx.font = "800 11px ui-rounded, sans-serif"; ctx.fillText("关卡进度", 36, 78);
+    ctx.fillStyle = "#cad3d2"; ctx.fillRect(108, 66, 445, 11);
+    ctx.fillStyle = level.accent; ctx.fillRect(108, 66, 445 * progress, 11);
+    ctx.strokeStyle = "#18212f"; ctx.lineWidth = 2; ctx.strokeRect(108, 66, 445, 11);
     drawRoundedRect(W - 163, 17, 145, 48, 14, "rgba(255,247,223,.93)", "#18212f", 3);
     ctx.fillStyle = msnStage === 3 ? "#a76b00" : "#2857a1"; ctx.font = "900 15px ui-rounded, sans-serif";
     ctx.fillText(msnStage === 3 ? "🏆 大力神杯" : `🤝 MSN ${msnStage}/3`, W - 145, 47);
@@ -1416,10 +1426,12 @@
   window.addEventListener("blur", () => keys.clear());
 
   document.querySelector("#startButton").addEventListener("click", startGame);
+  levelSelect.addEventListener("change", () => updateSceneOptions());
   document.querySelector("#playAgainButton").addEventListener("click", () => {
     if (levelWon && currentLevel === LEVELS.length - 1) {
-      document.querySelector("#levelSelect").value = "0";
-      document.querySelector("#sceneSelect").value = "main";
+      levelSelect.value = "0";
+      sceneSelect.value = "main";
+      updateSceneOptions(0);
       startGame();
     }
     else continueGame();
@@ -1457,6 +1469,7 @@
     if (bestScore >= card.milestone) ownedCards.add(card.id);
   }
   saveCards();
+  updateSceneOptions(0);
   resetLevel();
   updateShopUI();
   requestAnimationFrame(loop);
