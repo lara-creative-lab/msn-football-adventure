@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MSN球星大冒险</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">PIXEL PLATFORMER</p>
+          <h1>MSN球星大冒险</h1>
+        </div>
+        <div class="actions">
+          <select id="musicSelect" aria-label="选择游戏音乐">
+            <option value="adventure">正版 · 热血冒险</option>
+            <option value="dai">世界杯 · Dai Dai</option>
+            <option value="naruto">火影 · 忍者热血</option>
+            <option value="onepiece">海贼王 · 海洋冒险</option>
+          </select>
+          <button id="soundButton" type="button" aria-label="切换音乐和声音">音乐：正版冒险曲</button>
+          <button id="restartButton" type="button">重新开始</button>
+          <button id="shopButton" type="button">橱窗与卡册</button>
+        </div>
+      </header>
+
+      <section class="stage" aria-label="游戏区域">
+        <canvas id="gameCanvas" width="960" height="540"></canvas>
+        <div id="startScreen" class="overlay">
+          <div class="card">
+            <span class="mini-cap" aria-hidden="true">ϟ</span>
+            <p class="kicker">准备好了吗？</p>
+            <h2>穿越十个童话世界！</h2>
+            <p>从阳光草原出发，闯过冰雪宫殿与巨龙火山，抵达星光城堡。</p>
+            <label class="level-picker">
+              <span>选择起始关卡</span>
+              <select id="levelSelect">
+                <option value="0">1 · 阳光草原</option>
+                <option value="1">2 · 魔法森林</option>
+                <option value="2">3 · 糖果王国</option>
+                <option value="3">4 · 沙漠夜市</option>
+                <option value="4">5 · 海底珊瑚</option>
+                <option value="5">6 · 冰雪宫殿</option>
+                <option value="6">7 · 幽灵庄园</option>
+                <option value="7">8 · 天空群岛</option>
+                <option value="8">9 · 巨龙火山</option>
+                <option value="9">10 · 星光城堡</option>
+              </select>
+            </label>
+            <label class="level-picker">
+              <span>选择起始场景</span>
+              <select id="sceneSelect">
+                <option value="main">主世界</option>
+                <option value="forest">幻想森林层</option>
+                <option value="beach">晴海沙滩层</option>
+                <option value="snow">极光雪山层</option>
+              </select>
+            </label>
+            <button id="startButton" type="button">开始冒险</button>
+            <small>← → / A D 移动 · 空格跳跃 · F / X 踢球 · ↓ / S 进入水管</small>
+            <small>MSN主角成长：开局内马尔 · 500分梅西加入 · 1000分苏亚雷斯加入</small>
+            <small>三人集齐获得大力神杯，双方球员会互相踢足球对攻</small>
+            <small>C罗掉落“帅”字潮帽 · 登贝莱变大 · 维尼修斯变暗影</small>
+            <small>每200分解锁一张球星典藏卡，最高1600分集齐八张</small>
+          </div>
+        </div>
+        <div id="messageScreen" class="overlay hidden">
+          <div class="card">
+            <p id="messageKicker" class="kicker">漂亮！</p>
+            <h2 id="messageTitle">关卡完成</h2>
+            <p id="messageText"></p>
+            <button id="playAgainButton" type="button">再玩一次</button>
+          </div>
+        </div>
+        <div id="shopScreen" class="overlay hidden">
+          <div class="card shop-card">
+            <p class="kicker">TREASURE SHOP</p>
+            <h2>变身橱窗与球星卡册</h2>
+            <p class="wallet">宝藏钱包：<strong id="walletAmount">0</strong> · 卡片：<strong id="cardCount">0 / 8</strong></p>
+            <div class="shop-grid">
+              <article><span>👑</span><strong>星光冠军装</strong><small>500 宝藏</small><button type="button" data-skin="starlight" data-cost="500">购买并装备</button></article>
+              <article><span>🛡️</span><strong>美国队长</strong><small>1000 宝藏</small><button type="button" data-skin="captain" data-cost="1000">购买并装备</button></article>
+              <article><span>🧢</span><strong>内马尔帅字潮帽</strong><small>900 宝藏</small><button type="button" data-skin="ninja" data-cost="900">购买并装备</button></article>
+              <article><span>🕷️</span><strong>蜘蛛侠</strong><small>800 宝藏</small><button type="button" data-skin="spider" data-cost="800">购买并装备</button></article>
+              <article><span>💚</span><strong>绿巨人</strong><small>1200 宝藏</small><button type="button" data-skin="hulk" data-cost="1200">购买并装备</button></article>
+            </div>
+            <h3 class="collection-title">球星卡收藏</h3>
+            <div id="cardGrid" class="card-grid"></div>
+            <button id="closeShopButton" type="button">返回游戏</button>
+          </div>
+        </div>
+        <div id="rewardToast" class="reward-toast hidden" role="status">
+          <span>🏆</span>
+          <div><strong id="rewardTitle">特殊奖励解锁！</strong><small id="rewardDescription">内马尔获得新球衣</small></div>
+        </div>
+      </section>
+
+      <footer class="helpbar">
+        <span><kbd>←</kbd><kbd>→</kbd> 移动</span>
+        <span><kbd>空格 ×2</kbd> 二段跳</span>
+        <span><kbd>F</kbd> 踢出足球</span>
+        <span><kbd>↓</kbd> 进入水管</span>
+        <span>足球可以击中对手，对手也会射门攻击你</span>
+      </footer>
+    </main>
+
+    <script src="./game.js"></script>
+  </body>
+</html>
