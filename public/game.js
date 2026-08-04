@@ -118,7 +118,7 @@
   themeAudio.preload = "metadata";
   themeAudio.volume = .38;
   const MUSIC = {
-    adventure: { file: "./adventure-theme.ogg", label: "正版冒险曲", fallback: "原创冒险版" },
+    adventure: { file: "./world-cup-stadium.wav", label: "世界杯荣耀曲", fallback: "世界杯现场版" },
     dai: { file: "./dai-dai.mp3", label: "Dai Dai", fallback: "世界杯原创版" },
     naruto: { file: "./naruto-theme.mp3", label: "火影主题", fallback: "原创忍者版" },
     onepiece: { file: "./one-piece-theme.mp3", label: "海贼王主题", fallback: "原创航海版" },

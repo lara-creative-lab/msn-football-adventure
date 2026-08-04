@@ -1,10 +1,11 @@
 Music
 -----
-"Upbeat Title Theme Loop" by beardalaxy
-Source: https://opengameart.org/content/upbeat-title-theme-loop
-License: CC0 1.0 Universal (public domain dedication)
+"世界杯荣耀曲" was composed procedurally for this game as an original
+stadium-football instrumental. It is bundled as world-cup-stadium.wav and is
+the default game music.
 
-The track is bundled as adventure-theme.ogg and used as the default game music.
+The former CC0 track remains bundled as adventure-theme.ogg for archive
+compatibility but is no longer selected by the game.
 
 Character Art
 -------------
