@@ -206,7 +206,7 @@
 
   function resetLevel() {
     player.x = 120; player.y = 380; player.vx = 0; player.vy = 0;
-    const equippedScale = equippedSkin === "hulk" ? 1.55 : 1;
+    const equippedScale = 1;
     player.w = Math.round(52 * equippedScale); player.h = Math.round(52 * equippedScale); player.grounded = false; player.invincible = 0; player.facing = 1; player.powerShot = false; player.shotCooldown = 0; player.jumpCount = 0; player.growthLevel = 0; player.heroForm = "neymar";
     cameraX = 0; coins = 0; lives = 3; finished = false; levelWon = false; checkpointX = 120; inBonus = false; layerScene = "main"; savedWorld = null;
     msnStage = totalCoins >= 1000 ? 3 : (totalCoins >= 500 ? 2 : 1);
@@ -457,11 +457,11 @@
       ownedSkins.add("captain"); ownedSkins.add("starlight"); equippedSkin = "captain"; player.heroForm = "neymar";
       try { localStorage.setItem("hat-adventure-captain", "1"); localStorage.setItem("hat-adventure-outfit", "1"); } catch (_) {}
       saveCosmetics(); updateShopUI();
-      showFootballReward("🛡 梅西奖励！", "美国队长球衣已加入橱窗并自动装备");
+      showFootballReward("🥇 梅西奖励！", "世界杯冠军奖牌与金靴套装已加入橱窗并自动装备");
     } else if (type === "ronaldo") {
       ownedSkins.add("ninja"); equippedSkin = "ninja"; player.heroForm = "neymar";
       saveCosmetics(); updateShopUI();
-      showFootballReward("🧢 C罗奖励！", "内马尔“帅”字反戴潮帽已加入橱窗并自动装备");
+      showFootballReward("🏷️ C罗奖励！", "内马尔“帅”字队长袖标已加入橱窗并自动装备");
     } else if (type === "dembele") {
       growPlayer();
     } else if (type === "vinicius") {
@@ -643,7 +643,7 @@
     ownedSkins.add("starlight"); equippedSkin = "starlight"; saveCosmetics();
     try { localStorage.setItem("hat-adventure-outfit", "1"); } catch (_) {}
     rewardTitle.textContent = "500 分特殊奖励！";
-    rewardDescription.textContent = "内马尔获得“星光冠军装”";
+    rewardDescription.textContent = "内马尔获得“世界杯金靴套装”";
     rewardToast.classList.remove("hidden");
     window.setTimeout(() => rewardToast.classList.add("hidden"), 4200);
     beep(523, .12, "triangle", .045); beep(659, .12, "triangle", .04, .12); beep(784, .12, "triangle", .04, .24); beep(1047, .3, "triangle", .035, .36);
@@ -654,8 +654,8 @@
     outfitUnlocked = true;
     ownedSkins.add("captain"); ownedSkins.add("starlight"); equippedSkin = "captain"; saveCosmetics();
     try { localStorage.setItem("hat-adventure-captain", "1"); localStorage.setItem("hat-adventure-outfit", "1"); } catch (_) {}
-    rewardTitle.textContent = "1000 分终极变身！";
-    rewardDescription.textContent = "内马尔换上美国队长球衣";
+    rewardTitle.textContent = "1000 分冠军奖励！";
+    rewardDescription.textContent = "内马尔戴上世界杯冠军奖牌";
     rewardToast.classList.remove("hidden");
     window.setTimeout(() => rewardToast.classList.add("hidden"), 5200);
     beep(392, .14, "triangle", .05); beep(523, .14, "triangle", .045, .12); beep(659, .14, "triangle", .045, .24); beep(784, .16, "triangle", .04, .36); beep(1047, .38, "triangle", .04, .5);
@@ -671,7 +671,7 @@
 
   function equipSkin(skin) {
     equippedSkin = skin; player.heroForm = "neymar"; player.growthLevel = 0;
-    const scale = skin === "hulk" ? 1.55 : 1;
+    const scale = 1;
     const bottom = player.y + player.h; player.w = Math.round(52 * scale); player.h = Math.round(52 * scale); player.y = bottom - player.h;
     saveCosmetics(); updateShopUI();
   }
@@ -1104,24 +1104,23 @@
     ctx.fillStyle = darkened ? "#111" : style.skin; ctx.beginPath(); ctx.arc(0, -radius * .19, radius * .58, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = darkened ? "#050505" : style.hair; ctx.beginPath(); ctx.arc(0, -radius * .36, radius * .59, Math.PI, 0); ctx.lineTo(radius * .46, -radius * .12); ctx.quadraticCurveTo(0, -radius * .3, -radius * .5, -radius * .12); ctx.closePath(); ctx.fill();
     if (outfit === "captain") {
-      ctx.fillStyle = "#2857a1"; ctx.fillRect(-radius, radius * .18, radius * 2, radius);
-      ctx.fillStyle = "#fff"; ctx.font = `900 ${radius * .72}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("★", 0, radius * .75);
-      ctx.fillStyle = "#d83d47"; ctx.fillRect(-radius, radius * .72, radius * 2, radius * .18);
+      ctx.strokeStyle = "#f0cb57"; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(-radius * .35, radius * .2); ctx.lineTo(0, radius * .62); ctx.lineTo(radius * .35, radius * .2); ctx.stroke();
+      ctx.fillStyle = "#f0cb57"; ctx.beginPath(); ctx.arc(0, radius * .68, radius * .2, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = "#17213b"; ctx.font = `900 ${radius * .22}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("1", 0, radius * .76);
     } else if (outfit === "ninja") {
       ctx.fillStyle = "#f1ca28"; ctx.fillRect(-radius, radius * .22, radius * 2, radius);
-      // Compact backward cap: crown on top, short brim behind the right side.
-      ctx.fillStyle = "#111a32"; ctx.strokeStyle = "#d8aa32"; ctx.lineWidth = 1.5;
-      ctx.beginPath(); ctx.ellipse(radius * .58, -radius * .51, radius * .48, radius * .11, .08, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.beginPath(); ctx.arc(0, -radius * .47, radius * .61, Math.PI, 0); ctx.lineTo(radius * .5, -radius * .39); ctx.lineTo(-radius * .5, -radius * .39); ctx.closePath(); ctx.fill(); ctx.stroke();
+      // Compact fallback badge on the jersey; nothing is drawn over the head.
+      drawRoundedRect(-radius * .82, radius * .2, radius * .46, radius * .52, 3, "#f0cb57", "#17213b", 1.2);
+      ctx.fillStyle = "#17213b"; ctx.font = `1000 ${radius * .3}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.fillText("帅", -radius * .59, radius * .55);
     } else if (outfit === "starlight") {
       ctx.fillStyle = "#31559b"; ctx.fillRect(-radius, radius * .24, radius * 2, radius);
-      ctx.fillStyle = "#ffd45b"; ctx.font = `900 ${radius * .6}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("★", 0, radius * .78);
+      ctx.fillStyle = "#ffd45b"; ctx.font = `900 ${radius * .45}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("⚽", 0, radius * .76);
     } else if (outfit === "spider") {
-      ctx.fillStyle = "#d83f4d"; ctx.fillRect(-radius, radius * .2, radius * 2, radius);
-      ctx.strokeStyle = "#fff"; ctx.lineWidth = 1; ctx.beginPath(); ctx.arc(0, radius * .57, radius * .32, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = "#183a68"; ctx.fillRect(-radius, radius * .2, radius * 2, radius);
+      ctx.fillStyle = "#ffd45b"; ctx.font = `900 ${radius * .62}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("ϟ", 0, radius * .76);
     } else if (outfit === "hulk") {
-      ctx.fillStyle = "#65bd55"; ctx.fillRect(-radius, -radius, radius * 2, radius * 2);
-      ctx.fillStyle = "#6e49a5"; ctx.fillRect(-radius, radius * .45, radius * 2, radius * .55);
+      ctx.fillStyle = "#176b5d"; ctx.fillRect(-radius, radius * .2, radius * 2, radius);
+      ctx.fillStyle = "#eafaf4"; ctx.font = `900 ${radius * .5}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("GK", 0, radius * .73);
     }
     ctx.restore();
     ctx.fillStyle = "#161923"; ctx.beginPath(); ctx.arc(-radius * .2, -radius * .2, radius * .07, 0, Math.PI * 2); ctx.arc(radius * .2, -radius * .2, radius * .07, 0, Math.PI * 2); ctx.fill();
@@ -1166,7 +1165,6 @@
     ctx.fillStyle = "rgba(18,27,42,.2)";
     ctx.beginPath(); ctx.ellipse(0, 1, displayWidth * .34, 4, 0, 0, Math.PI * 2); ctx.fill();
     if (form === "black") ctx.filter = "brightness(.2) saturate(.35)";
-    if (form === "hulk") ctx.filter = "hue-rotate(70deg) saturate(1.35)";
     if (form === "starlight") { ctx.shadowColor = "#ffd45b"; ctx.shadowBlur = 14; }
     if (ready) {
       ctx.drawImage(image, -displayWidth / 2, -displayHeight, displayWidth, displayHeight);
@@ -1180,45 +1178,55 @@
     ctx.lineWidth = Math.max(2, displayHeight * .025); ctx.strokeStyle = "rgba(255,255,255,.88)";
     ctx.strokeText(String(meta.number), 0, -displayHeight * .41);
     ctx.fillStyle = meta.numberColor; ctx.fillText(String(meta.number), 0, -displayHeight * .41);
-    if (form === "captain") {
-      ctx.fillStyle = "#2857a1"; ctx.strokeStyle = "#fff"; ctx.lineWidth = 2;
-      ctx.beginPath(); ctx.arc(-displayWidth * .42, -displayHeight * .42, displayHeight * .13, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.fillStyle = "#fff"; ctx.font = `900 ${displayHeight * .16}px sans-serif`; ctx.fillText("★", -displayWidth * .42, -displayHeight * .42);
+    if (form === "starlight") {
+      // Golden boots sit on the existing feet without changing the footballer silhouette.
+      ctx.save(); ctx.shadowColor = "#ffe77a"; ctx.shadowBlur = 7; ctx.fillStyle = "#e9b72d"; ctx.strokeStyle = "#805414"; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.ellipse(-displayWidth * .17, -displayHeight * .045, displayWidth * .14, displayHeight * .035, -.12, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.beginPath(); ctx.ellipse(displayWidth * .22, -displayHeight * .105, displayWidth * .13, displayHeight * .032, .18, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.restore();
+    } else if (form === "captain") {
+      // A red-blue ribbon and gold champion medal hang below Neymar's collar.
+      ctx.save(); ctx.strokeStyle = "#2b56a0"; ctx.lineWidth = Math.max(2, displayHeight * .025);
+      ctx.beginPath(); ctx.moveTo(-displayWidth * .09, -displayHeight * .6); ctx.lineTo(0, -displayHeight * .515); ctx.lineTo(displayWidth * .09, -displayHeight * .6); ctx.stroke();
+      ctx.strokeStyle = "#d9414d"; ctx.lineWidth = Math.max(1, displayHeight * .011);
+      ctx.beginPath(); ctx.moveTo(-displayWidth * .07, -displayHeight * .6); ctx.lineTo(0, -displayHeight * .525); ctx.lineTo(displayWidth * .07, -displayHeight * .6); ctx.stroke();
+      const medal = ctx.createRadialGradient(-2, -displayHeight * .52, 1, 0, -displayHeight * .5, displayHeight * .065);
+      medal.addColorStop(0, "#fff4a6"); medal.addColorStop(.45, "#f0c33f"); medal.addColorStop(1, "#a86b12");
+      ctx.fillStyle = medal; ctx.strokeStyle = "#755019"; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.arc(0, -displayHeight * .5, displayHeight * .06, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.fillStyle = "#755019"; ctx.font = `1000 ${displayHeight * .055}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.fillText("1", 0, -displayHeight * .497);
+      ctx.restore();
     } else if (form === "ninja") {
-      // Backward baseball cap fitted to the crown. The lowest point stays near
-      // -.855h, safely above the artwork's eyebrows and eye line around -.74h.
-      ctx.save(); ctx.translate(0, -displayHeight * .895); ctx.rotate(-.025);
-      ctx.shadowColor = "rgba(12,20,43,.3)"; ctx.shadowBlur = 4; ctx.shadowOffsetY = 2;
-      ctx.fillStyle = "#151e39"; ctx.strokeStyle = "#e5bd43"; ctx.lineWidth = Math.max(1.5, displayHeight * .018);
-      // Draw the brim first so it visibly projects behind the head instead of over the face.
-      ctx.beginPath();
-      ctx.ellipse(displayWidth * .3, displayHeight * .012, displayWidth * .16, displayHeight * .022, .1, 0, Math.PI * 2);
-      ctx.fill(); ctx.stroke();
-      ctx.fillStyle = "#202c50";
-      ctx.beginPath();
-      ctx.moveTo(-displayWidth * .28, displayHeight * .012);
-      ctx.quadraticCurveTo(-displayWidth * .23, -displayHeight * .067, 0, -displayHeight * .085);
-      ctx.quadraticCurveTo(displayWidth * .22, -displayHeight * .065, displayWidth * .28, displayHeight * .012);
-      ctx.quadraticCurveTo(0, displayHeight * .033, -displayWidth * .28, displayHeight * .012);
-      ctx.closePath(); ctx.fill(); ctx.stroke();
+      // Gold captain armband follows the upper-left arm; the head stays untouched.
+      ctx.save(); ctx.translate(-displayWidth * .28, -displayHeight * .51); ctx.rotate(.24);
+      ctx.shadowColor = "rgba(16,26,48,.3)"; ctx.shadowBlur = 3; ctx.shadowOffsetY = 1.5;
+      drawRoundedRect(-displayWidth * .09, -displayHeight * .04, displayWidth * .18, displayHeight * .08, 3, "#f0cb57", "#17213b", 1.4);
       ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-      // Backward-facing adjustment opening and strap sit over the hairline.
-      ctx.strokeStyle = "#e5bd43"; ctx.lineWidth = Math.max(1.4, displayHeight * .015);
-      ctx.beginPath();
-      ctx.arc(0, displayHeight * .015, displayWidth * .07, Math.PI, 0);
-      ctx.stroke();
-      ctx.beginPath(); ctx.moveTo(-displayWidth * .12, displayHeight * .012); ctx.lineTo(displayWidth * .12, displayHeight * .012); ctx.stroke();
-      // Subtle panel seams and a compact “帅” badge keep the cap personal but clean.
-      ctx.strokeStyle = "rgba(255,255,255,.32)"; ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.moveTo(0, -displayHeight * .078); ctx.lineTo(0, -displayHeight * .018);
-      ctx.moveTo(-displayWidth * .22, -displayHeight * .026); ctx.quadraticCurveTo(0, -displayHeight * .052, displayWidth * .22, -displayHeight * .026); ctx.stroke();
-      drawRoundedRect(-displayWidth * .225, -displayHeight * .053, displayWidth * .145, displayHeight * .052, 2, "#f0cb57", "#fff1a3", 1);
-      ctx.fillStyle = "#151e39"; ctx.font = `1000 ${displayHeight * .041}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-      ctx.fillText("帅", -displayWidth * .1525, -displayHeight * .027);
+      ctx.strokeStyle = "#fff0a4"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(-displayWidth * .065, -displayHeight * .025); ctx.lineTo(-displayWidth * .065, displayHeight * .025); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(displayWidth * .065, -displayHeight * .025); ctx.lineTo(displayWidth * .065, displayHeight * .025); ctx.stroke();
+      ctx.fillStyle = "#17213b"; ctx.font = `1000 ${displayHeight * .045}px ui-rounded, sans-serif`; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+      ctx.fillText("帅", 0, 0);
       ctx.restore();
     } else if (form === "spider") {
-      ctx.fillStyle = "#d83f4d"; ctx.beginPath(); ctx.arc(displayWidth * .32, -displayHeight * .35, displayHeight * .09, 0, Math.PI * 2); ctx.fill();
+      // Slim navy shin guards with gold lightning marks.
+      ctx.save(); ctx.translate(displayWidth * .14, -displayHeight * .2); ctx.rotate(.14);
+      drawRoundedRect(-displayWidth * .07, -displayHeight * .065, displayWidth * .14, displayHeight * .13, 3, "#173762", "#f0c94d", 1.2);
+      ctx.fillStyle = "#f0c94d"; ctx.font = `1000 ${displayHeight * .09}px sans-serif`; ctx.textAlign = "center"; ctx.fillText("ϟ", 0, displayHeight * .018);
+      ctx.restore();
+    } else if (form === "hulk") {
+      // Teal goalkeeper gloves accent the hands; the body keeps Neymar's normal colors and size.
+      const gloves = [
+        { x: -displayWidth * .39, y: -displayHeight * .4, rot: -.26 },
+        { x: displayWidth * .39, y: -displayHeight * .4, rot: .26 },
+      ];
+      for (const glove of gloves) {
+        ctx.save(); ctx.translate(glove.x, glove.y); ctx.rotate(glove.rot);
+        drawRoundedRect(-displayWidth * .07, -displayHeight * .045, displayWidth * .14, displayHeight * .09, 4, "#1c9b82", "#f0c94d", 1.3);
+        ctx.strokeStyle = "#eafff8"; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(-displayWidth * .035, -displayHeight * .025); ctx.lineTo(-displayWidth * .035, displayHeight * .02); ctx.moveTo(0, -displayHeight * .03); ctx.lineTo(0, displayHeight * .022); ctx.moveTo(displayWidth * .035, -displayHeight * .025); ctx.lineTo(displayWidth * .035, displayHeight * .02); ctx.stroke();
+        ctx.restore();
+      }
     }
     ctx.restore();
   }
@@ -1261,21 +1269,16 @@
   function drawWorldCupTrophy(x, y, time) {
     const sway = Math.sin(time * 3) * .35;
     ctx.save(); ctx.translate(x, y + sway);
-    ctx.lineCap = "round";
-    // Messi and Suárez reach from the sides while Neymar supports the base with both hands.
-    const arms = [
-      { color: "#d89a72", fromX: -40, fromY: 0, toX: -6, toY: 3 },
-      { color: "#b9784d", fromX: -10, fromY: 15, toX: -3.5, toY: 10.5 },
-      { color: "#b9784d", fromX: 10, fromY: 15, toX: 3.5, toY: 10.5 },
-      { color: "#c17a50", fromX: 40, fromY: 0, toX: 6, toY: 3 },
+    // Four small hands grip the cup directly; no long horizontal arm bars.
+    const hands = [
+      { color: "#d89a72", x: -6, y: 3 },
+      { color: "#b9784d", x: -3.5, y: 10.5 },
+      { color: "#b9784d", x: 3.5, y: 10.5 },
+      { color: "#c17a50", x: 6, y: 3 },
     ];
-    for (const arm of arms) {
-      ctx.strokeStyle = "rgba(23,33,51,.28)"; ctx.lineWidth = 4.8;
-      ctx.beginPath(); ctx.moveTo(arm.fromX, arm.fromY + 1); ctx.quadraticCurveTo(arm.fromX * .48, arm.fromY + 5, arm.toX, arm.toY + 1); ctx.stroke();
-      ctx.strokeStyle = arm.color; ctx.lineWidth = 3.3;
-      ctx.beginPath(); ctx.moveTo(arm.fromX, arm.fromY); ctx.quadraticCurveTo(arm.fromX * .48, arm.fromY + 4, arm.toX, arm.toY); ctx.stroke();
-      ctx.fillStyle = arm.color; ctx.strokeStyle = "#5c3b2f"; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.arc(arm.toX, arm.toY, 2.45, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    for (const hand of hands) {
+      ctx.fillStyle = hand.color; ctx.strokeStyle = "#5c3b2f"; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(hand.x, hand.y, 2.45, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
     }
 
     // At 72% scale the trophy is about one-third of Neymar's height instead of half.
