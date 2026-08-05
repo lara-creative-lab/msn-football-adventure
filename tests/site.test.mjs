@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
-  const game = await readFile(new URL("../dist/client/game.js", import.meta.url), "utf8");
+  const game = await readFile(new URL("../dist/client/game-v19.js", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
   assert.match(html, /音乐：世界杯荣耀曲/);
   assert.match(html, /1990 意大利·罗马斗兽场/);
@@ -19,7 +19,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game\.js\?v=18/);
+  assert.match(html, /game-v19\.js/);
+  assert.doesNotMatch(html, /game\.js\?v=/);
   assert.doesNotMatch(html, /举办地|游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
   for (const city of ["罗马", "帕萨迪纳", "巴黎", "首尔", "横滨", "柏林", "开普敦", "里约", "莫斯科", "多哈", "墨西哥城", "多伦多", "旧金山"]) {
     assert.match(game, new RegExp(city));
@@ -39,7 +40,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /世界杯门神手套/);
   assert.doesNotMatch(html, /潮流头巾|反戴潮帽|美国队长|蜘蛛侠|绿巨人/);
   assert.doesNotMatch(html, /musicSelect|Dai Dai|火影|海贼王/);
-  assert.match(html, /三人集齐换上巴萨红蓝战袍/);
+  assert.match(html, /1000分＋6城苏亚雷斯加入并换巴萨战袍/);
   assert.match(game, /BARCA_CHARACTER_IMAGES/);
   assert.match(game, /barcaNumber: 11/);
   assert.match(game, /msnStage === 3 \? "barca"/);
@@ -49,7 +50,18 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /prize\.type = "scarf"/);
   assert.match(game, /type: "matchball"/);
   assert.doesNotMatch(game, /彩虹奖励|红蘑菇|type: "rainbow"|type: "mushroom"/);
-  await stat(new URL("../dist/client/game.js", import.meta.url));
+  assert.match(html, /500分＋3城梅西加入/);
+  assert.match(html, /1000分＋6城苏亚雷斯加入/);
+  assert.match(html, /第7—9枚城市印章获得奖杯碎片/);
+  assert.match(html, /城市印章：<strong id="stampCount">0 \/ 10<\/strong>/);
+  assert.match(game, /hat-adventure-city-stamps/);
+  assert.match(game, /progressScore >= 1000 && stamps >= 6/);
+  assert.match(game, /progressScore >= 500 && stamps >= 3/);
+  assert.match(game, /function hasWorldCupTrophy/);
+  assert.match(game, /completedLevels\.size >= LEVELS\.length/);
+  assert.match(game, /card\.milestone && completedLevels\.size >= card\.cities/);
+  assert.match(game, /function updateLevelOptionProgress/);
+  await stat(new URL("../dist/client/game-v19.js", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/neymar-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/suarez-barca.png", import.meta.url));
