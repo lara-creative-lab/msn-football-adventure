@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
-  const game = await readFile(new URL("../dist/client/game-v23.js", import.meta.url), "utf8");
+  const game = await readFile(new URL("../dist/client/game-v24.js", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
   assert.match(html, /音乐：世界杯荣耀曲/);
   assert.match(html, /1990 意大利·罗马斗兽场/);
@@ -19,7 +19,9 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game-v23\.js/);
+  assert.match(html, /game-v24\.js/);
+  assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
+  assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);
   assert.doesNotMatch(html, /举办地|游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
   for (const city of ["罗马", "帕萨迪纳", "巴黎", "首尔", "横滨", "柏林", "开普敦", "里约", "莫斯科", "多哈", "墨西哥城", "多伦多", "旧金山"]) {
@@ -46,7 +48,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /msnStage === 3 \? "barca"/);
   assert.match(game, /巴萨MSN合捧欧冠大耳朵杯/);
   assert.match(game, /function drawChampionsLeagueTrophy/);
-  assert.match(game, /Barcelona-blue and garnet ribbons/);
+  assert.match(game, /two oversized open handles/);
   assert.doesNotMatch(game, /drawWorldCupTrophy|巴萨MSN合捧大力神杯/);
   assert.match(game, /世界杯助威围巾/);
   assert.match(game, /世界杯能量球/);
@@ -62,7 +64,14 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /progressScore >= 1000 && stamps >= 6/);
   assert.match(game, /progressScore >= 500 && stamps >= 3/);
   assert.match(game, /function hasChampionsLeagueTrophy/);
-  assert.match(game, /completedLevels\.size >= LEVELS\.length/);
+  assert.match(game, /journeyLevels\.size >= LEVELS\.length/);
+  assert.match(game, /const stamps = journeyLevels\.size/);
+  assert.match(game, /function journeyScore\(score = totalCoins \+ coins\) \{\s+return score;/);
+  assert.doesNotMatch(game, /return Math\.max\(bestScore, score\)/);
+  assert.match(game, /function restartCurrentLevel/);
+  assert.match(game, /function restartFromFirstLevel/);
+  assert.match(game, /document\.querySelector\("#firstLevelButton"\)\.addEventListener\("click", restartFromFirstLevel\)/);
+  assert.match(game, /journeyLevels = new Set\(\)/);
   assert.match(game, /card\.milestone && completedLevels\.size >= card\.cities/);
   assert.match(game, /function updateLevelOptionProgress/);
   assert.match(game, /const NEYMAR_CELEBRATIONS/);
@@ -83,7 +92,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /activeForm === "black" \? "black" : \(msnStage === 3 \? "barca"/);
   assert.match(game, /内马尔立即变为暗影公仔；MSN巴萨球衣状态下也会生效/);
   assert.match(html, /由内马尔模仿其招牌庆祝/);
-  await stat(new URL("../dist/client/game-v23.js", import.meta.url));
+  await stat(new URL("../dist/client/game-v24.js", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/neymar-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/suarez-barca.png", import.meta.url));

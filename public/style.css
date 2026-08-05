@@ -42,7 +42,10 @@ body {
 .topbar { justify-content: space-between; gap: 20px; padding: 0 4px 16px; }
 .topbar h1 { margin: 1px 0 0; font-size: clamp(27px, 4vw, 44px); line-height: 1; letter-spacing: -.05em; }
 .eyebrow { margin: 0; color: var(--orange-dark); font-size: 11px; font-weight: 900; letter-spacing: .2em; }
-.actions { gap: 9px; }
+.actions { justify-content: flex-end; flex-wrap: wrap; gap: 9px; }
+.actions button { padding-inline: 13px; white-space: nowrap; }
+#firstLevelButton { color: #a33d26; background: #fff4dc; }
+#firstLevelButton:hover { background: #ffe7ad; }
 .actions select { max-width: 190px; padding: 9px 10px; color: var(--ink); border: 3px solid var(--ink); border-radius: 11px; background: white; font: 800 13px/1 inherit; box-shadow: 0 4px 0 var(--ink); }
 
 button {
@@ -156,6 +159,8 @@ kbd { min-width: 26px; padding: 4px 7px; text-align: center; border: 2px solid #
   body { padding: 10px; }
   .game-shell { padding: 12px; border-radius: 19px; }
   .topbar { align-items: flex-end; }
+  .actions { gap: 7px; }
+  .actions button { padding-inline: 10px; font-size: 12px; }
   .actions button:first-child { display: none; }
   .actions select { max-width: 132px; font-size: 11px; }
   .helpbar { font-size: 11px; gap: 10px 15px; }
