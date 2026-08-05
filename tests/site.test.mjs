@@ -19,7 +19,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game\.js\?v=17/);
+  assert.match(html, /game\.js\?v=18/);
   assert.doesNotMatch(html, /举办地|游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
   for (const city of ["罗马", "帕萨迪纳", "巴黎", "首尔", "横滨", "柏林", "开普敦", "里约", "莫斯科", "多哈", "墨西哥城", "多伦多", "旧金山"]) {
     assert.match(game, new RegExp(city));
@@ -44,6 +44,11 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /barcaNumber: 11/);
   assert.match(game, /msnStage === 3 \? "barca"/);
   assert.match(game, /巴萨MSN合捧大力神杯/);
+  assert.match(game, /世界杯助威围巾/);
+  assert.match(game, /世界杯能量球/);
+  assert.match(game, /prize\.type = "scarf"/);
+  assert.match(game, /type: "matchball"/);
+  assert.doesNotMatch(game, /彩虹奖励|红蘑菇|type: "rainbow"|type: "mushroom"/);
   await stat(new URL("../dist/client/game.js", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/neymar-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));

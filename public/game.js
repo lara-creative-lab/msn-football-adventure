@@ -144,9 +144,9 @@
 
   function makeTreasure(x, y, seed = 0) {
     const roll = seed % 13;
-    const type = roll === 0 ? "rainbow" : (roll === 3 ? "lightning" : (roll % 5 === 0 ? "star" : (roll % 4 === 0 ? "gem" : "coin")));
-    const values = { coin: 1, gem: 3, star: 5, lightning: 7, rainbow: 10 };
-    return { x, y, r: type === "star" || type === "rainbow" ? 16 : 14, type, value: values[type], collected: false, phase: seed * .7 };
+    const type = roll === 0 ? "scarf" : (roll === 3 ? "lightning" : (roll % 5 === 0 ? "star" : (roll % 4 === 0 ? "gem" : "coin")));
+    const values = { coin: 1, gem: 3, star: 5, lightning: 7, scarf: 10 };
+    return { x, y, r: type === "star" || type === "scarf" ? 16 : 14, type, value: values[type], collected: false, phase: seed * .7 };
   }
 
   function buildLevel(index) {
@@ -182,14 +182,14 @@
         coinItems.push(makeTreasure(x + 28 + c * Math.max(28, (w - 56) / Math.max(1, treasureCount - 1)), y - 48, platformIndex * 4 + c + index));
       }
       if (platformIndex === 2 || (index >= 5 && platformIndex === 8)) {
-        powerUps.push({ x: x + w / 2 - 15, y: y - 34, w: 30, h: 30, type: "mushroom", collected: false });
+        powerUps.push({ x: x + w / 2 - 15, y: y - 34, w: 30, h: 30, type: "matchball", collected: false });
       }
       platformIndex += 1;
     }
 
     for (let x = 720, prizeIndex = 0; x < goalX - 260; x += 820, prizeIndex += 1) {
       const prize = makeTreasure(x, 145 + (prizeIndex % 2) * 42, prizeIndex * 13);
-      prize.type = "rainbow"; prize.value = 25; prize.r = 19;
+      prize.type = "scarf"; prize.value = 25; prize.r = 19;
       coinItems.push(prize);
     }
 
@@ -371,10 +371,10 @@
       const dy = player.y + player.h / 2 - coin.y;
       if (dx * dx + dy * dy < 38 * 38) {
         coin.collected = true;
-        if (coin.type === "rainbow") {
+        if (coin.type === "scarf") {
           coins += coin.value;
           addWallet(coin.value);
-          showRainbowReward(coin.value);
+          showScarfReward(coin.value);
         } else {
           coins += coin.value;
           addWallet(coin.value);
@@ -388,8 +388,8 @@
       if (item.collected || !rectsOverlap(player, item)) continue;
       item.collected = true;
       player.powerShot = true;
-      rewardTitle.textContent = "⚽ 强力射门！";
-      rewardDescription.textContent = "红蘑菇让足球变大、威力提升";
+      rewardTitle.textContent = "⚽ 世界杯能量球！";
+      rewardDescription.textContent = "获得强力比赛用球：足球变大、威力提升";
       rewardToast.classList.remove("hidden");
       window.setTimeout(() => rewardToast.classList.add("hidden"), 2200);
       beep(392, .1, "square", .035); beep(523, .1, "square", .035, .08); beep(784, .18, "square", .03, .16);
@@ -568,9 +568,9 @@
     walletAmount.textContent = String(wallet);
   }
 
-  function showRainbowReward(amount) {
-    rewardTitle.textContent = "🌈 彩虹奖励！";
-    rewardDescription.textContent = `获得 ${amount} 点普通积分`;
+  function showScarfReward(amount) {
+    rewardTitle.textContent = "📣 世界杯助威围巾！";
+    rewardDescription.textContent = `球迷助威奖励：获得 ${amount} 点积分`;
     rewardToast.classList.remove("hidden");
     window.setTimeout(() => rewardToast.classList.add("hidden"), 1800);
     beep(523, .07, "triangle", .025); beep(659, .07, "triangle", .025, .05); beep(784, .07, "triangle", .025, .1); beep(1047, .16, "triangle", .02, .15);
@@ -611,7 +611,7 @@
     for (let i = 0; i < 42; i += 1) coinItems.push(makeTreasure(180 + i * 46, 220 + Math.sin(i * .72) * 105, i + currentLevel * 7 + target.length));
     [540, 1120, 1840].forEach((x, i) => {
       const prize = makeTreasure(x, 115 + i % 2 * 35, i * 13);
-      prize.type = "rainbow"; prize.value = 25; prize.r = 19; coinItems.push(prize);
+      prize.type = "scarf"; prize.value = 25; prize.r = 19; coinItems.push(prize);
     });
     const realmTypes = target === "snow" ? ["haaland", "kane", "ronaldo", "bellingham", "mbappe"] : (target === "beach" ? ["vinicius", "ronaldo", "dembele", "kane", "mbappe"] : ["ronaldo", "bellingham", "haaland", "dembele", "vinicius"]);
     enemies = realmTypes.map((type, i) => ({
@@ -619,7 +619,7 @@
       vx: (i % 2 ? -1 : 1) * (82 + currentLevel * 4), alive: true, type,
       hp: 1, flash: 0, shotCooldown: 1 + (i % 3) * .5,
     }));
-    powerUps = [{ x: 605, y: 250, w: 30, h: 30, type: "mushroom", collected: false }, { x: 1935, y: 235, w: 30, h: 30, type: "mushroom", collected: false }];
+    powerUps = [{ x: 605, y: 250, w: 30, h: 30, type: "matchball", collected: false }, { x: 1935, y: 235, w: 30, h: 30, type: "matchball", collected: false }];
     const next = target === "forest" ? "beach" : (target === "beach" ? "snow" : "forest");
     pipes = [
       { x: 70, y: FLOOR_Y - 62, w: 58, h: 62, target: "main", glow: true },
@@ -895,24 +895,42 @@
     if (x < -30 || x > W + 30) return;
     const bob = Math.sin(time * 5 + c.phase) * 5;
     ctx.save(); ctx.translate(x, c.y + bob);
-    const squeeze = .32 + Math.abs(Math.sin(time * 4 + c.phase)) * .68;
+    const squeeze = c.type === "scarf" ? .92 + Math.abs(Math.sin(time * 4 + c.phase)) * .08 : .32 + Math.abs(Math.sin(time * 4 + c.phase)) * .68;
     ctx.scale(squeeze, 1);
-    ctx.strokeStyle = "#5c3b32"; ctx.lineWidth = 4;
+    ctx.strokeStyle = "#172133"; ctx.lineWidth = 3;
     if (c.type === "gem") {
-      ctx.beginPath(); ctx.moveTo(0, -17); ctx.lineTo(14, -5); ctx.lineTo(9, 15); ctx.lineTo(-9, 15); ctx.lineTo(-14, -5); ctx.closePath();
-      ctx.fillStyle = "#51ecdc"; ctx.fill(); ctx.stroke(); ctx.fillStyle = "rgba(255,255,255,.7)"; ctx.beginPath(); ctx.moveTo(-5, -8); ctx.lineTo(4, -11); ctx.lineTo(0, 4); ctx.closePath(); ctx.fill();
+      // 世界杯主办城市纪念盾徽。
+      ctx.beginPath(); ctx.moveTo(0, -17); ctx.lineTo(14, -11); ctx.lineTo(12, 7); ctx.quadraticCurveTo(7, 15, 0, 18); ctx.quadraticCurveTo(-7, 15, -12, 7); ctx.lineTo(-14, -11); ctx.closePath();
+      ctx.fillStyle = "#2459a6"; ctx.fill(); ctx.strokeStyle = "#e8ba3f"; ctx.lineWidth = 3; ctx.stroke();
+      ctx.save(); ctx.clip(); ctx.fillStyle = "#c62f49"; ctx.fillRect(-14, -17, 7, 35); ctx.fillStyle = "#f2ca4e"; ctx.fillRect(7, -17, 7, 35); ctx.restore();
+      ctx.fillStyle = "#fff8dc"; ctx.font = "1000 8px ui-rounded, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("WC", 0, 1);
     } else if (c.type === "star") {
       ctx.beginPath(); for (let i = 0; i < 10; i += 1) { const a = -Math.PI / 2 + i * Math.PI / 5; const r = i % 2 ? 7 : 17; const px = Math.cos(a) * r; const py = Math.sin(a) * r; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.closePath();
-      ctx.fillStyle = "#ff81b8"; ctx.fill(); ctx.stroke(); ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(-4, -3, 2, 0, Math.PI * 2); ctx.arc(4, -3, 2, 0, Math.PI * 2); ctx.fill();
+      const starGold = ctx.createRadialGradient(-4, -6, 1, 0, 0, 18); starGold.addColorStop(0, "#fff6a8"); starGold.addColorStop(.5, "#f4c941"); starGold.addColorStop(1, "#b97314");
+      ctx.fillStyle = starGold; ctx.fill(); ctx.stroke();
+      ctx.fillStyle = "#fffdf2"; ctx.beginPath(); ctx.arc(0, 0, 5.5, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#21335e"; ctx.lineWidth = 1.5; ctx.stroke();
+      ctx.fillStyle = "#21335e"; ctx.beginPath(); for (let i = 0; i < 5; i += 1) { const a = -Math.PI / 2 + i * Math.PI * 2 / 5; const px = Math.cos(a) * 2.8; const py = Math.sin(a) * 2.8; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.closePath(); ctx.fill();
     } else if (c.type === "lightning") {
-      ctx.beginPath(); ctx.moveTo(3, -18); ctx.lineTo(-11, 2); ctx.lineTo(-2, 2); ctx.lineTo(-7, 18); ctx.lineTo(13, -6); ctx.lineTo(3, -6); ctx.closePath();
-      ctx.fillStyle = "#ffe44f"; ctx.fill(); ctx.stroke(); ctx.fillStyle = "rgba(255,255,255,.75)"; ctx.fillRect(-1, -12, 3, 9);
-    } else if (c.type === "rainbow") {
-      const colors = ["#ff5b5b", "#ffbd42", "#62d56b", "#4ab8ff", "#9a6cff"];
-      colors.forEach((color, i) => { ctx.strokeStyle = color; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 4, 15 - i * 2.3, Math.PI, 0); ctx.stroke(); });
-      ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(-14, 5, 5, 0, Math.PI * 2); ctx.arc(14, 5, 5, 0, Math.PI * 2); ctx.fill();
+      // 射手能量徽章。
+      ctx.beginPath(); ctx.moveTo(0, -18); ctx.lineTo(14, -10); ctx.lineTo(12, 10); ctx.lineTo(0, 18); ctx.lineTo(-12, 10); ctx.lineTo(-14, -10); ctx.closePath();
+      ctx.fillStyle = "#a8233d"; ctx.fill(); ctx.stroke();
+      ctx.fillStyle = "#f6d34f"; ctx.beginPath(); ctx.moveTo(3, -14); ctx.lineTo(-9, 2); ctx.lineTo(-1, 2); ctx.lineTo(-6, 15); ctx.lineTo(11, -5); ctx.lineTo(3, -5); ctx.closePath(); ctx.fill(); ctx.strokeStyle = "#6d4412"; ctx.lineWidth = 1.5; ctx.stroke();
+    } else if (c.type === "scarf") {
+      // 世界杯球迷助威围巾，取代原来的彩虹图标。
+      ctx.strokeStyle = "#172133"; ctx.lineWidth = 2.5;
+      drawRoundedRect(-19, -8, 38, 16, 4, "#b4243f", "#172133", 2.5);
+      ctx.fillStyle = "#244f9b"; ctx.fillRect(-16, -3, 32, 6);
+      ctx.fillStyle = "#f3cb4a"; ctx.fillRect(-16, -7, 32, 2); ctx.fillRect(-16, 5, 32, 2);
+      ctx.fillStyle = "#fff9e5"; ctx.font = "1000 8px ui-rounded, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillText("WC", 0, 0);
+      ctx.strokeStyle = "#b4243f"; ctx.lineWidth = 2;
+      for (const side of [-1, 1]) for (let i = -1; i <= 1; i += 1) { ctx.beginPath(); ctx.moveTo(side * 19, i * 4); ctx.lineTo(side * (23 + Math.abs(i)), i * 5 + 2); ctx.stroke(); }
     } else {
-      ctx.beginPath(); ctx.arc(0, 0, c.r, 0, Math.PI * 2); ctx.fillStyle = "#ffd332"; ctx.fill(); ctx.stroke(); ctx.fillStyle = "#fff2a0"; ctx.fillRect(-3, -8, 4, 11);
+      // 带足球纹样的世界杯纪念金币。
+      const medalGold = ctx.createRadialGradient(-5, -6, 1, 0, 0, c.r + 2); medalGold.addColorStop(0, "#fff4a4"); medalGold.addColorStop(.45, "#f4ca3f"); medalGold.addColorStop(1, "#b86c12");
+      ctx.beginPath(); ctx.arc(0, 0, c.r, 0, Math.PI * 2); ctx.fillStyle = medalGold; ctx.fill(); ctx.stroke();
+      ctx.strokeStyle = "rgba(114,66,15,.65)"; ctx.lineWidth = 1.5; ctx.beginPath(); ctx.arc(0, 0, c.r - 4, 0, Math.PI * 2); ctx.stroke();
+      ctx.fillStyle = "#20335f"; ctx.beginPath(); for (let i = 0; i < 5; i += 1) { const a = -Math.PI / 2 + i * Math.PI * 2 / 5; const px = Math.cos(a) * 4; const py = Math.sin(a) * 4; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.closePath(); ctx.fill();
+      ctx.strokeStyle = "#20335f"; ctx.lineWidth = 1.2; for (let i = 0; i < 5; i += 1) { const a = -Math.PI / 2 + i * Math.PI * 2 / 5; ctx.beginPath(); ctx.moveTo(Math.cos(a) * 4, Math.sin(a) * 4); ctx.lineTo(Math.cos(a) * (c.r - 4), Math.sin(a) * (c.r - 4)); ctx.stroke(); }
     }
     ctx.restore();
   }
@@ -968,12 +986,18 @@
     if (item.collected) return;
     const x = item.x - cameraX; if (x < -50 || x > W + 50) return;
     const y = item.y + Math.sin(time * 4 + item.x * .01) * 4;
-    ctx.save(); ctx.translate(x, y);
-    ctx.fillStyle = "#f4dfae"; ctx.strokeStyle = "#542f2b"; ctx.lineWidth = 3;
-    drawRoundedRect(10, 13, 14, 17, 5, "#f4dfae", "#542f2b", 3);
-    ctx.beginPath(); ctx.arc(17, 13, 16, Math.PI, 0); ctx.lineTo(33, 14); ctx.quadraticCurveTo(17, 24, 1, 14); ctx.closePath(); ctx.fillStyle = "#ef4a45"; ctx.fill(); ctx.stroke();
-    ctx.fillStyle = "#fff"; ctx.beginPath(); ctx.arc(11, 7, 4, 0, Math.PI * 2); ctx.arc(24, 10, 3.5, 0, Math.PI * 2); ctx.fill();
-    ctx.fillStyle = "#542f2b"; ctx.fillRect(13, 19, 2, 4); ctx.fillRect(20, 19, 2, 4);
+    const pulse = .45 + Math.sin(time * 6 + item.x * .02) * .18;
+    ctx.save(); ctx.translate(x + 17, y + 15);
+    ctx.strokeStyle = `rgba(244,202,61,${pulse})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI * 2); ctx.stroke();
+    ctx.shadowColor = "#f4ca3d"; ctx.shadowBlur = 11;
+    const ballWhite = ctx.createRadialGradient(-5, -7, 1, 0, 0, 16); ballWhite.addColorStop(0, "#ffffff"); ballWhite.addColorStop(.72, "#f8f1dc"); ballWhite.addColorStop(1, "#d9c99f");
+    ctx.fillStyle = ballWhite; ctx.strokeStyle = "#172133"; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.arc(0, 0, 15, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = "#172f62"; ctx.beginPath(); for (let i = 0; i < 5; i += 1) { const a = -Math.PI / 2 + i * Math.PI * 2 / 5; const px = Math.cos(a) * 5; const py = Math.sin(a) * 5; if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py); } ctx.closePath(); ctx.fill();
+    const panelColors = ["#c62f49", "#f0c945", "#2656a1", "#c62f49", "#f0c945"];
+    for (let i = 0; i < 5; i += 1) { const a = -Math.PI / 2 + i * Math.PI * 2 / 5; const px = Math.cos(a) * 10.5; const py = Math.sin(a) * 10.5; ctx.fillStyle = panelColors[i]; ctx.beginPath(); ctx.arc(px, py, 3.1, 0, Math.PI * 2); ctx.fill(); ctx.strokeStyle = "#172133"; ctx.lineWidth = 1; ctx.stroke(); ctx.beginPath(); ctx.moveTo(Math.cos(a) * 5, Math.sin(a) * 5); ctx.lineTo(px, py); ctx.stroke(); }
+    ctx.fillStyle = "#f2ca45"; ctx.strokeStyle = "#6d4412"; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(3, -8); ctx.lineTo(-4, 1); ctx.lineTo(0, 1); ctx.lineTo(-3, 8); ctx.lineTo(7, -3); ctx.lineTo(3, -3); ctx.closePath(); ctx.fill(); ctx.stroke();
     ctx.restore();
   }
 
