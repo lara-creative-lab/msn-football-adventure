@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
-  const game = await readFile(new URL("../dist/client/game-v22.js", import.meta.url), "utf8");
+  const game = await readFile(new URL("../dist/client/game-v23.js", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
   assert.match(html, /音乐：世界杯荣耀曲/);
   assert.match(html, /1990 意大利·罗马斗兽场/);
@@ -19,7 +19,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game-v22\.js/);
+  assert.match(html, /game-v23\.js/);
   assert.doesNotMatch(html, /game\.js\?v=/);
   assert.doesNotMatch(html, /举办地|游艇|冰川|绿茵场|幻想森林层|晴海沙滩层|极光雪山层/);
   for (const city of ["罗马", "帕萨迪纳", "巴黎", "首尔", "横滨", "柏林", "开普敦", "里约", "莫斯科", "多哈", "墨西哥城", "多伦多", "旧金山"]) {
@@ -65,21 +65,25 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /completedLevels\.size >= LEVELS\.length/);
   assert.match(game, /card\.milestone && completedLevels\.size >= card\.cities/);
   assert.match(game, /function updateLevelOptionProgress/);
-  assert.match(game, /const FOOTBALL_TAUNTS/);
+  assert.match(game, /const NEYMAR_CELEBRATIONS/);
   for (const taunt of ["SIU！", "禅意模式", "冷静定格", "滑跪指天", "桑巴舞步", "伯纳乌展翼", "队长滑跪"]) {
     assert.match(game, new RegExp(taunt));
   }
-  assert.match(game, /enemy\.tauntTimer > 0/);
-  assert.match(game, /function completeEnemyTaunt/);
-  assert.match(game, /function playTauntSound/);
-  assert.match(game, /function drawTauntEffects/);
+  assert.match(game, /player\.celebrationTimer > 0/);
+  assert.match(game, /function startNeymarCelebration/);
+  assert.match(game, /function playCelebrationSound/);
+  assert.match(game, /function drawCelebrationEffects/);
+  assert.doesNotMatch(game, /enemy\.tauntTimer|completeEnemyTaunt|drawTauntEffects/);
   assert.match(game, /not draw replacement arms, legs or hands/);
   assert.doesNotMatch(game, /fillText\("✊"|const skin = "#c98b62"/);
-  assert.match(game, /showFootballReward\("SIU！", "C罗完成招牌庆祝/);
+  assert.match(game, /showFootballReward\("SIU！", "内马尔模仿C罗招牌庆祝/);
   assert.doesNotMatch(game, /C罗奖励|C罗掉落/);
   assert.match(html, /C罗触发招牌SIU庆祝/);
-  assert.match(html, /专属“庆祝嘲讽”/);
-  await stat(new URL("../dist/client/game-v22.js", import.meta.url));
+  assert.match(game, /player\.heroForm = "black"/);
+  assert.match(game, /activeForm === "black" \? "black" : \(msnStage === 3 \? "barca"/);
+  assert.match(game, /内马尔立即变为暗影公仔；MSN巴萨球衣状态下也会生效/);
+  assert.match(html, /由内马尔模仿其招牌庆祝/);
+  await stat(new URL("../dist/client/game-v23.js", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/neymar-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/suarez-barca.png", import.meta.url));
