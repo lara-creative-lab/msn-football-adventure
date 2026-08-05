@@ -91,10 +91,11 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 #shopScreen { z-index: 8; }
 .draw-overlay { z-index: 7; overflow: hidden; padding: 0; color: white; background: radial-gradient(circle at 50% 48%, rgba(79,84,166,.72), rgba(8,12,36,.96) 58%, #040714); backdrop-filter: blur(6px); }
 .draw-scene { position: relative; isolation: isolate; display: grid; place-items: center; align-content: center; width: 100%; height: 100%; padding: 18px; text-align: center; }
-.draw-scene::before, .draw-scene::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; opacity: .5; filter: blur(1px); }
+.draw-scene::before, .draw-scene::after { content: ""; position: absolute; z-index: 0; border-radius: 50%; opacity: .5; filter: blur(1px); pointer-events: none; }
 .draw-scene::before { width: 420px; height: 420px; background: radial-gradient(circle, rgba(255,218,112,.22), transparent 68%); }
 .draw-scene::after { inset: 0; border-radius: 0; background: repeating-conic-gradient(from 12deg at 50% 52%, rgba(255,222,123,.08) 0 2deg, transparent 2deg 15deg); animation: draw-rays 18s linear infinite; }
-.draw-stars { position: absolute; z-index: -2; inset: 0; background-image: radial-gradient(circle, #fff 0 1px, transparent 1.6px), radial-gradient(circle, #ffe69b 0 1.4px, transparent 2px), radial-gradient(circle, #b7d6ff 0 1px, transparent 1.6px); background-position: 0 0, 23px 31px, 71px 12px; background-size: 73px 67px, 101px 89px, 137px 113px; opacity: .82; animation: star-drift 12s linear infinite; }
+.draw-stars { position: absolute; z-index: 0; inset: 0; background-image: radial-gradient(circle, #fff 0 1px, transparent 1.6px), radial-gradient(circle, #ffe69b 0 1.4px, transparent 2px), radial-gradient(circle, #b7d6ff 0 1px, transparent 1.6px); background-position: 0 0, 23px 31px, 71px 12px; background-size: 73px 67px, 101px 89px, 137px 113px; opacity: .82; animation: star-drift 12s linear infinite; pointer-events: none; }
+.draw-scene > :not(.draw-stars):not(.draw-comet):not(.draw-summon-ring):not(.draw-flash) { position: relative; z-index: 3; }
 .draw-kicker { margin: 0 0 3px; color: #ffe69b; font-size: 11px; font-weight: 1000; letter-spacing: .18em; text-transform: uppercase; }
 .draw-scene h2 { margin: 0 0 2px; color: #fff8df; font-size: clamp(24px, 4vw, 38px); text-shadow: 0 3px 18px rgba(100,169,255,.6); }
 .draw-scene > p:not(.draw-kicker) { margin: 4px 0 8px; color: #d7e6ff; font-size: 12px; }
@@ -111,9 +112,13 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .draw-card-copy span { color: #ffd75e; font-size: 10px; letter-spacing: .12em; }
 .draw-card-copy strong { font-size: 16px; }
 .draw-card-copy small { color: #fff0b4; font-size: 9px; }
-.draw-comet { position: absolute; z-index: -1; top: 12%; left: -32%; width: 42%; height: 5px; opacity: 0; border-radius: 50%; background: linear-gradient(90deg, transparent, #9ec9ff 34%, #fff 76%, #ffd467); box-shadow: 0 0 18px #fff, 0 0 46px #7ca8ff; transform: rotate(-17deg); }
+.draw-comet { position: absolute; z-index: 2; top: 12%; left: -32%; width: 42%; height: 5px; opacity: 0; border-radius: 50%; background: linear-gradient(90deg, transparent, #9ec9ff 34%, #fff 76%, #ffd467); box-shadow: 0 0 18px #fff, 0 0 46px #7ca8ff; transform: rotate(-17deg); pointer-events: none; }
+.draw-summon-ring { position: absolute; z-index: 1; top: 50%; left: 50%; width: 38px; height: 38px; border: 4px solid rgba(255,224,122,.92); border-radius: 50%; box-shadow: 0 0 18px #fff0a8, inset 0 0 18px #69a9ff; opacity: 0; pointer-events: none; transform: translate(-50%, -50%) scale(.2); }
+.draw-flash { position: absolute; z-index: 2; inset: 0; opacity: 0; background: radial-gradient(circle at 50% 50%, rgba(255,252,211,.95), rgba(255,222,117,.52) 18%, rgba(100,151,255,.06) 44%, transparent 70%); pointer-events: none; }
 .draw-scene.drawing .draw-comet { animation: champion-comet 1.65s ease-in forwards; }
 .draw-scene.drawing .draw-card-shell { animation: card-summon 2.25s ease-in-out both; }
+.draw-scene.drawing .draw-summon-ring { animation: champion-ring 2.25s cubic-bezier(.18,.7,.26,1) forwards; }
+.draw-scene.drawing .draw-flash { animation: champion-flash 2.25s ease-in-out forwards; }
 .draw-scene.revealed .draw-card-shell { filter: drop-shadow(0 0 24px rgba(255,211,83,.75)); transform: scale(1); }
 .draw-scene.revealed .draw-card-back { opacity: 0; transform: rotateY(180deg); }
 .draw-scene.revealed .draw-card-front { opacity: 1; transform: rotateY(0) scale(1); }
@@ -124,6 +129,8 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .draw-actions button { min-width: 160px; }
 @keyframes champion-comet { 0% { left: -38%; top: 10%; opacity: 0; } 12% { opacity: 1; } 72% { opacity: 1; } 100% { left: 110%; top: 73%; opacity: 0; } }
 @keyframes card-summon { 0% { opacity: .25; transform: scale(.42) rotateY(0); } 55% { opacity: .9; transform: scale(.72) rotateY(360deg); } 82% { filter: brightness(2.2); transform: scale(.15) rotateY(640deg); } 100% { opacity: 1; filter: brightness(1); transform: scale(.78) rotateY(720deg); } }
+@keyframes champion-ring { 0% { opacity: 0; transform: translate(-50%, -50%) scale(.18) rotate(0); } 14% { opacity: 1; } 68% { opacity: .92; transform: translate(-50%, -50%) scale(7.4) rotate(240deg); } 100% { opacity: 0; transform: translate(-50%, -50%) scale(10.4) rotate(370deg); } }
+@keyframes champion-flash { 0%, 62% { opacity: 0; } 72% { opacity: .88; } 82% { opacity: .14; } 100% { opacity: 0; } }
 @keyframes star-drift { to { background-position: 73px 67px, -78px 120px, 208px -101px; } }
 @keyframes draw-rays { to { transform: rotate(360deg); } }
 
