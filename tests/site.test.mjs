@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
-  const game = await readFile(new URL("../dist/client/game-v25.js", import.meta.url), "utf8");
+  const game = await readFile(new URL("../dist/client/game-v26.js", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
   assert.match(html, /音乐：世界杯荣耀曲/);
   assert.match(html, /1990 意大利·罗马斗兽场/);
@@ -19,7 +19,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game-v25\.js/);
+  assert.match(html, /game-v26\.js/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);
@@ -81,32 +81,29 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /player\.celebrationTimer > 0/);
   assert.match(game, /function startNeymarCelebration/);
   assert.match(game, /function playCelebrationSound/);
-  assert.match(game, /function drawCelebrationEffects/);
   assert.doesNotMatch(game, /enemy\.tauntTimer|completeEnemyTaunt|drawTauntEffects/);
-  assert.match(game, /const CELEBRATION_POSE_IMAGES/);
-  assert.match(game, /function celebrationPoseMix/);
-  assert.match(game, /function drawCelebrationPoseFigure/);
-  assert.match(game, /CELEBRATION_POSE_IMAGES\[player\.celebrationType\]/);
-  assert.match(game, /内马尔抱臂模仿姆巴佩招牌庆祝/);
-  assert.match(game, /内马尔模仿登贝莱滑跪指天/);
+  assert.match(game, /const CELEBRATION_EMOTE_IMAGES/);
+  assert.match(game, /function drawCelebrationEmote/);
+  assert.match(game, /CELEBRATION_EMOTE_IMAGES\[type\]/);
+  assert.match(game, /姆巴佩抱臂表情已在内马尔头顶弹出/);
+  assert.match(game, /登贝莱滑跪表情已在内马尔头顶弹出/);
   assert.doesNotMatch(game, /growPlayer\(|内马尔公仔变大了|登贝莱奖励/);
   assert.doesNotMatch(game, /fillText\("✊"|const skin = "#c98b62"/);
-  assert.match(game, /showFootballReward\("SIU！", "内马尔模仿C罗招牌庆祝/);
+  assert.match(game, /showFootballReward\("SIU！", "C罗庆祝表情已在内马尔头顶弹出/);
   assert.doesNotMatch(game, /C罗奖励|C罗掉落/);
-  assert.match(html, /C罗SIU · 登贝莱滑跪指天 · 姆巴佩抱臂 · 贝林厄姆展翼/);
+  assert.match(html, /内马尔头顶弹出其专属庆祝表情包/);
   assert.doesNotMatch(html, /登贝莱变大/);
   assert.match(game, /player\.heroForm = "black"/);
   assert.match(game, /activeForm === "black" \? "black" : \(msnStage === 3 \? "barca"/);
-  assert.match(game, /内马尔立即变为暗影公仔；MSN巴萨球衣状态下也会生效/);
-  assert.match(html, /由内马尔模仿其招牌庆祝/);
-  await stat(new URL("../dist/client/game-v25.js", import.meta.url));
+  assert.match(game, /桑巴庆祝表情弹出，内马尔变为暗影公仔；MSN巴萨球衣状态下也会生效/);
+  assert.match(html, /内马尔头顶会弹出其专属庆祝表情包/);
+  await stat(new URL("../dist/client/game-v26.js", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/neymar-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/suarez-barca.png", import.meta.url));
-  await stat(new URL("../dist/client/assets/characters/celebrations/neymar-mbappe-pose.png", import.meta.url));
-  await stat(new URL("../dist/client/assets/characters/celebrations/neymar-bellingham-pose.png", import.meta.url));
-  await stat(new URL("../dist/client/assets/characters/celebrations/neymar-barca-mbappe-pose.png", import.meta.url));
-  await stat(new URL("../dist/client/assets/characters/celebrations/neymar-barca-bellingham-pose.png", import.meta.url));
+  for (const id of ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"]) {
+    await stat(new URL(`../dist/client/assets/characters/emotes/${id}-celebration.png`, import.meta.url));
+  }
   await stat(new URL("../dist/client/world-cup-stadium.wav", import.meta.url));
   const worker = await readFile(new URL("../dist/server/index.js", import.meta.url), "utf8");
   assert.match(worker, /CDN-Cache-Control/);
