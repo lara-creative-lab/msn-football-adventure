@@ -75,6 +75,27 @@
             <button id="playAgainButton" type="button">再玩一次</button>
           </div>
         </div>
+        <div id="cardDrawScreen" class="overlay draw-overlay hidden" aria-label="MSN经典时刻卡抽取仪式">
+          <div id="cardDrawScene" class="draw-scene">
+            <div class="draw-stars" aria-hidden="true"></div>
+            <div class="draw-comet" aria-hidden="true"></div>
+            <p id="drawKicker" class="draw-kicker">冠军星轨</p>
+            <h2 id="drawTitle">一张经典时刻正在等待揭晓</h2>
+            <p id="drawHint">启动星轨，召唤本轮通关卡牌</p>
+            <div class="draw-card-shell" aria-live="polite">
+              <div class="draw-card-back"><span>⚽</span><strong>MSN</strong><small>CLASSIC MOMENT</small></div>
+              <div class="draw-card-front">
+                <img id="drawCardImage" src="./assets/msn-classics/msn-classic-01-goal.png" alt="待揭晓的MSN经典时刻卡">
+                <div class="draw-card-copy"><span>★★★★★</span><strong id="drawCardName">经典时刻</strong><small id="drawCardDetail">冠军典藏</small></div>
+              </div>
+            </div>
+            <button id="drawStartButton" type="button">启动冠军抽卡</button>
+            <div id="drawActions" class="draw-actions hidden">
+              <button id="drawAssetsButton" type="button">收下并查看资产</button>
+              <button id="drawNewRoundButton" type="button">开启新一轮</button>
+            </div>
+          </div>
+        </div>
         <div id="shopScreen" class="overlay hidden">
           <div class="card shop-card">
             <p class="kicker">TREASURE SHOP</p>
@@ -91,7 +112,7 @@
             <h3 class="collection-title">球星卡收藏</h3>
             <div id="cardGrid" class="card-grid"></div>
             <h3 class="collection-title">本轮资产列表</h3>
-            <p class="asset-note">城市徽章与大耳朵杯按本轮重置；MSN经典时刻卡只由第10关胜利抽取，永久收藏且不可兑换。</p>
+            <p class="asset-note">城市徽章与大耳朵杯按本轮重置；冠军合影属于结局资产，不是卡牌。最近抽中的封面会与下方收藏卡保持一致。</p>
             <div id="journeyAssetGrid" class="journey-assets"></div>
             <button id="closeShopButton" type="button">返回游戏</button>
           </div>
@@ -111,6 +132,6 @@
       </footer>
     </main>
 
-    <script src="./game-v28.js"></script>
+    <script src="./game-v29.js"></script>
   </body>
 </html>

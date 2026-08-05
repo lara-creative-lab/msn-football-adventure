@@ -88,6 +88,45 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 
 .overlay.hidden { opacity: 0; pointer-events: none; }
 
+#shopScreen { z-index: 8; }
+.draw-overlay { z-index: 7; overflow: hidden; padding: 0; color: white; background: radial-gradient(circle at 50% 48%, rgba(79,84,166,.72), rgba(8,12,36,.96) 58%, #040714); backdrop-filter: blur(6px); }
+.draw-scene { position: relative; isolation: isolate; display: grid; place-items: center; align-content: center; width: 100%; height: 100%; padding: 18px; text-align: center; }
+.draw-scene::before, .draw-scene::after { content: ""; position: absolute; z-index: -1; border-radius: 50%; opacity: .5; filter: blur(1px); }
+.draw-scene::before { width: 420px; height: 420px; background: radial-gradient(circle, rgba(255,218,112,.22), transparent 68%); }
+.draw-scene::after { inset: 0; border-radius: 0; background: repeating-conic-gradient(from 12deg at 50% 52%, rgba(255,222,123,.08) 0 2deg, transparent 2deg 15deg); animation: draw-rays 18s linear infinite; }
+.draw-stars { position: absolute; z-index: -2; inset: 0; background-image: radial-gradient(circle, #fff 0 1px, transparent 1.6px), radial-gradient(circle, #ffe69b 0 1.4px, transparent 2px), radial-gradient(circle, #b7d6ff 0 1px, transparent 1.6px); background-position: 0 0, 23px 31px, 71px 12px; background-size: 73px 67px, 101px 89px, 137px 113px; opacity: .82; animation: star-drift 12s linear infinite; }
+.draw-kicker { margin: 0 0 3px; color: #ffe69b; font-size: 11px; font-weight: 1000; letter-spacing: .18em; text-transform: uppercase; }
+.draw-scene h2 { margin: 0 0 2px; color: #fff8df; font-size: clamp(24px, 4vw, 38px); text-shadow: 0 3px 18px rgba(100,169,255,.6); }
+.draw-scene > p:not(.draw-kicker) { margin: 4px 0 8px; color: #d7e6ff; font-size: 12px; }
+.draw-card-shell { position: relative; width: 190px; aspect-ratio: 1; margin: 7px auto 9px; transform: scale(.78); transform-style: preserve-3d; transition: transform .65s cubic-bezier(.2,.85,.25,1.2), filter .65s; }
+.draw-card-back, .draw-card-front { position: absolute; inset: 0; overflow: hidden; display: grid; place-items: center; border: 4px solid #f6d16a; border-radius: 22px; backface-visibility: hidden; }
+.draw-card-back { align-content: center; gap: 3px; color: #ffe8a3; background: radial-gradient(circle at 50% 38%, #3654a1, transparent 35%), linear-gradient(145deg, #162a63, #6e1e46); box-shadow: inset 0 0 0 3px rgba(255,255,255,.18), 0 0 30px rgba(110,166,255,.4); }
+.draw-card-back::after { content: ""; position: absolute; inset: 12px; border: 1px solid rgba(255,230,155,.8); border-radius: 14px; }
+.draw-card-back span { font-size: 44px; }
+.draw-card-back strong { font-size: 28px; letter-spacing: .12em; }
+.draw-card-back small { color: #c8d9ff; font-size: 8px; letter-spacing: .16em; }
+.draw-card-front { opacity: 0; background: #101934; box-shadow: 0 0 0 2px #fff1b3, 0 0 42px 12px rgba(255,206,77,.55); transform: rotateY(180deg) scale(.8); transition: opacity .35s, transform .65s cubic-bezier(.2,.85,.25,1.2); }
+.draw-card-front img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.draw-card-copy { position: absolute; inset: auto 0 0; display: grid; gap: 1px; padding: 17px 8px 8px; color: white; background: linear-gradient(transparent, rgba(6,10,25,.95) 45%); text-shadow: 0 2px 3px #000; }
+.draw-card-copy span { color: #ffd75e; font-size: 10px; letter-spacing: .12em; }
+.draw-card-copy strong { font-size: 16px; }
+.draw-card-copy small { color: #fff0b4; font-size: 9px; }
+.draw-comet { position: absolute; z-index: -1; top: 12%; left: -32%; width: 42%; height: 5px; opacity: 0; border-radius: 50%; background: linear-gradient(90deg, transparent, #9ec9ff 34%, #fff 76%, #ffd467); box-shadow: 0 0 18px #fff, 0 0 46px #7ca8ff; transform: rotate(-17deg); }
+.draw-scene.drawing .draw-comet { animation: champion-comet 1.65s ease-in forwards; }
+.draw-scene.drawing .draw-card-shell { animation: card-summon 2.25s ease-in-out both; }
+.draw-scene.revealed .draw-card-shell { filter: drop-shadow(0 0 24px rgba(255,211,83,.75)); transform: scale(1); }
+.draw-scene.revealed .draw-card-back { opacity: 0; transform: rotateY(180deg); }
+.draw-scene.revealed .draw-card-front { opacity: 1; transform: rotateY(0) scale(1); }
+.draw-scene button { min-width: 190px; margin: 5px auto; color: #17213a; border-color: #ffd76a; background: linear-gradient(135deg, #fff5c9, #ffc849); box-shadow: 0 4px 0 #a87616, 0 0 20px rgba(255,210,82,.3); }
+.draw-scene button.hidden { display: none; }
+.draw-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 9px; }
+.draw-actions.hidden { display: none; }
+.draw-actions button { min-width: 160px; }
+@keyframes champion-comet { 0% { left: -38%; top: 10%; opacity: 0; } 12% { opacity: 1; } 72% { opacity: 1; } 100% { left: 110%; top: 73%; opacity: 0; } }
+@keyframes card-summon { 0% { opacity: .25; transform: scale(.42) rotateY(0); } 55% { opacity: .9; transform: scale(.72) rotateY(360deg); } 82% { filter: brightness(2.2); transform: scale(.15) rotateY(640deg); } 100% { opacity: 1; filter: brightness(1); transform: scale(.78) rotateY(720deg); } }
+@keyframes star-drift { to { background-position: 73px 67px, -78px 120px, 208px -101px; } }
+@keyframes draw-rays { to { transform: rotate(360deg); } }
+
 .reward-toast { position: absolute; top: 88px; left: 50%; z-index: 5; display: flex; align-items: center; gap: 12px; min-width: 310px; padding: 13px 18px; color: #3f2d14; border: 3px solid #6f501b; border-radius: 16px; background: linear-gradient(135deg, #fff7bd, #ffd85d); box-shadow: 0 7px 0 rgba(62,42,17,.4); transform: translateX(-50%); transition: opacity .25s, transform .25s; }
 .reward-toast.hidden { opacity: 0; pointer-events: none; transform: translate(-50%, -12px); }
 .reward-toast > span { font-size: 30px; }
@@ -148,12 +187,16 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .city-badge span { font-size: 20px; }
 .city-badge strong { margin-top: 3px; font-size: 9px; }
 .journey-assets .locked { filter: grayscale(.8); opacity: .52; }
-.round-trophy, .victory-photo { display: flex; align-items: center; gap: 12px; padding: 10px; border: 3px solid #283247; border-radius: 14px; background: linear-gradient(135deg, #fff8d6, #e7f3ff); }
+.round-trophy, .victory-photo, .latest-draw { display: flex; align-items: center; gap: 12px; padding: 10px; border: 3px solid #283247; border-radius: 14px; background: linear-gradient(135deg, #fff8d6, #e7f3ff); }
 .round-trophy > span { min-width: 56px; text-align: center; font-size: 44px; }
-.round-trophy strong, .round-trophy small, .victory-photo strong, .victory-photo small { display: block; }
-.round-trophy small, .victory-photo small { margin-top: 3px; color: #596575; font-size: 10px; }
+.round-trophy strong, .round-trophy small, .victory-photo strong, .victory-photo small, .latest-draw strong, .latest-draw small { display: block; }
+.round-trophy small, .victory-photo small, .latest-draw small { margin-top: 3px; color: #596575; font-size: 10px; }
+.asset-type { display: inline-block; margin-bottom: 4px; padding: 2px 7px; color: #fff; border-radius: 999px; background: #243967; font-size: 9px; font-weight: 900; }
 .victory-photo img { width: 160px; aspect-ratio: 16 / 9; object-fit: cover; object-position: center 42%; border: 2px solid #283247; border-radius: 10px; }
 .victory-photo.locked img { filter: blur(5px) grayscale(1) brightness(.65); }
+.latest-draw { background: linear-gradient(135deg, #fff5c2, #dceaff); }
+.latest-draw img { width: 126px; aspect-ratio: 1; object-fit: cover; border: 3px solid #d6a936; border-radius: 12px; box-shadow: 0 5px 0 rgba(35,43,64,.18); }
+.latest-draw.locked img { filter: blur(6px) grayscale(1) brightness(.55); }
 .classic-set { padding-top: 2px; }
 .classic-set > p { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
 .msn-card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
@@ -195,4 +238,12 @@ kbd { min-width: 26px; padding: 4px 7px; text-align: center; border: 2px solid #
   .msn-card-grid { grid-template-columns: repeat(2, 1fr); }
   .victory-photo { align-items: flex-start; flex-direction: column; }
   .victory-photo img { width: 100%; }
+  .draw-card-shell { width: 155px; }
+  .draw-scene h2 { font-size: 23px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .draw-stars, .draw-scene::after { animation: none; }
+  .draw-scene.drawing .draw-comet { animation-duration: .2s; }
+  .draw-scene.drawing .draw-card-shell { animation-duration: .2s; }
 }
