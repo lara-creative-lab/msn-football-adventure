@@ -116,7 +116,7 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .shop-card { width: min(930px, 96%); max-height: 92%; overflow-y: auto; padding: 18px; }
 .shop-card h2 { margin-bottom: 4px; }
 .wallet { margin: 4px 0 12px !important; }
-.shop-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
 .shop-grid article { display: grid; gap: 5px; place-items: center; padding: 12px 8px; border: 3px solid var(--ink); border-radius: 14px; background: white; }
 .shop-grid article > span { font-size: 30px; }
 .shop-grid article strong { font-size: 13px; }

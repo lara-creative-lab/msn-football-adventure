@@ -31,20 +31,20 @@
             <span class="mini-cap" aria-hidden="true">ϟ</span>
             <p class="kicker">准备好了吗？</p>
             <h2>穿越最近十届世界杯！</h2>
-            <p>从1990意大利出发，逐届走过举办城市地标，抵达2026美加墨盛典。</p>
+            <p>从1990意大利出发，每关展示当届举办国国旗，最终抵达2026美加墨终极Boss战。</p>
             <label class="level-picker">
               <span>选择起始关卡</span>
               <select id="levelSelect">
-                <option value="0">1 · 1990 意大利·罗马斗兽场</option>
-                <option value="1">2 · 1994 美国·玫瑰碗</option>
-                <option value="2">3 · 1998 法国·巴黎铁塔</option>
-                <option value="3">4 · 2002 韩日·横滨港</option>
-                <option value="4">5 · 2006 德国·勃兰登堡门</option>
-                <option value="5">6 · 2010 南非·开普桌山</option>
-                <option value="6">7 · 2014 巴西·里约热内卢</option>
-                <option value="7">8 · 2018 俄罗斯·圣瓦西里</option>
-                <option value="8">9 · 2022 卡塔尔·多哈海滨</option>
-                <option value="9">10 · 2026 美加墨·联合盛典</option>
+                <option value="0">1 · 🇮🇹 1990 意大利·罗马斗兽场</option>
+                <option value="1">2 · 🇺🇸 1994 美国·玫瑰碗</option>
+                <option value="2">3 · 🇫🇷 1998 法国·巴黎铁塔</option>
+                <option value="3">4 · 🇰🇷 🇯🇵 2002 韩日·横滨港</option>
+                <option value="4">5 · 🇩🇪 2006 德国·勃兰登堡门</option>
+                <option value="5">6 · 🇿🇦 2010 南非·开普桌山</option>
+                <option value="6">7 · 🇧🇷 2014 巴西·里约热内卢</option>
+                <option value="7">8 · 🇷🇺 2018 俄罗斯·圣瓦西里</option>
+                <option value="8">9 · 🇶🇦 2022 卡塔尔·多哈海滨</option>
+                <option value="9">10 · 🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典</option>
               </select>
             </label>
             <label class="level-picker">
@@ -59,7 +59,8 @@
             <button id="startButton" type="button">开始冒险</button>
             <small>← → / A D 移动 · 空格跳跃 · F / X 踢球 · ↓ / S 进入水管</small>
             <small>MSN成长：500分＋3城梅西加入 · 1000分＋6城苏亚雷斯加入并换巴萨战袍</small>
-            <small>第7—9枚城市印章获得欧冠奖杯碎片，集齐10城后巴萨MSN合捧大耳朵杯</small>
+            <small>第7—9枚城市印章获得MSN冠军星章；集齐10城并击败终极Boss后举行巴萨MSN大耳朵杯荣耀仪式</small>
+            <small>第10关必须击败因凡蒂诺终极Boss：半血后进入狂暴阶段，终点才会解锁</small>
             <small>击败球星后，内马尔头顶弹出其专属庆祝表情包；维尼修斯仍有暗影彩蛋</small>
             <small>球星卡需要积分＋城市印章自动解锁，也可以直接用宝藏积分兑换</small>
           </div>
@@ -75,14 +76,15 @@
         <div id="shopScreen" class="overlay hidden">
           <div class="card shop-card">
             <p class="kicker">TREASURE SHOP</p>
-            <h2>世界杯装备橱窗与球星卡册</h2>
+            <h2>MSN冠军装备橱窗与球星卡册</h2>
             <p class="wallet">宝藏钱包：<strong id="walletAmount">0</strong> · 城市印章：<strong id="stampCount">0 / 10</strong> · 卡片：<strong id="cardCount">0 / 8</strong></p>
             <div class="shop-grid">
-              <article><span>👟</span><strong>世界杯金靴套装</strong><small>500 宝藏</small><button type="button" data-skin="starlight" data-cost="500">购买并装备</button></article>
-              <article><span>🥇</span><strong>世界杯冠军奖牌</strong><small>1000 宝藏</small><button type="button" data-skin="captain" data-cost="1000">购买并装备</button></article>
+              <article><span>👟</span><strong>冠军金靴套装</strong><small>500 宝藏</small><button type="button" data-skin="starlight" data-cost="500">购买并装备</button></article>
+              <article><span>🥇</span><strong>冠军金球奖章</strong><small>1000 宝藏</small><button type="button" data-skin="captain" data-cost="1000">购买并装备</button></article>
               <article><span>🏷️</span><strong>内马尔“帅”字队长袖标</strong><small>900 宝藏</small><button type="button" data-skin="ninja" data-cost="900">购买并装备</button></article>
-              <article><span>⚡</span><strong>世界杯闪电护腿</strong><small>800 宝藏</small><button type="button" data-skin="spider" data-cost="800">购买并装备</button></article>
-              <article><span>🧤</span><strong>世界杯门神手套</strong><small>1200 宝藏</small><button type="button" data-skin="hulk" data-cost="1200">购买并装备</button></article>
+              <article><span>⚡</span><strong>闪电护腿</strong><small>800 宝藏</small><button type="button" data-skin="spider" data-cost="800">购买并装备</button></article>
+              <article><span>🧤</span><strong>门神手套</strong><small>1200 宝藏</small><button type="button" data-skin="hulk" data-cost="1200">购买并装备</button></article>
+              <article><span>👑</span><strong>终极冠军战袍</strong><small>Boss专属奖励 · 1000宝藏加赠</small><button type="button" data-skin="legend" data-cost="0" data-unlock="boss" disabled>击败终极Boss解锁</button></article>
             </div>
             <h3 class="collection-title">球星卡收藏</h3>
             <div id="cardGrid" class="card-grid"></div>
@@ -100,10 +102,10 @@
         <span><kbd>空格 ×2</kbd> 二段跳</span>
         <span><kbd>F</kbd> 踢出足球</span>
         <span><kbd>↓</kbd> 进入水管</span>
-        <span>足球击败球星后，内马尔头顶会弹出其专属庆祝表情包；对手也会射门反击</span>
+        <span>各关终点显示当届举办国国旗；第10关击败终极Boss后才能通关</span>
       </footer>
     </main>
 
-    <script src="./game-v26.js"></script>
+    <script src="./game-v27.js"></script>
   </body>
 </html>
