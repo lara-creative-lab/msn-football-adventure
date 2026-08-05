@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
-  const game = await readFile(new URL("../dist/client/game-v30.js", import.meta.url), "utf8");
+  const game = await readFile(new URL("../dist/client/game-v31.js", import.meta.url), "utf8");
   const css = await readFile(new URL("../dist/client/style.css", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
   assert.match(html, /音乐：世界杯荣耀曲/);
@@ -20,7 +20,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game-v30\.js/);
+  assert.match(html, /game-v31\.js/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);
@@ -88,11 +88,19 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /function drawCelebrationEmote/);
   assert.match(game, /CELEBRATION_EMOTE_IMAGES\[type\]/);
   assert.match(game, /const stairPlatforms = platforms\.filter/);
+  assert.match(game, /const stairEnemyBudget = Math\.min\(stairPlatforms\.length, index < 3 \? 1 : \(index < 6 \? 2 : 3\)\)/);
+  assert.match(game, /const enemyCount = Math\.max\(level\.enemies, 4 \+ index\)/);
   assert.match(game, /const onStair = stairPlatforms\.length/);
   assert.match(game, /type === "ronaldo" \? \.46/);
   assert.match(game, /enemy\.bouncePhase \+= dt \* 9\.4/);
   assert.match(game, /enemy\.type === "ronaldo" \? \[-220, -150\]/);
   assert.match(html, /C罗会砰砰跳跃连射/);
+  assert.match(html, /少数敌人会伏击阶梯/);
+  assert.match(game, /function getMsnBuffs/);
+  assert.match(game, /梅西组织：速度与射速提升/);
+  assert.match(game, /MSN连线：每4球强攻/);
+  assert.match(game, /const assistShot = Boolean\(buffs\.assistEvery/);
+  assert.match(game, /player\.speed \* getMsnBuffs\(\)\.move/);
   assert.match(game, /姆巴佩抱臂表情已在内马尔头顶弹出/);
   assert.match(game, /登贝莱滑跪表情已在内马尔头顶弹出/);
   assert.doesNotMatch(game, /growPlayer\(|内马尔公仔变大了|登贝莱奖励/);
@@ -147,7 +155,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /equippedSkin = "default";/);
   assert.match(game, /ownedSkins\.delete\("legend"\)/);
   assert.match(game, /已永久收入资产页/);
-  await stat(new URL("../dist/client/game-v30.js", import.meta.url));
+  await stat(new URL("../dist/client/game-v31.js", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/neymar-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/suarez-barca.png", import.meta.url));
