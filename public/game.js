@@ -43,8 +43,8 @@
     for (const option of sceneSelect.options) option.textContent = routes[option.value];
   }
   const PLAYER_META = {
-    neymar: { name: "内马尔", number: 10, team: "巴西", numberColor: "#14703b" },
-    messi: { name: "梅西", number: 10, team: "阿根廷", numberColor: "#171d27" },
+    neymar: { name: "内马尔", number: 10, barcaNumber: 11, team: "巴西", numberColor: "#14703b" },
+    messi: { name: "梅西", number: 10, barcaNumber: 10, team: "阿根廷", numberColor: "#171d27" },
     ronaldo: { name: "C罗", number: 7, team: "葡萄牙", numberColor: "#f2c64b" },
     haaland: { name: "哈兰德", number: 9, team: "曼城", numberColor: "#173c73" },
     mbappe: { name: "姆巴佩", number: 10, team: "法国", numberColor: "#ffffff" },
@@ -52,13 +52,19 @@
     vinicius: { name: "维尼修斯", number: 7, team: "皇家马德里", numberColor: "#18254a" },
     bellingham: { name: "贝林厄姆", number: 5, team: "皇家马德里", numberColor: "#18254a" },
     kane: { name: "哈里·凯恩", number: 9, team: "英格兰", numberColor: "#18254a" },
-    suarez: { name: "苏亚雷斯", number: 9, team: "乌拉圭", numberColor: "#171d27" },
+    suarez: { name: "苏亚雷斯", number: 9, barcaNumber: 9, team: "乌拉圭", numberColor: "#171d27" },
   };
   const CHARACTER_IMAGES = {};
   for (const id of Object.keys(PLAYER_META)) {
     const image = new Image();
     image.src = `./assets/characters/${id}.png`;
     CHARACTER_IMAGES[id] = image;
+  }
+  const BARCA_CHARACTER_IMAGES = {};
+  for (const id of ["neymar", "messi", "suarez"]) {
+    const image = new Image();
+    image.src = `./assets/characters/${id}-barca.png`;
+    BARCA_CHARACTER_IMAGES[id] = image;
   }
   const STAR_CARDS = [
     { id: "neymar", milestone: 200, cost: 200, rating: 91, rarity: "ICON", a: "#f5ce2e", b: "#087b43" },
@@ -545,7 +551,7 @@
       rewardDescription.textContent = "累计500分：内马尔 + 梅西，MSN 2/3";
     } else {
       rewardTitle.textContent = "🏆 MSN组合完成！";
-      rewardDescription.textContent = "苏亚雷斯加入，三人共同举起大力神杯";
+      rewardDescription.textContent = "苏亚雷斯加入，三人换上巴萨战袍共同举起大力神杯";
     }
     rewardToast.classList.remove("hidden");
     window.setTimeout(() => rewardToast.classList.add("hidden"), 4200);
@@ -1157,7 +1163,7 @@
   }
 
   function drawCollectibleFigure(id, centerX, bottomY, displayHeight, facing = 1, form = "default", opacity = 1) {
-    const image = CHARACTER_IMAGES[id];
+    const image = form === "barca" ? (BARCA_CHARACTER_IMAGES[id] || CHARACTER_IMAGES[id]) : CHARACTER_IMAGES[id];
     const meta = PLAYER_META[id] || PLAYER_META.neymar;
     const ready = image && image.complete && image.naturalWidth > 0;
     const displayWidth = ready ? displayHeight * image.naturalWidth / image.naturalHeight : displayHeight * .55;
@@ -1177,9 +1183,12 @@
     // 强制把准确号码印在胸前，避免生成素材漏号或错号。
     ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.font = `1000 ${Math.max(9, displayHeight * .12)}px ui-rounded, sans-serif`;
-    ctx.lineWidth = Math.max(2, displayHeight * .025); ctx.strokeStyle = "rgba(255,255,255,.88)";
-    ctx.strokeText(String(meta.number), 0, -displayHeight * .41);
-    ctx.fillStyle = meta.numberColor; ctx.fillText(String(meta.number), 0, -displayHeight * .41);
+    ctx.lineWidth = Math.max(2, displayHeight * .025);
+    const displayNumber = form === "barca" ? (meta.barcaNumber || meta.number) : meta.number;
+    ctx.strokeStyle = form === "barca" ? "rgba(33,28,72,.92)" : "rgba(255,255,255,.88)";
+    ctx.strokeText(String(displayNumber), 0, -displayHeight * .41);
+    ctx.fillStyle = form === "barca" ? "#f1c94f" : meta.numberColor;
+    ctx.fillText(String(displayNumber), 0, -displayHeight * .41);
     if (form === "starlight") {
       // Golden boots sit on the existing feet without changing the footballer silhouette.
       ctx.save(); ctx.shadowColor = "#ffe77a"; ctx.shadowBlur = 7; ctx.fillStyle = "#e9b72d"; ctx.strokeStyle = "#805414"; ctx.lineWidth = 1.2;
@@ -1255,13 +1264,14 @@
     const displayHeight = Math.max(108, player.h * 1.9);
     const centerX = x + player.w / 2;
     const bottomY = player.y + player.h + bounce;
-    if (msnStage >= 2) drawCollectibleFigure("messi", centerX - 33, bottomY + 1, displayHeight * .82, player.facing, "default", .96);
-    if (msnStage >= 3) drawCollectibleFigure("suarez", centerX + 34, bottomY + 1, displayHeight * .82, player.facing, "default", .96);
-    drawCollectibleFigure("neymar", centerX, bottomY, displayHeight, player.facing, activeForm);
+    const msnOutfit = msnStage === 3 ? "barca" : "default";
+    if (msnStage >= 2) drawCollectibleFigure("messi", centerX - 33, bottomY + 1, displayHeight * .82, player.facing, msnOutfit, .96);
+    if (msnStage >= 3) drawCollectibleFigure("suarez", centerX + 34, bottomY + 1, displayHeight * .82, player.facing, "barca", .96);
+    drawCollectibleFigure("neymar", centerX, bottomY, displayHeight, player.facing, msnStage === 3 ? "barca" : activeForm);
     if (msnStage === 3) drawWorldCupTrophy(centerX, bottomY - displayHeight * .31, time);
     ctx.save();
-    const teamLabel = msnStage === 3 ? "🏆 MSN合捧大力神杯" : (msnStage === 2 ? "MSN 2/3 · 梅西加入" : "内马尔 · 10");
-    const labelWidth = msnStage === 1 ? 78 : 124;
+    const teamLabel = msnStage === 3 ? "🏆 巴萨MSN合捧大力神杯" : (msnStage === 2 ? "MSN 2/3 · 梅西加入" : "内马尔 · 10");
+    const labelWidth = msnStage === 3 ? 154 : (msnStage === 1 ? 78 : 124);
     drawRoundedRect(centerX - labelWidth / 2, bottomY - displayHeight - 20, labelWidth, 20, 8, msnStage === 3 ? "rgba(255,235,126,.97)" : "rgba(255,255,255,.97)", "#172133", 2);
     ctx.fillStyle = "#172133"; ctx.font = "900 11px ui-rounded, sans-serif"; ctx.textAlign = "center";
     ctx.fillText(teamLabel, centerX, bottomY - displayHeight - 6);
