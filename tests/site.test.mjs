@@ -20,8 +20,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /style\.css\?v=42/);
-  assert.match(html, /game-v33\.js\?v=42/);
+  assert.match(html, /style\.css\?v=43/);
+  assert.match(html, /game-v33\.js\?v=43/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);
@@ -58,9 +58,10 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /prize\.type = "scarf"/);
   assert.match(game, /type: "matchball"/);
   assert.match(game, /function pickRonaldinhoLevels/);
-  assert.match(game, /const firstEligibleLevel = Math\.max\(5, Math\.min\(9, startLevel\)\)/);
-  assert.match(game, /Array\.from\(\{ length: 10 - firstEligibleLevel \}/);
-  assert.match(game, /const encounterCount = Math\.min\(eligibleLevels\.length, 3 \+ Math\.floor\(Math\.random\(\) \* 3\)\)/);
+  assert.match(game, /const fixedLevels = \[6, 8, 9\]\.filter\(\(levelIndex\) => levelIndex >= startLevel\)/);
+  assert.match(game, /const bonusLevels = \[5, 7\]\.filter\(\(levelIndex\) => levelIndex >= startLevel\)/);
+  assert.match(game, /const bonusCount = Math\.min\(bonusLevels\.length, Math\.floor\(Math\.random\(\) \* 3\)\)/);
+  assert.match(game, /return new Set\(\[\.\.\.fixedLevels, \.\.\.bonusLevels\.slice\(0, bonusCount\)\]\)/);
   assert.match(game, /i === 0 && ronaldinhoLevels\.has\(index\) \? "ronaldinho"/);
   assert.match(game, /const LEVEL_TIME_LIMIT = 20/);
   assert.match(game, /finish\(false, "timeout"\)/);
@@ -82,7 +83,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /enemy\.sambaPhase \+= dt \* 7\.2/);
   assert.match(game, /enemy\.type === "ronaldinho" \? \[-245, -95\]/);
   assert.match(game, /小罗始终是敌方球星/);
-  assert.match(html, /第6–10关保底3关、随机增至4–5关出现小罗/);
+  assert.match(html, /第7、9、10关固定出现小罗，第6、8关随机增加0–2次彩蛋/);
   assert.match(html, /击败后内马尔获得4秒无敌冲锋/);
   assert.match(game, /内马尔保持原形/);
   assert.doesNotMatch(game, /player\.heroForm = "ronaldinho"/);

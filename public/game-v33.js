@@ -220,14 +220,14 @@
   let enemies = [];
 
   function pickRonaldinhoLevels(startLevel = 0) {
-    const firstEligibleLevel = Math.max(5, Math.min(9, startLevel));
-    const eligibleLevels = Array.from({ length: 10 - firstEligibleLevel }, (_, offset) => firstEligibleLevel + offset);
-    for (let i = eligibleLevels.length - 1; i > 0; i -= 1) {
+    const fixedLevels = [6, 8, 9].filter((levelIndex) => levelIndex >= startLevel);
+    const bonusLevels = [5, 7].filter((levelIndex) => levelIndex >= startLevel);
+    for (let i = bonusLevels.length - 1; i > 0; i -= 1) {
       const swapIndex = Math.floor(Math.random() * (i + 1));
-      [eligibleLevels[i], eligibleLevels[swapIndex]] = [eligibleLevels[swapIndex], eligibleLevels[i]];
+      [bonusLevels[i], bonusLevels[swapIndex]] = [bonusLevels[swapIndex], bonusLevels[i]];
     }
-    const encounterCount = Math.min(eligibleLevels.length, 3 + Math.floor(Math.random() * 3));
-    return new Set(eligibleLevels.slice(0, encounterCount));
+    const bonusCount = Math.min(bonusLevels.length, Math.floor(Math.random() * 3));
+    return new Set([...fixedLevels, ...bonusLevels.slice(0, bonusCount)]);
   }
 
   function makeTreasure(x, y, seed = 0) {
@@ -301,7 +301,7 @@
       const footballers = ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
       const onStair = stairEnemyIndices.includes(i);
       const stairSlot = stairEnemyIndices.indexOf(i);
-      // 小罗是敌方球星而不是变身道具：完整旅程会在第6–10关随机3–5关的主线各安排一名。
+      // 小罗是敌方球星而不是变身道具：第7、9、10关固定出现，第6、8关随机增加0–2次彩蛋。
       const type = i === 0 && ronaldinhoLevels.has(index) ? "ronaldinho" : (onStair && (index + stairSlot) % 4 === 0 ? "ronaldo" : footballers[(i + index) % footballers.length]);
       const segment = onStair ? stairPlatforms[(i * 2 + index) % stairPlatforms.length] : enemyGround[i % enemyGround.length];
       const laneStart = segment.x + (onStair ? 10 : 95);
