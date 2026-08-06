@@ -10,9 +10,9 @@
 - 项目记忆文件的提交号以 `git log -1 --oneline` 为准，避免在本文件中形成自引用提交号。
 - 本地跟踪：`main...github/main`
 - 已配置远程：
-  - `github`: `https://github.com/danbaishi62/msn-football-adventure.git`
+  - `github`: 历史地址为 `https://github.com/danbaishi62/msn-football-adventure.git`，GitHub 当前已迁移/重定向到 `https://github.com/lara-creative-lab/msn-football-adventure.git`。
   - `sites`: ChatGPT Sites 源仓库
-- 旧任务截图与文字称仓库已迁移到 `lara-creative-lab/msn-football-adventure`，但本地远程仍是 `danbaishi62/...`。发布前必须通过 GitHub 页面或远程读回核实真实主仓库和 Pages 地址；未核实前不要擅自改 remote。
+- 2026-08-06 已通过远程 HEAD 与公开 Pages 双重读回确认，真实公开仓库为 `lara-creative-lab/msn-football-adventure`。
 
 ## 2026-08-06 本轮实现
 
@@ -23,6 +23,13 @@
 - 十城徽章已生成三版本地概念预览，V3 使用活动页奶油底、深蓝粗边与橙黄框架，并简化右下 2026 美加墨徽章；尚未拆分或接入游戏。
 - `npm test` 已通过。
 - 发布前 Codex Security 标准扫描已完成：覆盖 70/70 文件，0 个可报告问题；报告位于本机 Codex Security 扫描目录，scan id `b38a17b1-bf05-449a-b237-a8fa9c390e14`。
+
+## 2026-08-06 发布记录
+
+- 功能提交：`b8cac91f5542289a9ca0ff6cf38915b8894361cf`。
+- GitHub：`lara-creative-lab/msn-football-adventure` 的 `main` 已指向该提交。
+- GitHub Pages：`https://lara-creative-lab.github.io/msn-football-adventure/` 返回 200，并读回到 9 张球星卡、第 6–9 关随机小罗与 4 秒冲锋文案；`ASSET VIEW` 已不存在。
+- ChatGPT Sites：版本 29 部署成功，地址 `https://msn-football-adventure.florapr.chatgpt.site`；访问策略保持原有仅所有者可访问，未登录读回为 401。
 
 ## 已完成且必须保留
 
