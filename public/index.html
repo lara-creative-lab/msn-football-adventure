@@ -104,12 +104,12 @@
             <h2>MSN冠军装备橱窗与球星卡册</h2>
             <p class="wallet">宝藏钱包：<strong id="walletAmount">0</strong> · 永久城市印章：<strong id="stampCount">0 / 10</strong> · 球星卡：<strong id="cardCount">0 / 8</strong></p>
             <div class="shop-grid">
-              <article><span>👟</span><strong>冠军金靴套装</strong><small>500 宝藏</small><button type="button" data-skin="starlight" data-cost="500">购买并装备</button></article>
-              <article><span>🥇</span><strong>冠军金球奖章</strong><small>1000 宝藏</small><button type="button" data-skin="captain" data-cost="1000">购买并装备</button></article>
-              <article><span>🏷️</span><strong>内马尔“帅”字队长袖标</strong><small>900 宝藏</small><button type="button" data-skin="ninja" data-cost="900">购买并装备</button></article>
-              <article><span>⚡</span><strong>闪电护腿</strong><small>800 宝藏</small><button type="button" data-skin="spider" data-cost="800">购买并装备</button></article>
-              <article><span>🧤</span><strong>门神手套</strong><small>1200 宝藏</small><button type="button" data-skin="hulk" data-cost="1200">购买并装备</button></article>
-              <article><span>🏆</span><strong>终极冠军纪念章</strong><small>Boss首胜奖励 · 1000宝藏加赠</small><button id="bossBadgeButton" type="button" disabled>击败终极Boss解锁</button></article>
+              <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="冠军金靴套装" data-preview-detail="速度与射门兼备的冠军装备"><span>👟</span><strong>冠军金靴套装</strong><small>500 宝藏</small><button type="button" data-skin="starlight" data-cost="500">购买并装备</button></article>
+              <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="冠军金球奖章" data-preview-detail="属于MSN核心球员的荣耀奖章"><span>🥇</span><strong>冠军金球奖章</strong><small>1000 宝藏</small><button type="button" data-skin="captain" data-cost="1000">购买并装备</button></article>
+              <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="帅字队长袖标" data-preview-detail="内马尔专属的帅字队长袖标"><span>🏷️</span><strong>内马尔“帅”字队长袖标</strong><small>900 宝藏</small><button type="button" data-skin="ninja" data-cost="900">购买并装备</button></article>
+              <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="闪电护腿" data-preview-detail="强化冲刺节奏的世界杯战斗装备"><span>⚡</span><strong>闪电护腿</strong><small>800 宝藏</small><button type="button" data-skin="spider" data-cost="800">购买并装备</button></article>
+              <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="门神手套" data-preview-detail="守护球门与生命值的冠军手套"><span>🧤</span><strong>门神手套</strong><small>1200 宝藏</small><button type="button" data-skin="hulk" data-cost="1200">购买并装备</button></article>
+              <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="终极冠军纪念章" data-preview-detail="击败第10关终极Boss后的首胜纪念"><span>🏆</span><strong>终极冠军纪念章</strong><small>Boss首胜奖励 · 1000宝藏加赠</small><button id="bossBadgeButton" type="button" disabled>击败终极Boss解锁</button></article>
             </div>
             <h3 class="collection-title">球星卡收藏</h3>
             <div id="cardGrid" class="card-grid"></div>
@@ -117,6 +117,15 @@
             <p class="asset-note">城市徽章与大耳朵杯按本轮重置；冠军合影属于结局资产，不是卡牌。最近抽中的封面会与下方收藏卡保持一致。</p>
             <div id="journeyAssetGrid" class="journey-assets"></div>
             <button id="closeShopButton" type="button">返回游戏</button>
+          </div>
+        </div>
+        <div id="assetPreviewScreen" class="overlay asset-preview-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="assetPreviewTitle">
+          <div class="asset-preview-card">
+            <button id="closeAssetPreviewButton" class="asset-preview-close" type="button" aria-label="关闭资产大图">×</button>
+            <p class="kicker">ASSET VIEW</p>
+            <div id="assetPreviewVisual" class="asset-preview-visual"></div>
+            <h2 id="assetPreviewTitle">资产详情</h2>
+            <p id="assetPreviewDetail">点击资产即可放大查看</p>
           </div>
         </div>
         <div id="rewardToast" class="reward-toast hidden" role="status">
@@ -134,6 +143,6 @@
       </footer>
     </main>
 
-    <script src="./game-v33.js"></script>
+    <script src="./game-v33.js?v=35"></script>
   </body>
 </html>

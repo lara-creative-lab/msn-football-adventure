@@ -32,6 +32,11 @@
   const drawActions = document.querySelector("#drawActions");
   const levelSelect = document.querySelector("#levelSelect");
   const sceneSelect = document.querySelector("#sceneSelect");
+  const assetPreviewScreen = document.querySelector("#assetPreviewScreen");
+  const assetPreviewVisual = document.querySelector("#assetPreviewVisual");
+  const assetPreviewTitle = document.querySelector("#assetPreviewTitle");
+  const assetPreviewDetail = document.querySelector("#assetPreviewDetail");
+  const closeAssetPreviewButton = document.querySelector("#closeAssetPreviewButton");
 
   const W = canvas.width;
   const H = canvas.height;
@@ -89,8 +94,9 @@
     image.src = `./assets/characters/${id}-barca.png`;
     BARCA_CHARACTER_IMAGES[id] = image;
   }
+  const CELEBRATION_EMOTE_IDS = ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
   const CELEBRATION_EMOTE_IMAGES = {};
-  for (const id of ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"]) {
+  for (const id of CELEBRATION_EMOTE_IDS) {
     const image = new Image();
     image.src = `./assets/characters/emotes/${id}-celebration.png`;
     CELEBRATION_EMOTE_IMAGES[id] = image;
@@ -160,11 +166,13 @@
   let bestScore = 0;
   let ownedCards = new Set();
   let ownedMsnCards = new Set();
+  let ownedCelebrationEmotes = new Set();
   let lastMsnCardId = "";
   try {
     bestScore = Number(localStorage.getItem("hat-adventure-best-score")) || 0;
     ownedCards = new Set(JSON.parse(localStorage.getItem("hat-adventure-cards") || "[]"));
     ownedMsnCards = new Set(JSON.parse(localStorage.getItem("hat-adventure-msn-classic-cards") || "[]"));
+    ownedCelebrationEmotes = new Set(JSON.parse(localStorage.getItem("hat-adventure-celebration-emotes") || "[]").filter((id) => CELEBRATION_EMOTE_IDS.includes(id)));
     lastMsnCardId = localStorage.getItem("hat-adventure-msn-last-card") || "";
   } catch (_) {}
   if (!MSN_CLASSIC_CARDS.some((card) => card.id === lastMsnCardId && ownedMsnCards.has(card.id))) {
@@ -506,7 +514,9 @@
 
     const left = keys.has("ArrowLeft") || keys.has("KeyA");
     const right = keys.has("ArrowRight") || keys.has("KeyD");
-    const target = player.celebrationTimer > 0 ? 0 : (right ? 1 : 0) - (left ? 1 : 0);
+    // Celebration bubbles are visual feedback only. Keep movement responsive
+    // while the emote is visible so combat never traps the player in place.
+    const target = (right ? 1 : 0) - (left ? 1 : 0);
     player.vx += (target * player.speed * getMsnBuffs().move - player.vx) * Math.min(1, dt * (player.grounded ? 12 : 5));
     if (target) player.facing = target;
 
@@ -712,8 +722,16 @@
     player.celebrationType = opponentType;
     player.celebrationDuration = celebration.duration;
     player.celebrationTimer = celebration.duration;
-    player.vx = 0;
     playCelebrationSound(celebration.style);
+  }
+
+  function collectCelebrationEmote(type) {
+    if (!CELEBRATION_EMOTE_IDS.includes(type)) return false;
+    const isNew = !ownedCelebrationEmotes.has(type);
+    ownedCelebrationEmotes.add(type);
+    try { localStorage.setItem("hat-adventure-celebration-emotes", JSON.stringify([...ownedCelebrationEmotes])); } catch (_) {}
+    updateShopUI();
+    return isNew;
   }
 
   function playCelebrationSound(style) {
@@ -731,6 +749,8 @@
 
   function applyFootballerReward(type) {
     const names = Object.fromEntries(Object.entries(PLAYER_META).map(([id, meta]) => [id, meta.name]));
+    const emoteAdded = collectCelebrationEmote(type);
+    const emoteStatus = emoteAdded ? "专属庆祝表情首次收入资产页" : "专属庆祝表情已在资产页收藏";
     coins += 10; addWallet(10); checkScoreRewards();
     if (type === "messi") {
       captainUnlocked = true; outfitUnlocked = true;
@@ -739,15 +759,18 @@
       saveCosmetics(); updateShopUI();
       showFootballReward("🥇 梅西奖励！", "冠军金球奖章与金靴套装已加入橱窗并自动装备");
     } else if (type === "ronaldo") {
-      showFootballReward("SIU！", "C罗庆祝表情已在内马尔头顶弹出：获得 10 点积分与宝藏");
+      showFootballReward("SIU！", `C罗庆祝表情已弹出，${emoteStatus}；获得 10 点积分与宝藏`);
     } else if (type === "dembele") {
-      showFootballReward("⭐ 登贝莱庆祝！", "登贝莱滑跪表情已在内马尔头顶弹出：获得 10 点积分与宝藏");
+      showFootballReward("⭐ 登贝莱庆祝！", `登贝莱滑跪表情已弹出，${emoteStatus}；获得 10 点积分与宝藏`);
     } else if (type === "mbappe") {
-      showFootballReward("🧊 姆巴佩冷静定格！", "姆巴佩抱臂表情已在内马尔头顶弹出：获得 10 点积分与宝藏");
+      showFootballReward("🧊 姆巴佩冷静定格！", `姆巴佩抱臂表情已弹出，${emoteStatus}；获得 10 点积分与宝藏`);
     } else if (type === "vinicius") {
-      showFootballReward("💃 维尼修斯桑巴庆祝！", "维尼修斯桑巴表情已在内马尔头顶弹出：获得 10 点积分与宝藏");
+      showFootballReward("💃 维尼修斯桑巴庆祝！", `维尼修斯桑巴表情已弹出，${emoteStatus}；获得 10 点积分与宝藏`);
     } else {
-      showFootballReward(`⚽ 击败${names[type]}！`, `${names[type]}的专属庆祝表情已弹出：获得 10 点积分与宝藏`);
+      const description = NEYMAR_CELEBRATIONS[type]
+        ? `${names[type]}的专属庆祝表情已弹出，${emoteStatus}；获得 10 点积分与宝藏`
+        : `获得 10 点积分与宝藏`;
+      showFootballReward(`⚽ 击败${names[type]}！`, description);
     }
   }
 
@@ -898,7 +921,7 @@
   }
 
   function shoot() {
-    if (!running || finished || player.shotCooldown > 0 || player.celebrationTimer > 0) return;
+    if (!running || finished || player.shotCooldown > 0) return;
     const buffs = getMsnBuffs();
     player.shotCount += 1;
     const assistShot = Boolean(buffs.assistEvery && player.shotCount % buffs.assistEvery === 0);
@@ -977,7 +1000,7 @@
   }
 
   function jump() {
-    if (!running || finished || player.celebrationTimer > 0 || player.jumpCount >= player.maxJumps) return;
+    if (!running || finished || player.jumpCount >= player.maxJumps) return;
     const secondJump = player.jumpCount === 1;
     player.vy = -(secondJump ? player.jump * .9 : player.jump);
     player.grounded = false;
@@ -1047,7 +1070,7 @@
     cardGrid.innerHTML = STAR_CARDS.map((card) => {
       const owned = ownedCards.has(card.id);
       const meta = PLAYER_META[card.id];
-      return `<article class="star-card ${owned ? "" : "locked"}" style="--card-a:${card.a};--card-b:${card.b}">
+      return `<article class="star-card asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? `${meta.name}球星卡` : "未解锁球星卡"}" data-preview-detail="${owned ? `${meta.team} · ${card.rating}评分 · ${card.rarity}典藏` : `${card.milestone}分并到达${card.cities}座城市后解锁`}" style="--card-a:${card.a};--card-b:${card.b}">
         <span class="rating">${card.rating}</span><span class="rarity">${card.rarity}</span>
         <img class="card-player" src="./assets/characters/${card.id}.png" alt="${meta.name} ${meta.number}号公仔">
         <span class="card-number">#${meta.number}</span><strong>${owned ? meta.name : "神秘球星"}</strong>
@@ -1064,25 +1087,59 @@
     if (!journeyAssetGrid) return;
     const cityBadges = LEVELS.map((level, index) => {
       const unlocked = journeyLevels.has(index);
-      return `<div class="city-badge ${unlocked ? "" : "locked"}"><span>${unlocked ? level.flags.join(" ") : "◌"}</span><strong>${unlocked ? level.name.split("·")[1] : `第${index + 1}城`}</strong></div>`;
+      return `<div class="city-badge asset-zoomable ${unlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${unlocked ? level.name : `第${index + 1}城徽章待解锁`}" data-preview-detail="${unlocked ? `${level.flags.join(" ")} ${level.hosts}举办地纪念` : "完成对应关卡后加入本轮资产"}"><span>${unlocked ? level.flags.join(" ") : "◌"}</span><strong>${unlocked ? level.name.split("·")[1] : `第${index + 1}城`}</strong></div>`;
     }).join("");
     const trophyUnlocked = hasChampionsLeagueTrophy();
     const photoUnlocked = ownedMsnCards.size > 0;
     const latestCard = MSN_CLASSIC_CARDS.find((card) => card.id === lastMsnCardId && ownedMsnCards.has(card.id));
     const classicCards = MSN_CLASSIC_CARDS.map((card, index) => {
       const owned = ownedMsnCards.has(card.id);
-      return `<article class="msn-classic-card ${owned ? "" : "locked"}">
+      return `<article class="msn-classic-card asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? card.name : `经典时刻 ${index + 1}待解锁`}" data-preview-detail="${owned ? card.detail : "第10关胜利后随机获得"}">
         <img src="./assets/msn-classics/${card.image}" alt="${owned ? card.name : `未解锁的MSN经典时刻卡${index + 1}`}" loading="lazy">
         <strong>${owned ? card.name : `经典时刻 ${index + 1}`}</strong>
         <small>${owned ? card.detail : "第10关胜利后随机获得 · 不可兑换"}</small>
       </article>`;
     }).join("");
+    const celebrationCards = CELEBRATION_EMOTE_IDS.map((id) => {
+      const owned = ownedCelebrationEmotes.has(id);
+      const meta = PLAYER_META[id];
+      const celebration = NEYMAR_CELEBRATIONS[id];
+      return `<article class="celebration-asset asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? `${meta.name} · ${celebration.label}` : "庆祝表情待解锁"}" data-preview-detail="${owned ? `${celebration.detail} · 击败${meta.name}获得的永久资产` : `用足球击败${meta.name}后永久收藏`}">
+        <img src="./assets/characters/emotes/${id}-celebration.png" alt="${owned ? `${meta.name}${celebration.label}庆祝表情` : "未解锁庆祝表情"}" loading="lazy">
+        <strong>${owned ? meta.name : "神秘球星"}</strong>
+        <small>${owned ? celebration.label : `击败${meta.name}解锁`}</small>
+      </article>`;
+    }).join("");
     journeyAssetGrid.innerHTML = `
       <section class="round-assets"><h4>本轮城市徽章 ${journeyLevels.size}/${LEVELS.length}</h4><div class="city-badge-grid">${cityBadges}</div></section>
-      <section class="round-trophy ${trophyUnlocked ? "" : "locked"}"><span>🏆</span><div><strong>${trophyUnlocked ? "MSN大耳朵杯" : "大耳朵杯尚未解锁"}</strong><small>${trophyUnlocked ? "第10关终极Boss已击败，MSN三人共同捧杯" : "MSN齐聚后，在第10关击败因凡蒂诺解锁"}</small></div></section>
-      <section class="victory-photo ${photoUnlocked ? "" : "locked"}"><img src="./assets/msn-classics/msn-ending-photo.png" alt="MSN冠军合影"><div><span class="asset-type">结局合影 · 非卡牌</span><strong>${photoUnlocked ? "MSN冠军合影" : "冠军合影待解锁"}</strong><small>${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}</small></div></section>
-      <section class="latest-draw ${latestCard ? "" : "locked"}"><img src="./assets/msn-classics/${latestCard?.image || MSN_CLASSIC_CARDS[0].image}" alt="${latestCard ? `最近抽中的${latestCard.name}卡` : "尚未抽中的MSN经典时刻卡"}"><div><span class="asset-type">最近抽中的卡</span><strong>${latestCard?.name || "等待第10关抽卡"}</strong><small>${latestCard ? `${latestCard.detail} · 与下方收藏卡为同一卡面` : "完成第10关后启动冠军星轨"}</small></div></section>
+      <section class="celebration-set"><h4>庆祝表情收藏 ${ownedCelebrationEmotes.size}/${CELEBRATION_EMOTE_IDS.length}</h4><p>用足球击败对应球星即可永久收藏；头顶气泡出现时仍可自由移动、跳跃和射球。</p><div class="celebration-grid">${celebrationCards}</div></section>
+      <section class="round-trophy asset-zoomable ${trophyUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${trophyUnlocked ? "MSN大耳朵杯" : "大耳朵杯尚未解锁"}" data-preview-detail="${trophyUnlocked ? "第10关终极Boss已击败，MSN三人共同捧杯" : "MSN齐聚后，在第10关击败终极Boss解锁"}"><span>🏆</span><div><strong>${trophyUnlocked ? "MSN大耳朵杯" : "大耳朵杯尚未解锁"}</strong><small>${trophyUnlocked ? "第10关终极Boss已击败，MSN三人共同捧杯" : "MSN齐聚后，在第10关击败因凡蒂诺解锁"}</small></div></section>
+      <section class="victory-photo asset-zoomable ${photoUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${photoUnlocked ? "MSN冠军合影" : "冠军合影待解锁"}" data-preview-detail="${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}"><img src="./assets/msn-classics/msn-ending-photo.png" alt="MSN冠军合影"><div><span class="asset-type">结局合影 · 非卡牌</span><strong>${photoUnlocked ? "MSN冠军合影" : "冠军合影待解锁"}</strong><small>${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}</small></div></section>
+      <section class="latest-draw asset-zoomable ${latestCard ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${latestCard?.name || "等待第10关抽卡"}" data-preview-detail="${latestCard ? latestCard.detail : "完成第10关后启动冠军星轨"}"><img src="./assets/msn-classics/${latestCard?.image || MSN_CLASSIC_CARDS[0].image}" alt="${latestCard ? `最近抽中的${latestCard.name}卡` : "尚未抽中的MSN经典时刻卡"}"><div><span class="asset-type">最近抽中的卡</span><strong>${latestCard?.name || "等待第10关抽卡"}</strong><small>${latestCard ? `${latestCard.detail} · 与下方收藏卡为同一卡面` : "完成第10关后启动冠军星轨"}</small></div></section>
       <section class="classic-set"><h4>MSN经典时刻卡 ${ownedMsnCards.size}/${MSN_CLASSIC_CARDS.length}</h4><p>每轮第10关胜利抽一张未收藏卡，四轮必定集齐；仅通关获得，不开放兑换。</p><div class="msn-card-grid">${classicCards}</div></section>`;
+  }
+
+  function openAssetPreview(asset) {
+    if (!assetPreviewScreen || !assetPreviewVisual || !asset) return;
+    const clone = asset.cloneNode(true);
+    clone.classList.remove("asset-zoomable");
+    clone.removeAttribute("tabindex");
+    clone.removeAttribute("role");
+    clone.removeAttribute("data-preview-title");
+    clone.removeAttribute("data-preview-detail");
+    clone.querySelectorAll("button").forEach((button) => button.remove());
+    clone.querySelectorAll("[id]").forEach((element) => element.removeAttribute("id"));
+    assetPreviewVisual.replaceChildren(clone);
+    assetPreviewTitle.textContent = asset.dataset.previewTitle || "资产详情";
+    assetPreviewDetail.textContent = asset.dataset.previewDetail || "已收入资产收藏";
+    assetPreviewScreen.classList.remove("hidden");
+    closeAssetPreviewButton?.focus();
+  }
+
+  function closeAssetPreview() {
+    if (!assetPreviewScreen) return;
+    assetPreviewScreen.classList.add("hidden");
+    assetPreviewVisual?.replaceChildren();
   }
 
   function redeemCard(cardId, cost) {
@@ -1106,6 +1163,7 @@
   }
 
   function closeShop() {
+    closeAssetPreview();
     shopOpen = false; shopScreen.classList.add("hidden");
   }
 
@@ -2002,6 +2060,11 @@
   }
 
   window.addEventListener("keydown", (event) => {
+    if (event.code === "Escape" && assetPreviewScreen && !assetPreviewScreen.classList.contains("hidden")) {
+      event.preventDefault();
+      closeAssetPreview();
+      return;
+    }
     if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Space"].includes(event.code)) event.preventDefault();
     keys.add(event.code);
     if (["Space", "ArrowUp", "KeyW"].includes(event.code) && !event.repeat) jump();
@@ -2037,6 +2100,22 @@
   document.querySelector("#drawAssetsButton").addEventListener("click", openShop);
   document.querySelector("#drawNewRoundButton").addEventListener("click", restartFromFirstLevel);
   document.querySelector("#closeShopButton").addEventListener("click", closeShop);
+  shopScreen.addEventListener("click", (event) => {
+    const asset = event.target.closest(".asset-zoomable");
+    if (!asset || event.target.closest("button")) return;
+    openAssetPreview(asset);
+  });
+  shopScreen.addEventListener("keydown", (event) => {
+    const asset = event.target.closest(".asset-zoomable");
+    if (!asset || !["Enter", "Space"].includes(event.code)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    openAssetPreview(asset);
+  });
+  closeAssetPreviewButton?.addEventListener("click", closeAssetPreview);
+  assetPreviewScreen?.addEventListener("click", (event) => {
+    if (event.target === assetPreviewScreen) closeAssetPreview();
+  });
   document.querySelectorAll("[data-skin]").forEach((button) => {
     button.addEventListener("click", () => {
       const skin = button.dataset.skin;

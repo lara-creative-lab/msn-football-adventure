@@ -164,7 +164,7 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .shop-card h2 { margin-bottom: 4px; }
 .wallet { margin: 4px 0 12px !important; }
 .shop-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.shop-grid article { display: grid; gap: 5px; place-items: center; padding: 12px 8px; border: 3px solid var(--ink); border-radius: 14px; background: white; }
+.shop-grid article, .asset-preview-visual .shop-item { display: grid; gap: 5px; place-items: center; padding: 12px 8px; border: 3px solid var(--ink); border-radius: 14px; background: white; }
 .shop-grid article > span { font-size: 30px; }
 .shop-grid article strong { font-size: 13px; }
 .shop-grid article small { font-size: 11px; }
@@ -213,6 +213,39 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .msn-classic-card small { min-height: 28px; color: #f8e9bb; font-size: 9px; }
 .msn-classic-card.locked img { filter: blur(6px) grayscale(1) brightness(.46); }
 
+.celebration-set { padding: 11px; border: 3px solid #283247; border-radius: 14px; background: linear-gradient(135deg, #eef5ff, #fff2c8); }
+.celebration-set > p { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
+.celebration-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.celebration-asset { display: grid; gap: 3px; place-items: center; min-width: 0; padding: 7px 5px; text-align: center; border: 2px solid #283247; border-radius: 12px; background: linear-gradient(145deg, #ffffff, #dceaff); box-shadow: 0 4px 0 rgba(35,43,64,.14); }
+.celebration-asset img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: radial-gradient(circle, #fff8d2, #cfdfff); }
+.celebration-asset strong { font-size: 10px; }
+.celebration-asset small { color: #596575; font-size: 8px; }
+.celebration-asset.locked img { filter: blur(5px) grayscale(1) brightness(.55); }
+
+.asset-zoomable { cursor: zoom-in; transition: transform .16s ease, box-shadow .16s ease; }
+.asset-zoomable:hover, .asset-zoomable:focus-visible { z-index: 3; outline: 3px solid #4b93ff; outline-offset: 2px; transform: translateY(-2px); }
+.asset-preview-overlay { z-index: 18; padding: 16px; background: rgba(9,16,31,.78); backdrop-filter: blur(8px); }
+.asset-preview-card { position: relative; width: min(560px, 96vw); max-height: 92vh; overflow: auto; padding: 22px 24px 24px; text-align: center; border: 5px solid var(--ink); border-radius: 24px; background: var(--cream); box-shadow: 0 16px 0 rgba(8,14,28,.32); }
+.asset-preview-card h2 { margin: 10px 0 3px; font-size: 25px; }
+.asset-preview-card > p:last-child { margin: 0; color: #596575; font-size: 13px; }
+.asset-preview-close { position: absolute; z-index: 4; top: 10px; right: 11px; width: 40px; min-width: 0; height: 40px; margin: 0; padding: 0; color: #172133; border: 3px solid #172133; border-radius: 50%; background: #fff; font-size: 27px; line-height: 31px; }
+.asset-preview-visual { display: flex; align-items: center; justify-content: center; min-height: 310px; padding: 8px; }
+.asset-preview-visual > * { width: min(100%, 380px); margin: 0; }
+.asset-preview-visual .star-card { min-height: 410px; padding: 20px 14px 16px; }
+.asset-preview-visual .star-card .card-player { height: 270px; }
+.asset-preview-visual .star-card strong { font-size: 21px; }
+.asset-preview-visual .star-card small { font-size: 13px; }
+.asset-preview-visual .msn-classic-card, .asset-preview-visual .celebration-asset { max-width: 390px; padding: 12px; }
+.asset-preview-visual .msn-classic-card strong, .asset-preview-visual .celebration-asset strong { font-size: 18px; }
+.asset-preview-visual .msn-classic-card small, .asset-preview-visual .celebration-asset small { font-size: 12px; }
+.asset-preview-visual .city-badge { min-height: 220px; }
+.asset-preview-visual .city-badge span { font-size: 72px; }
+.asset-preview-visual .city-badge strong { font-size: 20px; }
+.asset-preview-visual .round-trophy > span { font-size: 100px; }
+.asset-preview-visual .victory-photo, .asset-preview-visual .latest-draw, .asset-preview-visual .round-trophy { flex-direction: column; text-align: center; }
+.asset-preview-visual .victory-photo img, .asset-preview-visual .latest-draw img { width: 100%; }
+.asset-preview-visual .locked { filter: grayscale(.75); opacity: .62; }
+
 .mini-cap {
   display: inline-block;
   width: 46px;
@@ -243,8 +276,13 @@ kbd { min-width: 26px; padding: 4px 7px; text-align: center; border: 2px solid #
   .card-grid { grid-template-columns: repeat(2, 1fr); }
   .city-badge-grid { grid-template-columns: repeat(2, 1fr); }
   .msn-card-grid { grid-template-columns: repeat(2, 1fr); }
+  .celebration-grid { grid-template-columns: repeat(3, 1fr); }
   .victory-photo { align-items: flex-start; flex-direction: column; }
   .victory-photo img { width: 100%; }
+  .asset-preview-card { padding: 18px 14px 20px; }
+  .asset-preview-visual { min-height: 260px; }
+  .asset-preview-visual .star-card { min-height: 340px; }
+  .asset-preview-visual .star-card .card-player { height: 215px; }
   .draw-card-shell { width: 155px; }
   .draw-scene h2 { font-size: 23px; }
 }
