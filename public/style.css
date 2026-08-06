@@ -201,15 +201,18 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .journey-assets { display: grid; gap: 12px; text-align: left; }
 .journey-assets h4 { margin: 0 0 8px; font-size: 13px; }
 .city-badge-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 9px; }
-.city-badge { position: relative; overflow: hidden; display: grid; grid-template-rows: auto 54px auto auto; place-items: center; min-width: 0; min-height: 148px; padding: 8px 7px 9px; text-align: center; border: 2px solid #263246; border-radius: 14px; background: radial-gradient(circle at 50% 36%, rgba(255,255,255,.92), transparent 37%), linear-gradient(145deg, color-mix(in srgb, var(--badge-a) 34%, white), color-mix(in srgb, var(--badge-b) 24%, white)); box-shadow: 0 4px 0 rgba(35,43,64,.12); }
-.city-badge::after { content: ""; position: absolute; inset: 5px; border: 1px solid rgba(255,255,255,.72); border-radius: 9px; pointer-events: none; }
-.city-badge-year { position: absolute; z-index: 1; top: 8px; left: 9px; padding: 2px 5px; color: #fff; border-radius: 5px; background: #243967; font-size: 8px; font-weight: 1000; }
-.city-badge-flags { position: absolute; z-index: 1; top: 7px; right: 8px; font-size: 12px; }
-.city-badge-emblem { position: relative; display: grid; place-items: center; width: 64px; height: 64px; margin-top: 15px; border: 2px solid rgba(35,49,75,.5); border-radius: 50%; background: rgba(255,255,255,.64); box-shadow: inset 0 0 0 4px rgba(255,255,255,.35); }
-.city-badge-emblem b { font-size: 34px; line-height: 1; }
-.city-badge-emblem i { position: absolute; right: -5px; bottom: -3px; display: grid; place-items: center; width: 25px; height: 25px; border: 2px solid #263246; border-radius: 50%; background: #fff6cc; font-size: 14px; font-style: normal; }
-.city-badge strong { z-index: 1; margin-top: 6px; overflow: hidden; max-width: 100%; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
-.city-badge small { z-index: 1; color: #596575; font-size: 8px; }
+.city-badge { position: relative; display: grid; grid-template-rows: 106px auto auto auto; place-items: center; min-width: 0; min-height: 158px; padding: 5px 3px 7px; text-align: center; border: 0; border-radius: 12px; background: transparent; box-shadow: none; }
+.city-medal { position: relative; isolation: isolate; display: grid; place-items: center; width: 92px; height: 92px; margin-top: 7px; border: 4px ridge #f7dd88; border-radius: 50%; background: conic-gradient(from 18deg, #6d4a17, #fff0a3 10%, #9b671e 20%, #f9e6a0 31%, #70501d 44%, #ffeaa0 58%, #8a5c18 72%, #f7db77 86%, #6d4815); box-shadow: inset 0 0 0 3px #6b491a, inset 0 0 0 6px #f6d575, inset 0 0 18px rgba(65,38,5,.75), 0 5px 0 #4d3514, 0 8px 16px rgba(41,30,16,.27); }
+.city-medal::before { content: ""; position: absolute; z-index: -2; inset: -10px; border-radius: 50%; background: repeating-conic-gradient(from 0deg, #c7942e 0 7deg, #f9df7a 7deg 14deg); clip-path: polygon(50% 0,58% 7%,68% 3%,74% 13%,85% 12%,88% 24%,97% 30%,93% 42%,100% 50%,93% 58%,97% 70%,88% 76%,85% 88%,74% 87%,68% 97%,58% 93%,50% 100%,42% 93%,32% 97%,26% 87%,15% 88%,12% 76%,3% 70%,7% 58%,0 50%,7% 42%,3% 30%,12% 24%,15% 12%,26% 13%,32% 3%,42% 7%); }
+.city-medal::after { content: ""; position: absolute; inset: 9px; z-index: -1; border: 2px solid rgba(255,242,176,.85); border-radius: 50%; background: radial-gradient(circle at 34% 24%, rgba(255,255,255,.78), transparent 18%), radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--badge-a) 68%, #21324a), color-mix(in srgb, var(--badge-b) 60%, #101827) 68%, #192132 69%); box-shadow: inset 0 0 0 3px rgba(43,31,17,.42), inset 0 0 13px rgba(255,225,126,.34); }
+.city-medal-stars { position: absolute; top: 13px; z-index: 2; color: #ffeaa0; font-size: 7px; font-weight: 1000; letter-spacing: .11em; text-shadow: 0 1px 0 #4a3210; }
+.city-badge-year { position: absolute; z-index: 3; bottom: -7px; left: 50%; min-width: 43px; padding: 3px 7px; color: #fff2b6; border: 2px solid #5a3c13; border-radius: 999px; background: linear-gradient(#a87722,#5f3c0e); box-shadow: inset 0 1px 0 rgba(255,255,255,.42), 0 2px 0 rgba(35,25,12,.3); font-size: 9px; font-weight: 1000; transform: translateX(-50%); }
+.city-badge-flags { margin-top: 2px; font-size: 11px; filter: saturate(.78); }
+.city-badge-emblem { position: relative; display: grid; place-items: center; width: 60px; height: 60px; border: 0; border-radius: 50%; background: transparent; }
+.city-badge-emblem b { font-size: 34px; line-height: 1; filter: grayscale(1) sepia(.72) saturate(.72) brightness(1.35) contrast(1.08) drop-shadow(0 2px 0 #503711); text-shadow: 0 -1px 0 rgba(255,255,255,.66); }
+.city-badge-emblem i { position: absolute; right: -1px; bottom: 2px; display: grid; place-items: center; width: 23px; height: 23px; border: 2px solid #725018; border-radius: 50%; background: radial-gradient(circle at 35% 25%, #fff1a8, #b7781d 68%); box-shadow: inset 0 0 0 2px rgba(255,255,255,.28); font-size: 12px; font-style: normal; filter: sepia(.28) saturate(.75); }
+.city-badge strong { margin-top: 8px; overflow: hidden; max-width: 100%; color: #233047; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.city-badge small { min-height: 12px; color: #596575; font-size: 8px; }
 .tier-note { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
 .journey-assets .locked { filter: grayscale(.8); opacity: .52; }
 .featured-asset-set { display: grid; gap: 9px; }
@@ -217,7 +220,7 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .asset-section-heading h4 { margin: 0; }
 .asset-section-heading span { color: #7b8491; font-size: 9px; font-weight: 800; }
 .featured-asset-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(205px, 1fr)); gap: 12px; }
-.round-trophy, .victory-photo, .latest-draw { overflow: hidden; display: grid; grid-template-rows: 132px minmax(92px, auto); align-items: stretch; min-width: 0; padding: 0; text-align: left; border: 3px solid #283247; border-radius: 16px; background: #fffdf2; box-shadow: 0 6px 0 rgba(35,43,64,.14); }
+.round-trophy, .victory-photo, .latest-draw { overflow: hidden; display: grid; grid-template-rows: 148px 108px; align-items: stretch; min-width: 0; min-height: 256px; padding: 0; text-align: left; border: 3px solid #283247; border-radius: 16px; background: #fffdf2; box-shadow: 0 6px 0 rgba(35,43,64,.14); }
 .featured-media { display: flex; align-items: center; justify-content: center; min-width: 0; background: linear-gradient(145deg, #edf6ff, #fff3c2); border-bottom: 2px solid rgba(40,50,71,.2); }
 .round-trophy .featured-media { position: relative; background: radial-gradient(circle at 50% 38%, #fffad5 0 25%, transparent 26%), linear-gradient(145deg, #fff2a8, #e7f1ff); }
 .round-trophy .featured-media::before, .round-trophy .featured-media::after { content: ""; position: absolute; width: 64px; height: 2px; top: 65px; background: linear-gradient(90deg, transparent, #d5a827); }
@@ -229,24 +232,24 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .round-trophy strong, .victory-photo strong, .latest-draw strong { font-size: 14px; line-height: 1.2; }
 .round-trophy small, .victory-photo small, .latest-draw small { margin-top: 4px; color: #596575; font-size: 10px; line-height: 1.35; }
 .asset-type { display: inline-block; margin-bottom: 4px; padding: 2px 7px; color: #fff; border-radius: 999px; background: #243967; font-size: 9px; font-weight: 900; }
-.victory-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 42%; }
+.victory-photo img { width: 100%; height: 100%; padding: 8px; object-fit: contain; object-position: center; }
 .victory-photo.locked img { filter: blur(5px) grayscale(1) brightness(.65); }
 .latest-draw { background: #fffdf2; }
 .latest-draw .featured-media { padding: 9px; background: radial-gradient(circle, #fff7c7, #dfeaff); }
-.latest-draw img { width: 106px; height: 106px; object-fit: cover; border: 3px solid #d6a936; border-radius: 11px; box-shadow: 0 5px 0 rgba(35,43,64,.16); }
+.latest-draw img { width: 124px; height: 124px; object-fit: contain; border: 3px solid #d6a936; border-radius: 11px; background: #101a39; box-shadow: 0 5px 0 rgba(35,43,64,.16); }
 .latest-draw.locked img { filter: blur(6px) grayscale(1) brightness(.55); }
 .classic-set { padding: 12px; border: 3px solid #283247; border-radius: 14px; background: linear-gradient(135deg, #fff5cb, #e9efff); }
 .classic-set > p { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
 .msn-card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
 .msn-classic-card { overflow: hidden; display: grid; gap: 4px; padding: 7px; text-align: center; color: #fff; border: 3px solid #1d2435; border-radius: 14px; background: linear-gradient(145deg, #152b5b, #711e35); box-shadow: inset 0 0 0 1px rgba(255,220,120,.68); }
-.msn-classic-card img { width: 100%; aspect-ratio: 1; object-fit: cover; border-radius: 8px; }
+.msn-classic-card img { width: 100%; aspect-ratio: 1; padding: 3px; object-fit: contain; object-position: center; border-radius: 8px; background: #101a39; }
 .msn-classic-card strong { font-size: 12px; }
 .msn-classic-card small { min-height: 28px; color: #f8e9bb; font-size: 9px; }
 .msn-classic-card.locked img { filter: blur(6px) grayscale(1) brightness(.46); }
 
 .celebration-set { padding: 11px; border: 3px solid #283247; border-radius: 14px; background: linear-gradient(135deg, #eef5ff, #fff2c8); }
 .celebration-set > p { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
-.celebration-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+.celebration-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .celebration-asset { display: grid; gap: 3px; place-items: center; min-width: 0; padding: 7px 5px; text-align: center; border: 2px solid #283247; border-radius: 12px; background: linear-gradient(145deg, #ffffff, #dceaff); box-shadow: 0 4px 0 rgba(35,43,64,.14); }
 .celebration-asset img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: radial-gradient(circle, #fff8d2, #cfdfff); }
 .celebration-asset strong { font-size: 10px; }
@@ -274,10 +277,12 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .asset-preview-visual .msn-classic-card, .asset-preview-visual .celebration-asset { max-width: 390px; padding: 12px; }
 .asset-preview-visual .msn-classic-card strong, .asset-preview-visual .celebration-asset strong { font-size: 18px; }
 .asset-preview-visual .msn-classic-card small, .asset-preview-visual .celebration-asset small { font-size: 12px; }
-.asset-preview-visual .city-badge { min-height: 220px; }
-.asset-preview-visual .city-badge-emblem { width: 130px; height: 130px; }
-.asset-preview-visual .city-badge-emblem b { font-size: 72px; }
-.asset-preview-visual .city-badge-emblem i { width: 42px; height: 42px; font-size: 24px; }
+.asset-preview-visual .city-badge { min-height: 280px; }
+.asset-preview-visual .city-medal { width: 178px; height: 178px; border-width: 7px; }
+.asset-preview-visual .city-badge-emblem { width: 128px; height: 128px; }
+.asset-preview-visual .city-badge-emblem b { font-size: 74px; }
+.asset-preview-visual .city-badge-emblem i { right: 3px; bottom: 4px; width: 43px; height: 43px; font-size: 24px; }
+.asset-preview-visual .city-badge-year { bottom: -10px; min-width: 64px; padding: 5px 10px; font-size: 14px; }
 .asset-preview-visual .city-badge strong { font-size: 20px; }
 .asset-preview-visual .round-trophy .featured-media > span { font-size: 100px; }
 .asset-preview-visual .victory-photo, .asset-preview-visual .latest-draw, .asset-preview-visual .round-trophy { grid-template-rows: minmax(230px, auto) auto; text-align: left; }

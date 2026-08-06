@@ -20,7 +20,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game-v33\.js/);
+  assert.match(html, /game-v33\.js\?v=38/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);
@@ -56,12 +56,20 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /冠军能量球/);
   assert.match(game, /prize\.type = "scarf"/);
   assert.match(game, /type: "matchball"/);
+  assert.match(game, /type: "ronaldinho"/);
+  assert.match(game, /const LEVEL_TIME_LIMIT = 20/);
+  assert.match(game, /finish\(false, "timeout"\)/);
+  assert.match(html, /每关20秒限时挑战/);
+  assert.match(game, /function activateRonaldinhoRush/);
+  assert.match(game, /player\.rushTimer = 8/);
+  assert.match(game, /enemy\.isBoss \? 1 : 999/);
+  assert.match(game, /小罗桑巴魔法/);
   assert.doesNotMatch(game, /彩虹奖励|红蘑菇|type: "rainbow"|type: "mushroom"/);
   assert.match(html, /500分＋3城梅西加入/);
   assert.match(html, /1000分＋6城苏亚雷斯加入/);
   assert.match(html, /MSN三人齐聚后换上巴萨战袍/);
   assert.match(html, /第10关击败终极Boss后，三人共同捧出大耳朵杯/);
-  assert.match(html, /永久城市印章：<strong id="stampCount">0 \/ 10<\/strong>/);
+  assert.match(html, /本轮城市徽章：<strong id="stampCount">0 \/ 10<\/strong>/);
   assert.match(game, /hat-adventure-city-stamps/);
   assert.match(game, /progressScore >= 1000 && stamps >= 6/);
   assert.match(game, /progressScore >= 500 && stamps >= 3/);
@@ -77,12 +85,21 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /card\.milestone && completedLevels\.size >= card\.cities/);
   assert.match(game, /function updateLevelOptionProgress/);
   assert.match(game, /const NEYMAR_CELEBRATIONS/);
-  for (const taunt of ["SIU！", "禅意模式", "抱臂定格", "滑跪指天", "桑巴舞步", "伯纳乌展翼", "队长滑跪"]) {
+  for (const taunt of ["桑巴魔法", "SIU！", "禅意模式", "抱臂定格", "滑跪指天", "桑巴舞步", "伯纳乌展翼", "队长滑跪"]) {
     assert.match(game, new RegExp(taunt));
   }
   assert.match(game, /player\.celebrationTimer > 0/);
   assert.match(game, /function startNeymarCelebration/);
   assert.match(game, /function playCelebrationSound/);
+  assert.match(game, /function collectCelebrationEmote/);
+  assert.match(game, /hat-adventure-celebration-emotes/);
+  assert.match(game, /ownedCelebrationEmotes\.add\(type\)/);
+  assert.match(game, /庆祝表情收藏/);
+  assert.match(game, /头顶气泡出现时仍可自由移动、跳跃和射球/);
+  assert.doesNotMatch(game, /const target = player\.celebrationTimer > 0 \? 0/);
+  assert.doesNotMatch(game, /player\.celebrationTimer > 0\) return;\s+const buffs = getMsnBuffs/);
+  assert.doesNotMatch(game, /player\.celebrationTimer > 0 \|\| player\.jumpCount/);
+  assert.doesNotMatch(game, /player\.celebrationTimer = celebration\.duration;\s+player\.vx = 0/);
   assert.doesNotMatch(game, /enemy\.tauntTimer|completeEnemyTaunt|drawTauntEffects/);
   assert.match(game, /const CELEBRATION_EMOTE_IMAGES/);
   assert.match(game, /function drawCelebrationEmote/);
@@ -102,17 +119,17 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /MSN连线：每3球强攻/);
   assert.match(game, /const assistShot = Boolean\(buffs\.assistEvery/);
   assert.match(game, /player\.speed \* getMsnBuffs\(\)\.move/);
-  assert.match(game, /姆巴佩抱臂表情已在内马尔头顶弹出/);
-  assert.match(game, /登贝莱滑跪表情已在内马尔头顶弹出/);
+  assert.match(game, /姆巴佩抱臂表情已弹出/);
+  assert.match(game, /登贝莱滑跪表情已弹出/);
   assert.doesNotMatch(game, /growPlayer\(|内马尔公仔变大了|登贝莱奖励/);
   assert.doesNotMatch(game, /fillText\("✊"|const skin = "#c98b62"/);
-  assert.match(game, /showFootballReward\("SIU！", "C罗庆祝表情已在内马尔头顶弹出/);
+  assert.match(game, /showFootballReward\("SIU！", `C罗庆祝表情已弹出/);
   assert.doesNotMatch(game, /C罗奖励|C罗掉落/);
   assert.match(html, /内马尔头顶弹出其专属庆祝表情包/);
   assert.doesNotMatch(html, /登贝莱变大/);
   assert.doesNotMatch(game, /player\.heroForm = "black"/);
   assert.match(game, /activeForm === "black" \? "black" : \(activeForm === "legend" \? "legend"/);
-  assert.match(game, /维尼修斯桑巴表情已在内马尔头顶弹出/);
+  assert.match(game, /维尼修斯桑巴表情已弹出/);
   assert.doesNotMatch(html, /维尼修斯仍有暗影彩蛋/);
   assert.match(game, /flags: \["🇮🇹"\]/);
   assert.match(game, /flags: \["🇰🇷", "🇯🇵"\]/);
@@ -124,7 +141,10 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /championEmblemCount/);
   assert.doesNotMatch(game, /fillText\("WC"|欧冠奖杯碎片|世界杯冠军奖牌|世界杯金靴套装|世界杯能量球/);
   assert.match(game, /type: "infantino", isBoss: true/);
-  assert.match(game, /hp: 12, maxHp: 12/);
+  assert.match(game, /hp: 24, maxHp: 24, barHp: 12/);
+  assert.match(game, /\[-275, -195, -115\]/);
+  assert.match(game, /Boss×2/);
+  assert.match(html, /双血条、连续三球攻击/);
   assert.match(game, /function defeatFinalBoss/);
   assert.match(game, /先击败因凡蒂诺终极Boss，才能完成第10关/);
   assert.match(game, /enemy\.phase === 2 \? 146 : 88/);
@@ -136,6 +156,24 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /第10关必须击败因凡蒂诺终极Boss/);
   assert.match(html, /id="messageAssetButton"/);
   assert.match(html, /id="journeyAssetGrid"/);
+  assert.match(game, /featured-asset-grid/);
+  assert.match(game, /冠军典藏/);
+  assert.match(html, /01 · 积分兑换/);
+  assert.match(html, /02 · 冒险收藏/);
+  assert.match(game, /十城主题徽章/);
+  assert.match(game, /city-medal-stars/);
+  assert.match(css, /conic-gradient/);
+  assert.match(css, /repeating-conic-gradient/);
+  assert.match(game, /永恒之城·桂冠/);
+  assert.match(game, /三国同心·终极之战/);
+  assert.match(html, /id="assetPreviewScreen"/);
+  assert.match(html, /id="assetPreviewVisual"/);
+  assert.match(game, /function openAssetPreview/);
+  assert.match(game, /function closeAssetPreview/);
+  assert.match(game, /cloneNode\(true\)/);
+  assert.match(game, /\.asset-zoomable/);
+  assert.match(css, /\.asset-preview-overlay/);
+  assert.match(css, /\.celebration-grid/);
   assert.match(game, /const MSN_CLASSIC_CARDS/);
   assert.match(game, /hat-adventure-msn-classic-cards/);
   assert.match(game, /hat-adventure-msn-last-card/);
@@ -164,10 +202,11 @@ test("build includes the playable game and worker entrypoint", async () => {
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/suarez-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/infantino-boss.png", import.meta.url));
+  await stat(new URL("../dist/client/assets/characters/ronaldinho.png", import.meta.url));
   for (const file of ["msn-classic-01-goal.png", "msn-classic-02-embrace.png", "msn-classic-03-trophy.png", "msn-classic-04-award.png", "msn-ending-photo.png"]) {
     await stat(new URL(`../dist/client/assets/msn-classics/${file}`, import.meta.url));
   }
-  for (const id of ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"]) {
+  for (const id of ["ronaldinho", "ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"]) {
     await stat(new URL(`../dist/client/assets/characters/emotes/${id}-celebration.png`, import.meta.url));
   }
   await stat(new URL("../dist/client/world-cup-stadium.wav", import.meta.url));

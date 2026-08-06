@@ -42,6 +42,7 @@
   const H = canvas.height;
   const FLOOR_Y = 468;
   const GRAVITY = 2100;
+  const LEVEL_TIME_LIMIT = 20;
   const keys = new Set();
 
   const LEVELS = [
@@ -63,6 +64,7 @@
   }
   const PLAYER_META = {
     neymar: { name: "内马尔", number: 10, barcaNumber: 11, team: "巴西", numberColor: "#14703b" },
+    ronaldinho: { name: "小罗", number: 10, team: "巴西", numberColor: "#14703b" },
     messi: { name: "梅西", number: 10, barcaNumber: 10, team: "阿根廷", numberColor: "#171d27" },
     ronaldo: { name: "C罗", number: 7, team: "葡萄牙", numberColor: "#f2c64b" },
     haaland: { name: "哈兰德", number: 9, team: "曼城", numberColor: "#173c73" },
@@ -74,6 +76,7 @@
     suarez: { name: "苏亚雷斯", number: 9, barcaNumber: 9, team: "乌拉圭", numberColor: "#171d27" },
   };
   const NEYMAR_CELEBRATIONS = {
+    ronaldinho: { label: "桑巴魔法", detail: "笑容摇摆与双手手势", style: "samba", duration: 2.1, color: "#14834f" },
     ronaldo: { label: "SIU！", detail: "跃起转身", style: "siu", duration: 1.8, color: "#b51d2c" },
     haaland: { label: "禅意模式", detail: "盘腿冥想", style: "meditate", duration: 1.9, color: "#62c5e7" },
     mbappe: { label: "抱臂定格", detail: "冷静庆祝", style: "arms", duration: 1.85, color: "#243c94" },
@@ -94,7 +97,7 @@
     image.src = `./assets/characters/${id}-barca.png`;
     BARCA_CHARACTER_IMAGES[id] = image;
   }
-  const CELEBRATION_EMOTE_IDS = ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
+  const CELEBRATION_EMOTE_IDS = ["ronaldinho", "ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
   const CELEBRATION_EMOTE_IMAGES = {};
   for (const id of CELEBRATION_EMOTE_IDS) {
     const image = new Image();
@@ -141,6 +144,8 @@
   let footballs = [];
   let finalBossDefeated = false;
   let bossWarningCooldown = 0;
+  let levelTimeRemaining = LEVEL_TIME_LIMIT;
+  let lastCountdownSecond = LEVEL_TIME_LIMIT;
   let outfitUnlocked = false;
   let captainUnlocked = false;
   let bossRewardUnlocked = false;
@@ -205,7 +210,7 @@
     vx: 0, vy: 0, speed: 335, jump: 845,
     grounded: false, facing: 1, invincible: 0, powerShot: false, shotCooldown: 0,
     jumpCount: 0, maxJumps: 2, growthLevel: 0, heroForm: "neymar", shotCount: 0, msnShieldUsed: false,
-    celebrationTimer: 0, celebrationDuration: 0, celebrationType: "",
+    celebrationTimer: 0, celebrationDuration: 0, celebrationType: "", rushTimer: 0,
   };
 
   let platforms = [];
@@ -259,6 +264,18 @@
       platformIndex += 1;
     }
 
+    // 每关中段安排一枚小罗魔法球。拿到后短时间化身小罗持续冲锋，
+    // 普通敌人会被直接撞倒，Boss则按间隔扣血，仍保留终极战难度。
+    const elevatedPlatforms = platforms.filter((platform) => !platform.ground);
+    const ronaldinhoPlatform = elevatedPlatforms[Math.min(elevatedPlatforms.length - 1, 3 + Math.floor(index / 3))];
+    if (ronaldinhoPlatform) {
+      powerUps.push({
+        x: ronaldinhoPlatform.x + ronaldinhoPlatform.w / 2 - 17,
+        y: ronaldinhoPlatform.y - 39,
+        w: 34, h: 34, type: "ronaldinho", collected: false,
+      });
+    }
+
     for (let x = 720, prizeIndex = 0; x < goalX - 260; x += 820, prizeIndex += 1) {
       const prize = makeTreasure(x, 145 + (prizeIndex % 2) * 42, prizeIndex * 13);
       prize.type = "scarf"; prize.value = 25; prize.r = 19;
@@ -302,7 +319,7 @@
         x: goalX - 230, y: FLOOR_Y - 102, w: 72, h: 102,
         minX: goalX - 292, maxX: goalX - 82, vx: -88,
         alive: true, type: "infantino", isBoss: true,
-        hp: 12, maxHp: 12, phase: 1, flash: 0, shotCooldown: 1.35,
+        hp: 24, maxHp: 24, barHp: 12, phase: 1, flash: 0, shotCooldown: 1.1,
       });
     }
   }
@@ -362,9 +379,10 @@
   function resetLevel() {
     player.x = 120; player.y = 380; player.vx = 0; player.vy = 0;
     const equippedScale = 1;
-    player.w = Math.round(52 * equippedScale); player.h = Math.round(52 * equippedScale); player.grounded = false; player.invincible = 0; player.facing = 1; player.powerShot = false; player.shotCooldown = 0; player.shotCount = 0; player.msnShieldUsed = false; player.jumpCount = 0; player.growthLevel = 0; player.heroForm = "neymar"; player.celebrationTimer = 0; player.celebrationDuration = 0; player.celebrationType = "";
+    player.w = Math.round(52 * equippedScale); player.h = Math.round(52 * equippedScale); player.grounded = false; player.invincible = 0; player.facing = 1; player.powerShot = false; player.shotCooldown = 0; player.shotCount = 0; player.msnShieldUsed = false; player.jumpCount = 0; player.growthLevel = 0; player.heroForm = "neymar"; player.celebrationTimer = 0; player.celebrationDuration = 0; player.celebrationType = ""; player.rushTimer = 0;
     finalBossDefeated = false; bossWarningCooldown = 0;
     cameraX = 0; coins = 0; lives = 3; finished = false; levelWon = false; checkpointX = 120; inBonus = false; layerScene = "main"; savedWorld = null;
+    levelTimeRemaining = LEVEL_TIME_LIMIT; lastCountdownSecond = LEVEL_TIME_LIMIT;
     msnStage = calculateMsnStage();
     rewardToast.classList.add("hidden");
     buildLevel(currentLevel);
@@ -508,17 +526,41 @@
 
   function update(dt) {
     if (!running || finished || shopOpen) return;
+    levelTimeRemaining = Math.max(0, levelTimeRemaining - dt);
+    const countdownSecond = Math.ceil(levelTimeRemaining);
+    if (countdownSecond !== lastCountdownSecond) {
+      lastCountdownSecond = countdownSecond;
+      if (countdownSecond > 0 && countdownSecond <= 5) beep(210 + countdownSecond * 34, .055, "square", .022);
+    }
+    if (levelTimeRemaining <= 0) {
+      finish(false, "timeout");
+      return;
+    }
     if (player.shotCooldown > 0) player.shotCooldown -= dt;
     if (player.celebrationTimer > 0) player.celebrationTimer = Math.max(0, player.celebrationTimer - dt);
     if (bossWarningCooldown > 0) bossWarningCooldown = Math.max(0, bossWarningCooldown - dt);
+    if (player.rushTimer > 0) {
+      player.rushTimer = Math.max(0, player.rushTimer - dt);
+      player.invincible = Math.max(player.invincible, player.rushTimer + .12);
+      if (player.rushTimer === 0) {
+        player.heroForm = "neymar";
+        rewardTitle.textContent = "✨ 小罗魔法结束";
+        rewardDescription.textContent = "无敌冲锋结束，继续用MSN连线突破终点";
+        rewardToast.classList.remove("hidden");
+        window.setTimeout(() => rewardToast.classList.add("hidden"), 1700);
+      }
+    }
 
     const left = keys.has("ArrowLeft") || keys.has("KeyA");
     const right = keys.has("ArrowRight") || keys.has("KeyD");
     // Celebration bubbles are visual feedback only. Keep movement responsive
     // while the emote is visible so combat never traps the player in place.
     const target = (right ? 1 : 0) - (left ? 1 : 0);
-    player.vx += (target * player.speed * getMsnBuffs().move - player.vx) * Math.min(1, dt * (player.grounded ? 12 : 5));
     if (target) player.facing = target;
+    const rushActive = player.rushTimer > 0;
+    const movementTarget = rushActive ? player.facing : target;
+    const rushMultiplier = rushActive ? 2.05 : 1;
+    player.vx += (movementTarget * player.speed * getMsnBuffs().move * rushMultiplier - player.vx) * Math.min(1, dt * (rushActive ? 18 : (player.grounded ? 12 : 5)));
 
     const oldY = player.y;
     player.vy += GRAVITY * dt;
@@ -573,6 +615,10 @@
     for (const item of powerUps) {
       if (item.collected || !rectsOverlap(player, item)) continue;
       item.collected = true;
+      if (item.type === "ronaldinho") {
+        activateRonaldinhoRush();
+        continue;
+      }
       player.powerShot = true;
       rewardTitle.textContent = "⚽ 冠军能量球！";
       rewardDescription.textContent = "获得强力比赛用球：足球变大、威力提升";
@@ -609,6 +655,7 @@
     for (const enemy of enemies) {
       if (!enemy.alive) continue;
       if (enemy.flash > 0) enemy.flash -= dt;
+      if (enemy.rushHitCooldown > 0) enemy.rushHitCooldown = Math.max(0, enemy.rushHitCooldown - dt);
       if (enemy.isBoss) {
         enemy.phase = enemy.hp <= enemy.maxHp / 2 ? 2 : 1;
         const bossSpeed = enemy.phase === 2 ? 146 : 88;
@@ -628,20 +675,29 @@
       const shootWindow = enemy.type === "ronaldo" ? 250 : 150;
       if (enemy.shotCooldown <= 0 && Math.abs(playerDistance) < 900 && Math.abs(player.y - enemy.y) < shootWindow) {
         const direction = playerDistance >= 0 ? 1 : -1;
-        const enemyShots = enemy.isBoss && enemy.phase === 2
-          ? [-235, -155]
-          : (enemy.type === "ronaldo" ? [-220, -150] : [enemy.isBoss ? -205 : -175]);
+        const enemyShots = enemy.isBoss
+          ? [-275, -195, -115]
+          : (enemy.type === "ronaldo" ? [-220, -150] : [-175]);
         for (const launchY of enemyShots) {
           const size = enemy.isBoss ? 22 : (enemy.type === "ronaldo" ? 18 : 16);
           const speed = enemy.isBoss ? 410 : (enemy.type === "ronaldo" ? 355 + currentLevel * 10 : 285 + currentLevel * 9);
           footballs.push({ owner: "enemy", x: enemy.x + enemy.w / 2 - size / 2, y: enemy.y + enemy.h * .34, w: size, h: size, vx: direction * speed, vy: launchY, rotation: 0, bounces: 0, life: 3.2, damage: 1, dead: false });
         }
         enemy.shotCooldown = enemy.isBoss
-          ? (enemy.phase === 2 ? .82 : 1.3)
+          ? (enemy.phase === 2 ? .62 : .92)
           : (enemy.type === "ronaldo" ? .48 + ((enemy.x | 0) % 3) * .035 : Math.max(1.05, 2.55 - currentLevel * .08) + ((enemy.x | 0) % 5) * .08);
         beep(enemy.isBoss ? 112 : (enemy.type === "ronaldo" ? 205 : 165), enemy.isBoss ? .09 : .05, "triangle", enemy.isBoss ? .03 : .018);
       }
       if (rectsOverlap(player, enemy)) {
+        if (player.rushTimer > 0) {
+          if (enemy.rushHitCooldown <= 0) {
+            enemy.rushHitCooldown = enemy.isBoss ? .65 : 9;
+            hitEnemy(enemy, enemy.isBoss ? 1 : 999);
+            player.vx = player.facing * player.speed * getMsnBuffs().move * 2.05;
+            beep(enemy.isBoss ? 128 : 245, .07, "square", .04);
+          }
+          continue;
+        }
         const wasAbove = oldY + player.h <= enemy.y + 9 && player.vy > 0;
         if (wasAbove) {
           hitEnemy(enemy, 1); player.vy = -480;
@@ -725,6 +781,21 @@
     playCelebrationSound(celebration.style);
   }
 
+  function activateRonaldinhoRush() {
+    player.heroForm = "ronaldinho";
+    player.rushTimer = 8;
+    player.invincible = Math.max(player.invincible, 8.15);
+    player.facing = player.facing || 1;
+    player.vx = player.facing * player.speed * getMsnBuffs().move * 2.05;
+    const emoteAdded = collectCelebrationEmote("ronaldinho");
+    startNeymarCelebration("ronaldinho");
+    rewardTitle.textContent = "✨ 小罗桑巴魔法！";
+    rewardDescription.textContent = `${emoteAdded ? "庆祝表情已收入资产页；" : ""}8秒无敌冲锋，撞倒普通敌人并撞击Boss扣血`;
+    rewardToast.classList.remove("hidden");
+    window.setTimeout(() => rewardToast.classList.add("hidden"), 3000);
+    beep(392, .08, "triangle", .04); beep(523, .09, "triangle", .038, .07); beep(659, .1, "triangle", .034, .15); beep(988, .22, "triangle", .03, .24);
+  }
+
   function collectCelebrationEmote(type) {
     if (!CELEBRATION_EMOTE_IDS.includes(type)) return false;
     const isNew = !ownedCelebrationEmotes.has(type);
@@ -736,6 +807,7 @@
 
   function playCelebrationSound(style) {
     const sounds = {
+      samba: [[392, .06, "triangle"], [494, .06, "triangle"], [587, .07, "triangle"], [784, .14, "triangle"]],
       siu: [[330, .07, "square"], [494, .07, "square"], [740, .15, "triangle"]],
       meditate: [[220, .16, "sine"], [330, .18, "sine"], [440, .2, "sine"]],
       arms: [[262, .08, "triangle"], [392, .08, "triangle"], [523, .14, "triangle"]],
@@ -1089,9 +1161,8 @@
       const unlocked = journeyLevels.has(index);
       const year = level.name.slice(0, 4);
       return `<article class="city-badge asset-zoomable ${unlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${unlocked ? `${year} ${level.badge.title}城市徽章` : `${year}城市徽章待解锁`}" data-preview-detail="${unlocked ? `${level.badge.detail} · ${level.hosts}世界杯纪念` : "完成对应关卡后加入本轮冒险收藏"}" style="--badge-a:${level.accent};--badge-b:${level.sky[0]}">
-        <span class="city-badge-year">${year}</span><span class="city-badge-flags">${level.flags.join(" ")}</span>
-        <span class="city-badge-emblem"><b>${level.badge.icon}</b><i>${level.badge.motif}</i></span>
-        <strong>${unlocked ? level.badge.title : `第${index + 1}城待解锁`}</strong><small>${unlocked ? level.badge.detail : "完成关卡点亮徽章"}</small>
+        <span class="city-medal"><span class="city-medal-stars">✦ · ✦</span><span class="city-badge-emblem"><b>${level.badge.icon}</b><i>${level.badge.motif}</i></span><span class="city-badge-year">${year}</span></span>
+        <strong>${unlocked ? level.badge.title : `第${index + 1}城待解锁`}</strong><small>${unlocked ? level.badge.detail : "完成关卡点亮徽章"}</small><span class="city-badge-flags">${level.flags.join(" ")}</span>
       </article>`;
     }).join("");
     const trophyUnlocked = hasChampionsLeagueTrophy();
@@ -1206,7 +1277,7 @@
     finish(true);
   }
 
-  function finish(won) {
+  function finish(won, reason = "") {
     finished = true;
     levelWon = won;
     stopMusic();
@@ -1221,11 +1292,13 @@
       return;
     }
     messageAssetButton.classList.toggle("hidden", !won);
-    messageKicker.textContent = won ? (finalVictory ? "冠军之夜" : "太棒了！") : "别灰心";
-    messageTitle.textContent = won ? (finalVictory ? "第 10 关通关！" : `第 ${currentLevel + 1} 关完成`) : "冒险暂停";
+    messageKicker.textContent = won ? (finalVictory ? "冠军之夜" : "太棒了！") : (reason === "timeout" ? "时间到！" : "别灰心");
+    messageTitle.textContent = won ? (finalVictory ? "第 10 关通关！" : `第 ${currentLevel + 1} 关完成`) : (reason === "timeout" ? "20秒挑战结束" : "冒险暂停");
     if (won) {
       messageText.textContent = `本关获得 ${coins} 点宝藏与${stampAdded ? "一枚新城市徽章" : "已到访城市记录"}，奖励已存入资产页。`;
-    } else messageText.textContent = `本关获得 ${coins} 点宝藏；重新挑战不会清除永久收藏。`;
+    } else messageText.textContent = reason === "timeout"
+      ? `本关获得 ${coins} 点宝藏；重试后倒计时恢复为20秒，永久收藏不会清除。`
+      : `本关获得 ${coins} 点宝藏；重新挑战不会清除永久收藏。`;
     document.querySelector("#playAgainButton").textContent = won && !finalLevel
       ? "进入下一关"
       : (won ? "开启新一轮" : "重玩本关");
@@ -1449,6 +1522,30 @@
     const x = item.x - cameraX; if (x < -50 || x > W + 50) return;
     const y = item.y + Math.sin(time * 4 + item.x * .01) * 4;
     const pulse = .45 + Math.sin(time * 6 + item.x * .02) * .18;
+    if (item.type === "ronaldinho") {
+      const image = CHARACTER_IMAGES.ronaldinho;
+      ctx.save();
+      ctx.translate(x + item.w / 2, y + item.h / 2);
+      ctx.shadowColor = "rgba(255,215,70,.92)";
+      ctx.shadowBlur = 18 + Math.sin(time * 7) * 4;
+      const medal = ctx.createRadialGradient(-6, -8, 2, 0, 0, 23);
+      medal.addColorStop(0, "#fff7b8"); medal.addColorStop(.48, "#f4c83e"); medal.addColorStop(1, "#147d48");
+      ctx.fillStyle = medal; ctx.strokeStyle = "#172133"; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.arc(0, 0, 22, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+      ctx.shadowBlur = 0;
+      if (image?.complete && image.naturalWidth > 0) {
+        const height = 39;
+        const width = height * image.naturalWidth / image.naturalHeight;
+        ctx.drawImage(image, -width / 2, -20, width, height);
+      } else {
+        ctx.fillStyle = "#173f2b"; ctx.font = "1000 11px ui-rounded, sans-serif"; ctx.textAlign = "center"; ctx.fillText("小罗", 0, 4);
+      }
+      ctx.fillStyle = "#fff7c8"; ctx.font = "1000 8px ui-rounded, sans-serif"; ctx.textAlign = "center";
+      drawRoundedRect(-24, 20, 48, 13, 6, "#173f2b", "#f1c84b", 1.5);
+      ctx.fillStyle = "#fff7c8"; ctx.fillText("无敌冲锋", 0, 27);
+      ctx.restore();
+      return;
+    }
     ctx.save(); ctx.translate(x + 17, y + 15);
     ctx.strokeStyle = `rgba(244,202,61,${pulse})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI * 2); ctx.stroke();
     ctx.shadowColor = "#f4ca3d"; ctx.shadowBlur = 11;
@@ -1845,17 +1942,23 @@
     const barWidth = 138;
     drawRoundedRect(centerX - barWidth / 2, bottomY - displayHeight - 44, barWidth, 23, 9, "rgba(19,28,47,.96)", "#f0c94d", 2);
     ctx.fillStyle = "#fff7df"; ctx.font = "1000 11px ui-rounded, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
-    ctx.fillText("👑 因凡蒂诺 · 终极Boss", centerX, bottomY - displayHeight - 32);
-    ctx.fillStyle = "#4d586a"; ctx.fillRect(centerX - 62, bottomY - displayHeight - 16, 124, 8);
-    ctx.fillStyle = enemy.phase === 2 ? "#ef4056" : "#f2c94c"; ctx.fillRect(centerX - 62, bottomY - displayHeight - 16, 124 * Math.max(0, enemy.hp / enemy.maxHp), 8);
-    ctx.strokeStyle = "#172133"; ctx.lineWidth = 1.5; ctx.strokeRect(centerX - 62, bottomY - displayHeight - 16, 124, 8);
+    ctx.fillText("👑 因凡蒂诺 · 双血条Boss", centerX, bottomY - displayHeight - 32);
+    const bossBarWidth = 124;
+    const bossBarHp = enemy.barHp || enemy.maxHp / 2;
+    const firstBarHp = Math.max(0, Math.min(bossBarHp, enemy.hp - bossBarHp));
+    const secondBarHp = Math.max(0, Math.min(bossBarHp, enemy.hp));
+    ctx.fillStyle = "#4d586a"; ctx.fillRect(centerX - 62, bottomY - displayHeight - 18, bossBarWidth, 7); ctx.fillRect(centerX - 62, bottomY - displayHeight - 8, bossBarWidth, 7);
+    ctx.fillStyle = "#f2c94c"; ctx.fillRect(centerX - 62, bottomY - displayHeight - 18, bossBarWidth * firstBarHp / bossBarHp, 7);
+    ctx.fillStyle = "#ef4056"; ctx.fillRect(centerX - 62, bottomY - displayHeight - 8, bossBarWidth * secondBarHp / bossBarHp, 7);
+    ctx.strokeStyle = "#172133"; ctx.lineWidth = 1.5; ctx.strokeRect(centerX - 62, bottomY - displayHeight - 18, bossBarWidth, 7); ctx.strokeRect(centerX - 62, bottomY - displayHeight - 8, bossBarWidth, 7);
   }
 
   function drawPlayerFigurine(time) {
-    if (player.invincible > 0 && Math.floor(time * 12) % 2 === 0) return;
+    if (player.invincible > 0 && player.rushTimer <= 0 && Math.floor(time * 12) % 2 === 0) return;
     const x = player.x - cameraX;
     const bounce = player.grounded && Math.abs(player.vx) > 30 ? Math.sin(time * 18) * 2 : 0;
     const activeForm = player.heroForm !== "neymar" ? player.heroForm : equippedSkin;
+    const ronaldinhoRush = activeForm === "ronaldinho" && player.rushTimer > 0;
     const displayHeight = Math.max(108, player.h * 1.9);
     const centerX = x + player.w / 2;
     const bottomY = player.y + player.h + bounce;
@@ -1872,16 +1975,29 @@
     }
     if (msnStage >= 2) drawCollectibleFigure("messi", centerX - 33, bottomY + 1, displayHeight * .82, player.facing, msnOutfit, .96);
     if (msnStage >= 3) drawCollectibleFigure("suarez", centerX + 34, bottomY + 1, displayHeight * .82, player.facing, "barca", .96);
+    if (ronaldinhoRush) {
+      ctx.save();
+      const direction = player.facing || 1;
+      for (let trail = 3; trail >= 1; trail -= 1) {
+        ctx.globalAlpha = .1 + (4 - trail) * .06;
+        ctx.fillStyle = trail % 2 ? "#f6d44d" : "#23a765";
+        ctx.beginPath(); ctx.ellipse(centerX - direction * trail * 26, bottomY - displayHeight * .48, 24 + trail * 4, 38 + trail * 3, 0, 0, Math.PI * 2); ctx.fill();
+      }
+      ctx.restore();
+    }
     ctx.save(); ctx.translate(centerX, bottomY + offsetY); ctx.rotate(rotation);
-    drawCollectibleFigure("neymar", 0, 0, displayHeight, player.facing, neymarOutfit, 1);
+    if (ronaldinhoRush) {
+      ctx.shadowColor = "#ffe86a"; ctx.shadowBlur = 22;
+      drawCollectibleFigure("ronaldinho", 0, 0, displayHeight * 1.04, player.facing, "default", 1);
+    } else drawCollectibleFigure("neymar", 0, 0, displayHeight, player.facing, neymarOutfit, 1);
     ctx.restore();
     if (celebrating) drawCelebrationEmote(player.celebrationType, centerX, bottomY, displayHeight, elapsed, player.celebrationDuration);
     const trophyWon = hasChampionsLeagueTrophy();
     if (trophyWon && !celebrating) drawChampionsLeagueTrophy(centerX, bottomY - displayHeight * .31, time);
     ctx.save();
     const celebrationName = PLAYER_META[player.celebrationType]?.name || "球星";
-    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (trophyWon ? "🏆 巴萨MSN合捧欧冠大耳朵杯" : (msnStage === 3 ? "🔵🔴 MSN连线 · 三连强攻" : (msnStage === 2 ? `🤝 梅西组织 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10")));
-    const labelWidth = celebrating ? 154 : (trophyWon ? 174 : (msnStage === 1 ? 78 : 164));
+    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 小罗无敌冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🏆 巴萨MSN合捧欧冠大耳朵杯" : (msnStage === 3 ? "🔵🔴 MSN连线 · 三连强攻" : (msnStage === 2 ? `🤝 梅西组织 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
+    const labelWidth = celebrating ? 154 : (ronaldinhoRush ? 150 : (trophyWon ? 174 : (msnStage === 1 ? 78 : 164)));
     drawRoundedRect(centerX - labelWidth / 2, bottomY - displayHeight - 20, labelWidth, 20, 8, celebrating ? "rgba(255,247,223,.97)" : (trophyWon ? "rgba(233,242,255,.97)" : "rgba(255,255,255,.97)"), celebrating ? celebration.color : "#172133", 2);
     ctx.fillStyle = "#172133"; ctx.font = "900 11px ui-rounded, sans-serif"; ctx.textAlign = "center";
     ctx.fillText(teamLabel, centerX, bottomY - displayHeight - 6);
@@ -2011,7 +2127,13 @@
     ctx.fillText(`★ ${String(coins).padStart(2, "0")}`, 112, 49);
     ctx.fillText(`♥ ${lives}`, 207, 49);
     ctx.font = "800 13px ui-rounded, sans-serif";
-    ctx.fillText(`${level.flags.join("")} ${inBonus ? level.routes[layerScene] : `${level.name} · ${level.difficulty}`}`, 282, 48, 280);
+    ctx.fillText(`${level.flags.join("")} ${inBonus ? level.routes[layerScene] : `${level.name} · ${level.difficulty}`}`, 282, 48, 210);
+    const secondsLeft = Math.max(0, Math.ceil(levelTimeRemaining));
+    const timerWarning = secondsLeft <= 5;
+    drawRoundedRect(505, 27, 58, 28, 10, timerWarning ? "#b72e3c" : "#173f69", timerWarning ? "#ffd76b" : "#91d8ff", 2);
+    ctx.fillStyle = "#fff8df"; ctx.font = "1000 13px ui-rounded, sans-serif"; ctx.textAlign = "center";
+    ctx.fillText(`⏱ ${secondsLeft}s`, 534, 46);
+    ctx.textAlign = "left";
     const progress = Math.min(1, player.x / goalX);
     ctx.fillStyle = "#56606d"; ctx.font = "800 11px ui-rounded, sans-serif"; ctx.fillText("关卡进度", 36, 78);
     ctx.fillStyle = "#cad3d2"; ctx.fillRect(108, 66, 445, 11);
@@ -2026,7 +2148,7 @@
     ctx.save(); ctx.textAlign = "center"; ctx.textBaseline = "middle";
     ctx.fillStyle = boss ? "#9b263e" : (trophyWon ? "#45658f" : "#2857a1"); ctx.font = "900 14px ui-rounded, sans-serif";
     const trophyStatus = boss
-      ? `👑 Boss ${boss.hp}/${boss.maxHp}`
+      ? `👑 Boss×2 ${boss.hp}/${boss.maxHp}`
       : (trophyWon
         ? "🏆 MSN大耳朵杯"
         : (currentLevel === LEVELS.length - 1 && finalBossDefeated ? "✓ Boss已击破" : (msnStage === 3 ? `✦ 冠军星章 ${championEmblemCount()}/3` : `📍 城市 ${stampCount}/10`)));
