@@ -32,6 +32,14 @@
 - GitHub Pages：`https://lara-creative-lab.github.io/msn-football-adventure/` 返回 200，并读回到 9 张球星卡、第 6–9 关随机小罗与 4 秒冲锋文案；`ASSET VIEW` 已不存在。
 - ChatGPT Sites：版本 29 部署成功，地址 `https://msn-football-adventure.florapr.chatgpt.site`；访问策略保持原有仅所有者可访问，未登录读回为 401。
 
+## 2026-08-06 城市徽章升级发布记录
+
+- 发布源码提交：`be2847b4f1f3662ef3e930e45aa8134b255de5ef`。
+- GitHub：`lara-creative-lab/msn-football-adventure` 的 `main` 已包含十枚独立城市徽章与无按钮感收藏分类标签。
+- GitHub Pages：公开页面、`style.css?v=40`、`game-v33.js?v=40` 与 `city-badge-2026-united.png` 均返回 200；读回样式确认分类标签为无底色且 `pointer-events: none`。
+- ChatGPT Sites：版本 30 部署成功，地址保持 `https://msn-football-adventure.florapr.chatgpt.site`；访问策略未变，未登录读回仍为 401。
+- 发布前安全扫描：scan id `748485c5-3754-4647-85c8-60707ba02b06`，覆盖 87/87 文件，0 个可报告问题。
+
 ## 已完成且必须保留
 
 - MSN 球星大冒险基础玩法与 10 关世界杯旅程。
@@ -45,7 +53,7 @@
 
 ## 当前待办
 
-1. 本轮已获得发布授权；发布时仍需核实实际 GitHub 主仓库、Sites 部署结果与公开页面。
+- 本轮城市徽章与资产页分类标签需求已实现、验证并发布；等待下一条需求。
 
 ## 参考资料
 
