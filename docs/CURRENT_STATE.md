@@ -43,6 +43,14 @@
 - ChatGPT Sites：版本 30 部署成功，地址保持 `https://msn-football-adventure.florapr.chatgpt.site`；访问策略未变，未登录读回仍为 401。
 - 发布前安全扫描：scan id `748485c5-3754-4647-85c8-60707ba02b06`，覆盖 87/87 文件，0 个可报告问题。
 
+## 2026-08-06 小罗频率与球星卡标签发布记录
+
+- 发布源码提交：`e889a0d8ccfeb4e725bee79a98a540872b78cc88`。
+- GitHub：`lara-creative-lab/msn-football-adventure` 的 `main` 已包含完整十关中随机 2–3 次小罗遭遇，以及球星卡客观场上位置标签。
+- GitHub Pages：部署工作流成功；公开页面已读回 `style.css?v=41`、`game-v33.js?v=41`、“第 6–9 关随机 2–3 关”文案、随机计数逻辑及“前腰 / 中场”等位置标签。
+- ChatGPT Sites：版本 31 部署成功，地址保持 `https://msn-football-adventure.florapr.chatgpt.site`；访问策略仍为仅所有者可见。
+- 发布前安全扫描：scan id `2140ea12-06f3-485b-b411-f82c88d9d479`，覆盖 88/88 文件，0 个可报告问题。
+
 ## 已完成且必须保留
 
 - MSN 球星大冒险基础玩法与 10 关世界杯旅程。
@@ -56,7 +64,7 @@
 
 ## 当前待办
 
-- 小罗频率与球星卡客观位置标签已实现并通过发布前验证，等待本轮线上发布读回。
+- 小罗频率与球星卡客观位置标签已实现、验证并发布；等待下一条需求。
 
 ## 参考资料
 
