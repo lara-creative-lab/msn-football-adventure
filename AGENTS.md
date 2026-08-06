@@ -2,7 +2,7 @@
 
 本文件适用于整个仓库。任何新任务开始时，不要依赖旧聊天记录；先读取以下文件，并以仓库当前状态为准：
 
-1. `docs/GAME_SPEC.md`
+1. `docs/MSN球星大冒险项目档案.md`
 2. `docs/DECISIONS.md`
 3. `docs/CURRENT_STATE.md`
 4. `git status --short --branch`、`git log -5 --oneline` 和相关源码
@@ -14,7 +14,7 @@
 1. 用户在当前任务中的最新明确指令
 2. `docs/DECISIONS.md` 中已确认且未被撤销的决定
 3. `docs/CURRENT_STATE.md` 中的当前状态与待办
-4. `docs/GAME_SPEC.md` 中的产品规格
+4. `docs/MSN球星大冒险项目档案.md` 中的产品规格
 5. 旧聊天、旧截图和历史实现
 
 如果当前指令会推翻已确认决定，先指出冲突并取得用户确认；不要自行猜测。
