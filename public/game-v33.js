@@ -264,18 +264,6 @@
       platformIndex += 1;
     }
 
-    // 每关中段安排一枚小罗魔法球。拿到后短时间化身小罗持续冲锋，
-    // 普通敌人会被直接撞倒，Boss则按间隔扣血，仍保留终极战难度。
-    const elevatedPlatforms = platforms.filter((platform) => !platform.ground);
-    const ronaldinhoPlatform = elevatedPlatforms[Math.min(elevatedPlatforms.length - 1, 3 + Math.floor(index / 3))];
-    if (ronaldinhoPlatform) {
-      powerUps.push({
-        x: ronaldinhoPlatform.x + ronaldinhoPlatform.w / 2 - 17,
-        y: ronaldinhoPlatform.y - 39,
-        w: 34, h: 34, type: "ronaldinho", collected: false,
-      });
-    }
-
     for (let x = 720, prizeIndex = 0; x < goalX - 260; x += 820, prizeIndex += 1) {
       const prize = makeTreasure(x, 145 + (prizeIndex % 2) * 42, prizeIndex * 13);
       prize.type = "scarf"; prize.value = 25; prize.r = 19;
@@ -300,18 +288,21 @@
       const footballers = ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
       const onStair = stairEnemyIndices.includes(i);
       const stairSlot = stairEnemyIndices.indexOf(i);
-      // 让 C 罗定期担任阶梯连射手，其余位置分配不同球星。
-      const type = onStair && (index + stairSlot) % 4 === 0 ? "ronaldo" : footballers[(i + index) % footballers.length];
+      // 小罗是敌方球星而不是变身道具：每关安排一名，其余位置轮换其他球星。
+      const type = i === 0 ? "ronaldinho" : (onStair && (index + stairSlot) % 4 === 0 ? "ronaldo" : footballers[(i + index) % footballers.length]);
       const segment = onStair ? stairPlatforms[(i * 2 + index) % stairPlatforms.length] : enemyGround[i % enemyGround.length];
       const laneStart = segment.x + (onStair ? 10 : 95);
       const laneEnd = segment.x + segment.w - (onStair ? 10 : 45);
       const offset = ((i * 137) % Math.max(26, laneEnd - laneStart - 52));
       const baseY = segment.y - 40;
+      const moveSpeed = level.speed * (type === "ronaldinho" ? 1.12 : 1);
       enemies.push({
         x: Math.min(laneEnd - 45, laneStart + offset), y: baseY, baseY, w: 45, h: 40,
-        minX: laneStart, maxX: laneEnd, vx: (i % 2 ? 1 : -1) * level.speed,
-        alive: true, type, onStair, hp: 1, flash: 0, shotCooldown: type === "ronaldo" ? .46 + (i % 2) * .1 : .9 + (i % 4) * .42,
+        minX: laneStart, maxX: laneEnd, vx: (i % 2 ? 1 : -1) * moveSpeed, moveSpeed,
+        alive: true, type, onStair, hp: 1, flash: 0,
+        shotCooldown: type === "ronaldo" ? .46 + (i % 2) * .1 : (type === "ronaldinho" ? .74 : .9 + (i % 4) * .42),
         bouncePhase: (i * 1.71 + index * .63) % (Math.PI * 2), bounceHeight: type === "ronaldo" ? 27 : 0,
+        sambaPhase: (index * 1.13) % (Math.PI * 2),
       });
     }
     if (index === LEVELS.length - 1) {
@@ -543,8 +534,7 @@
       player.rushTimer = Math.max(0, player.rushTimer - dt);
       player.invincible = Math.max(player.invincible, player.rushTimer + .12);
       if (player.rushTimer === 0) {
-        player.heroForm = "neymar";
-        rewardTitle.textContent = "✨ 小罗魔法结束";
+        rewardTitle.textContent = "✨ 桑巴冲锋结束";
         rewardDescription.textContent = "无敌冲锋结束，继续用MSN连线突破终点";
         rewardToast.classList.remove("hidden");
         window.setTimeout(() => rewardToast.classList.add("hidden"), 1700);
@@ -615,10 +605,6 @@
     for (const item of powerUps) {
       if (item.collected || !rectsOverlap(player, item)) continue;
       item.collected = true;
-      if (item.type === "ronaldinho") {
-        activateRonaldinhoRush();
-        continue;
-      }
       player.powerShot = true;
       rewardTitle.textContent = "⚽ 冠军能量球！";
       rewardDescription.textContent = "获得强力比赛用球：足球变大、威力提升";
@@ -664,6 +650,11 @@
         enemy.bouncePhase += dt * 9.4;
         const bounce = Math.max(0, Math.sin(enemy.bouncePhase));
         enemy.y = enemy.baseY - bounce * enemy.bounceHeight;
+      } else if (enemy.type === "ronaldinho") {
+        enemy.sambaPhase += dt * 7.2;
+        const sambaBurst = Math.max(0, Math.sin(enemy.sambaPhase));
+        enemy.vx = (Math.sign(enemy.vx) || -1) * enemy.moveSpeed * (1.05 + sambaBurst * .52);
+        enemy.y = enemy.baseY - Math.abs(Math.sin(enemy.sambaPhase * .5)) * 10;
       }
       enemy.x += enemy.vx * dt;
       if (enemy.x < enemy.minX || enemy.x + enemy.w > enemy.maxX) {
@@ -672,21 +663,21 @@
       }
       enemy.shotCooldown -= dt;
       const playerDistance = player.x + player.w / 2 - (enemy.x + enemy.w / 2);
-      const shootWindow = enemy.type === "ronaldo" ? 250 : 150;
+      const shootWindow = enemy.type === "ronaldo" ? 250 : (enemy.type === "ronaldinho" ? 220 : 150);
       if (enemy.shotCooldown <= 0 && Math.abs(playerDistance) < 900 && Math.abs(player.y - enemy.y) < shootWindow) {
         const direction = playerDistance >= 0 ? 1 : -1;
         const enemyShots = enemy.isBoss
           ? [-275, -195, -115]
-          : (enemy.type === "ronaldo" ? [-220, -150] : [-175]);
+          : (enemy.type === "ronaldo" ? [-220, -150] : (enemy.type === "ronaldinho" ? [-245, -95] : [-175]));
         for (const launchY of enemyShots) {
-          const size = enemy.isBoss ? 22 : (enemy.type === "ronaldo" ? 18 : 16);
-          const speed = enemy.isBoss ? 410 : (enemy.type === "ronaldo" ? 355 + currentLevel * 10 : 285 + currentLevel * 9);
+          const size = enemy.isBoss ? 22 : (enemy.type === "ronaldo" ? 18 : (enemy.type === "ronaldinho" ? 17 : 16));
+          const speed = enemy.isBoss ? 410 : (enemy.type === "ronaldo" ? 355 + currentLevel * 10 : (enemy.type === "ronaldinho" ? 335 + currentLevel * 9 : 285 + currentLevel * 9));
           footballs.push({ owner: "enemy", x: enemy.x + enemy.w / 2 - size / 2, y: enemy.y + enemy.h * .34, w: size, h: size, vx: direction * speed, vy: launchY, rotation: 0, bounces: 0, life: 3.2, damage: 1, dead: false });
         }
         enemy.shotCooldown = enemy.isBoss
           ? (enemy.phase === 2 ? .62 : .92)
-          : (enemy.type === "ronaldo" ? .48 + ((enemy.x | 0) % 3) * .035 : Math.max(1.05, 2.55 - currentLevel * .08) + ((enemy.x | 0) % 5) * .08);
-        beep(enemy.isBoss ? 112 : (enemy.type === "ronaldo" ? 205 : 165), enemy.isBoss ? .09 : .05, "triangle", enemy.isBoss ? .03 : .018);
+          : (enemy.type === "ronaldo" ? .48 + ((enemy.x | 0) % 3) * .035 : (enemy.type === "ronaldinho" ? .76 : Math.max(1.05, 2.55 - currentLevel * .08) + ((enemy.x | 0) % 5) * .08));
+        beep(enemy.isBoss ? 112 : (enemy.type === "ronaldo" ? 205 : (enemy.type === "ronaldinho" ? 294 : 165)), enemy.isBoss ? .09 : .05, "triangle", enemy.isBoss ? .03 : .018);
       }
       if (rectsOverlap(player, enemy)) {
         if (player.rushTimer > 0) {
@@ -742,6 +733,7 @@
       enemy.alive = false;
       startNeymarCelebration(enemy.type);
       applyFootballerReward(enemy.type);
+      if (enemy.type === "ronaldinho") activateRonaldinhoRush();
       beep(210, .07, "square", .04); beep(320, .1, "square", .03, .05);
     } else {
       enemy.vx *= -1.28;
@@ -782,15 +774,13 @@
   }
 
   function activateRonaldinhoRush() {
-    player.heroForm = "ronaldinho";
+    // 小罗始终是敌方球星；击败他只给内马尔加状态，不替换主角形象。
     player.rushTimer = 8;
     player.invincible = Math.max(player.invincible, 8.15);
     player.facing = player.facing || 1;
     player.vx = player.facing * player.speed * getMsnBuffs().move * 2.05;
-    const emoteAdded = collectCelebrationEmote("ronaldinho");
-    startNeymarCelebration("ronaldinho");
-    rewardTitle.textContent = "✨ 小罗桑巴魔法！";
-    rewardDescription.textContent = `${emoteAdded ? "庆祝表情已收入资产页；" : ""}8秒无敌冲锋，撞倒普通敌人并撞击Boss扣血`;
+    rewardTitle.textContent = "✨ 击败小罗：桑巴冲锋！";
+    rewardDescription.textContent = "内马尔保持原形，获得8秒无敌冲锋；可撞倒普通敌人并撞击Boss扣血";
     rewardToast.classList.remove("hidden");
     window.setTimeout(() => rewardToast.classList.add("hidden"), 3000);
     beep(392, .08, "triangle", .04); beep(523, .09, "triangle", .038, .07); beep(659, .1, "triangle", .034, .15); beep(988, .22, "triangle", .03, .24);
@@ -1522,30 +1512,6 @@
     const x = item.x - cameraX; if (x < -50 || x > W + 50) return;
     const y = item.y + Math.sin(time * 4 + item.x * .01) * 4;
     const pulse = .45 + Math.sin(time * 6 + item.x * .02) * .18;
-    if (item.type === "ronaldinho") {
-      const image = CHARACTER_IMAGES.ronaldinho;
-      ctx.save();
-      ctx.translate(x + item.w / 2, y + item.h / 2);
-      ctx.shadowColor = "rgba(255,215,70,.92)";
-      ctx.shadowBlur = 18 + Math.sin(time * 7) * 4;
-      const medal = ctx.createRadialGradient(-6, -8, 2, 0, 0, 23);
-      medal.addColorStop(0, "#fff7b8"); medal.addColorStop(.48, "#f4c83e"); medal.addColorStop(1, "#147d48");
-      ctx.fillStyle = medal; ctx.strokeStyle = "#172133"; ctx.lineWidth = 3;
-      ctx.beginPath(); ctx.arc(0, 0, 22, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-      ctx.shadowBlur = 0;
-      if (image?.complete && image.naturalWidth > 0) {
-        const height = 39;
-        const width = height * image.naturalWidth / image.naturalHeight;
-        ctx.drawImage(image, -width / 2, -20, width, height);
-      } else {
-        ctx.fillStyle = "#173f2b"; ctx.font = "1000 11px ui-rounded, sans-serif"; ctx.textAlign = "center"; ctx.fillText("小罗", 0, 4);
-      }
-      ctx.fillStyle = "#fff7c8"; ctx.font = "1000 8px ui-rounded, sans-serif"; ctx.textAlign = "center";
-      drawRoundedRect(-24, 20, 48, 13, 6, "#173f2b", "#f1c84b", 1.5);
-      ctx.fillStyle = "#fff7c8"; ctx.fillText("无敌冲锋", 0, 27);
-      ctx.restore();
-      return;
-    }
     ctx.save(); ctx.translate(x + 17, y + 15);
     ctx.strokeStyle = `rgba(244,202,61,${pulse})`; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(0, 0, 20, 0, Math.PI * 2); ctx.stroke();
     ctx.shadowColor = "#f4ca3d"; ctx.shadowBlur = 11;
@@ -1899,7 +1865,7 @@
     }
     const meta = PLAYER_META[enemy.type] || PLAYER_META.messi;
     const displayHeight = enemy.type === "haaland" || enemy.type === "kane" ? 96 : 90;
-    if (enemy.type === "ronaldo") {
+    if (enemy.type === "ronaldo" || enemy.type === "ronaldinho") {
       const bounce = Math.max(0, Math.sin(enemy.bouncePhase || 0));
       ctx.save();
       ctx.globalAlpha = .3 + (1 - bounce) * .25;
@@ -1909,8 +1875,8 @@
     }
     drawCollectibleFigure(enemy.type, x + enemy.w / 2, enemy.y + enemy.h, displayHeight, enemy.vx >= 0 ? 1 : -1, "default", enemy.flash > 0 ? .45 : 1);
     ctx.save();
-    const label = enemy.type === "ronaldo" ? `${meta.name} · 连射` : `${meta.name} · ${meta.number}`;
-    const labelWidth = enemy.type === "ronaldo" ? 74 : 64;
+    const label = enemy.type === "ronaldo" ? `${meta.name} · 连射` : (enemy.type === "ronaldinho" ? `${meta.name} · 桑巴突袭` : `${meta.name} · ${meta.number}`);
+    const labelWidth = enemy.type === "ronaldo" ? 74 : (enemy.type === "ronaldinho" ? 92 : 64);
     drawRoundedRect(x - (labelWidth - 45) / 2, enemy.y - displayHeight - 15, labelWidth, 17, 7, "rgba(255,255,255,.95)", "#172133", 2);
     ctx.fillStyle = "#172133"; ctx.font = "900 10px ui-rounded, sans-serif"; ctx.textAlign = "center";
     ctx.fillText(label, x + enemy.w / 2, enemy.y - displayHeight - 3);
@@ -1958,7 +1924,7 @@
     const x = player.x - cameraX;
     const bounce = player.grounded && Math.abs(player.vx) > 30 ? Math.sin(time * 18) * 2 : 0;
     const activeForm = player.heroForm !== "neymar" ? player.heroForm : equippedSkin;
-    const ronaldinhoRush = activeForm === "ronaldinho" && player.rushTimer > 0;
+    const ronaldinhoRush = player.rushTimer > 0;
     const displayHeight = Math.max(108, player.h * 1.9);
     const centerX = x + player.w / 2;
     const bottomY = player.y + player.h + bounce;
@@ -1986,17 +1952,15 @@
       ctx.restore();
     }
     ctx.save(); ctx.translate(centerX, bottomY + offsetY); ctx.rotate(rotation);
-    if (ronaldinhoRush) {
-      ctx.shadowColor = "#ffe86a"; ctx.shadowBlur = 22;
-      drawCollectibleFigure("ronaldinho", 0, 0, displayHeight * 1.04, player.facing, "default", 1);
-    } else drawCollectibleFigure("neymar", 0, 0, displayHeight, player.facing, neymarOutfit, 1);
+    if (ronaldinhoRush) { ctx.shadowColor = "#ffe86a"; ctx.shadowBlur = 22; }
+    drawCollectibleFigure("neymar", 0, 0, displayHeight, player.facing, neymarOutfit, 1);
     ctx.restore();
     if (celebrating) drawCelebrationEmote(player.celebrationType, centerX, bottomY, displayHeight, elapsed, player.celebrationDuration);
     const trophyWon = hasChampionsLeagueTrophy();
     if (trophyWon && !celebrating) drawChampionsLeagueTrophy(centerX, bottomY - displayHeight * .31, time);
     ctx.save();
     const celebrationName = PLAYER_META[player.celebrationType]?.name || "球星";
-    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 小罗无敌冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🏆 巴萨MSN合捧欧冠大耳朵杯" : (msnStage === 3 ? "🔵🔴 MSN连线 · 三连强攻" : (msnStage === 2 ? `🤝 梅西组织 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
+    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 内马尔·桑巴冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🏆 巴萨MSN合捧欧冠大耳朵杯" : (msnStage === 3 ? "🔵🔴 MSN连线 · 三连强攻" : (msnStage === 2 ? `🤝 梅西组织 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
     const labelWidth = celebrating ? 154 : (ronaldinhoRush ? 150 : (trophyWon ? 174 : (msnStage === 1 ? 78 : 164)));
     drawRoundedRect(centerX - labelWidth / 2, bottomY - displayHeight - 20, labelWidth, 20, 8, celebrating ? "rgba(255,247,223,.97)" : (trophyWon ? "rgba(233,242,255,.97)" : "rgba(255,255,255,.97)"), celebrating ? celebration.color : "#172133", 2);
     ctx.fillStyle = "#172133"; ctx.font = "900 11px ui-rounded, sans-serif"; ctx.textAlign = "center";
