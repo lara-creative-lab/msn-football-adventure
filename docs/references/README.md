@@ -25,3 +25,7 @@
 
 - `asset-page-city-badges-and-labels-feedback.png`：确认旧版十枚通用圆形徽章仍未替换，并指出右上角收藏分类不应做成像按钮一样的深色胶囊。
 - `asset-label-epic-feedback.png`、`asset-label-journey-feedback.png`、`asset-label-easter-egg-feedback.png`：三种低对比度胶囊标签的局部截图。后续实现应采用无底色、不可点击、高对比文字标签。
+
+## `star-card-ranking-labels-feedback.png`
+
+球星卡标签反馈截图。`ICON / GOAT / SAMBA / ELITE / GOLD / LEGEND` 会形成主观的球星高低比较；球星卡右上角应改用客观的场上位置标签。

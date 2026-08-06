@@ -107,15 +107,15 @@
   const BOSS_IMAGE = new Image();
   BOSS_IMAGE.src = "./assets/characters/infantino-boss.png";
   const STAR_CARDS = [
-    { id: "neymar", milestone: 200, cities: 1, cost: 200, rating: 91, rarity: "ICON", a: "#f5ce2e", b: "#087b43" },
-    { id: "messi", milestone: 400, cities: 2, cost: 400, rating: 94, rarity: "GOAT", a: "#72c9f1", b: "#e8f5ff" },
-    { id: "ronaldinho", milestone: 500, cities: 3, cost: 500, rating: 93, rarity: "SAMBA", a: "#f7d22f", b: "#14834f" },
-    { id: "ronaldo", milestone: 600, cities: 3, cost: 600, rating: 94, rarity: "GOAT", a: "#b51d2c", b: "#176b45" },
-    { id: "mbappe", milestone: 800, cities: 4, cost: 800, rating: 92, rarity: "ELITE", a: "#243c94", b: "#e24a45" },
-    { id: "haaland", milestone: 1000, cities: 5, cost: 1000, rating: 92, rarity: "ELITE", a: "#75d4ee", b: "#152a58" },
-    { id: "bellingham", milestone: 1200, cities: 6, cost: 1200, rating: 91, rarity: "GOLD", a: "#f7f2dc", b: "#b88a28" },
-    { id: "kane", milestone: 1400, cities: 7, cost: 1400, rating: 91, rarity: "GOLD", a: "#f4f4f4", b: "#273b70" },
-    { id: "suarez", milestone: 1600, cities: 8, cost: 1600, rating: 92, rarity: "LEGEND", a: "#66c5ec", b: "#101a2d" },
+    { id: "neymar", milestone: 200, cities: 1, cost: 200, rating: 91, position: "左边锋", a: "#f5ce2e", b: "#087b43" },
+    { id: "messi", milestone: 400, cities: 2, cost: 400, rating: 94, position: "右边锋", a: "#72c9f1", b: "#e8f5ff" },
+    { id: "ronaldinho", milestone: 500, cities: 3, cost: 500, rating: 93, position: "前腰", a: "#f7d22f", b: "#14834f" },
+    { id: "ronaldo", milestone: 600, cities: 3, cost: 600, rating: 94, position: "左边锋", a: "#b51d2c", b: "#176b45" },
+    { id: "mbappe", milestone: 800, cities: 4, cost: 800, rating: 92, position: "左边锋", a: "#243c94", b: "#e24a45" },
+    { id: "haaland", milestone: 1000, cities: 5, cost: 1000, rating: 92, position: "中锋", a: "#75d4ee", b: "#152a58" },
+    { id: "bellingham", milestone: 1200, cities: 6, cost: 1200, rating: 91, position: "中场", a: "#f7f2dc", b: "#b88a28" },
+    { id: "kane", milestone: 1400, cities: 7, cost: 1400, rating: 91, position: "中锋", a: "#f4f4f4", b: "#273b70" },
+    { id: "suarez", milestone: 1600, cities: 8, cost: 1600, rating: 92, position: "中锋", a: "#66c5ec", b: "#101a2d" },
   ];
   const MSN_CLASSIC_CARDS = [
     { id: "goal", name: "三箭齐发", detail: "经典进球庆祝", image: "msn-classic-01-goal.png" },
@@ -192,7 +192,7 @@
   // A journey is deliberately separate from permanent collection progress.
   // Cards, outfits and city stamps survive, but MSN must reunite again in each run.
   let journeyLevels = new Set();
-  let ronaldinhoLevel = pickRonaldinhoLevel();
+  let ronaldinhoLevels = pickRonaldinhoLevels();
   let endingCardDrawnThisRun = false;
   let pendingMsnDraw = null;
   let drawRevealTimer = 0;
@@ -219,9 +219,15 @@
   let coinItems = [];
   let enemies = [];
 
-  function pickRonaldinhoLevel(startLevel = 0) {
+  function pickRonaldinhoLevels(startLevel = 0) {
     const firstEligibleLevel = Math.max(5, Math.min(8, startLevel));
-    return firstEligibleLevel + Math.floor(Math.random() * (9 - firstEligibleLevel));
+    const eligibleLevels = Array.from({ length: 9 - firstEligibleLevel }, (_, offset) => firstEligibleLevel + offset);
+    for (let i = eligibleLevels.length - 1; i > 0; i -= 1) {
+      const swapIndex = Math.floor(Math.random() * (i + 1));
+      [eligibleLevels[i], eligibleLevels[swapIndex]] = [eligibleLevels[swapIndex], eligibleLevels[i]];
+    }
+    const encounterCount = Math.min(eligibleLevels.length, 2 + Math.floor(Math.random() * 2));
+    return new Set(eligibleLevels.slice(0, encounterCount));
   }
 
   function makeTreasure(x, y, seed = 0) {
@@ -295,8 +301,8 @@
       const footballers = ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
       const onStair = stairEnemyIndices.includes(i);
       const stairSlot = stairEnemyIndices.indexOf(i);
-      // 小罗是敌方球星而不是变身道具：每轮仅在第6–9关随机一关的主线安排一名。
-      const type = i === 0 && index === ronaldinhoLevel ? "ronaldinho" : (onStair && (index + stairSlot) % 4 === 0 ? "ronaldo" : footballers[(i + index) % footballers.length]);
+      // 小罗是敌方球星而不是变身道具：完整旅程会在第6–9关随机2–3关的主线各安排一名。
+      const type = i === 0 && ronaldinhoLevels.has(index) ? "ronaldinho" : (onStair && (index + stairSlot) % 4 === 0 ? "ronaldo" : footballers[(i + index) % footballers.length]);
       const segment = onStair ? stairPlatforms[(i * 2 + index) % stairPlatforms.length] : enemyGround[i % enemyGround.length];
       const laneStart = segment.x + (onStair ? 10 : 95);
       const laneEnd = segment.x + segment.w - (onStair ? 10 : 45);
@@ -391,7 +397,7 @@
     currentLevel = Number(levelSelect.value) || 0;
     totalCoins = 0;
     journeyLevels = new Set();
-    ronaldinhoLevel = pickRonaldinhoLevel(currentLevel);
+    ronaldinhoLevels = pickRonaldinhoLevels(currentLevel);
     endingCardDrawnThisRun = false;
     equippedSkin = "default";
     saveCosmetics();
@@ -425,7 +431,7 @@
     currentLevel = 0;
     totalCoins = 0;
     journeyLevels = new Set();
-    ronaldinhoLevel = pickRonaldinhoLevel();
+    ronaldinhoLevels = pickRonaldinhoLevels();
     endingCardDrawnThisRun = false;
     equippedSkin = "default";
     saveCosmetics();
@@ -1141,8 +1147,8 @@
     cardGrid.innerHTML = STAR_CARDS.map((card) => {
       const owned = ownedCards.has(card.id);
       const meta = PLAYER_META[card.id];
-      return `<article class="star-card asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? `${meta.name}球星卡` : "未解锁球星卡"}" data-preview-detail="${owned ? `${meta.team} · ${card.rating}评分 · ${card.rarity}典藏` : `${card.milestone}分并到达${card.cities}座城市后解锁`}" style="--card-a:${card.a};--card-b:${card.b}">
-        <span class="rating">${card.rating}</span><span class="rarity">${card.rarity}</span>
+      return `<article class="star-card asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? `${meta.name}球星卡` : "未解锁球星卡"}" data-preview-detail="${owned ? `${meta.team} · ${card.rating}评分 · 场上位置：${card.position}` : `${card.milestone}分并到达${card.cities}座城市后解锁`}" style="--card-a:${card.a};--card-b:${card.b}">
+        <span class="rating">${card.rating}</span><span class="card-position">${card.position}</span>
         <img class="card-player" src="./assets/characters/${card.id}.png" alt="${meta.name} ${meta.number}号公仔">
         <span class="card-number">#${meta.number}</span><strong>${owned ? meta.name : "神秘球星"}</strong>
         <small>${owned ? `${meta.team} · 典藏编号 ${String(card.milestone).padStart(4, "0")}` : `${card.milestone}分 + ${card.cities}城解锁`}</small>

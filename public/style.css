@@ -192,7 +192,7 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .star-card.locked { filter: grayscale(.28); }
 .star-card.locked .card-player { filter: brightness(.68) grayscale(.42); opacity: .9; }
 .star-card .rating { position: absolute; z-index: 2; top: 12px; left: 12px; color: #fff8cf; font-size: 18px; font-weight: 1000; text-shadow: 0 2px 0 rgba(0,0,0,.35); }
-.star-card .rarity { position: absolute; z-index: 2; top: 13px; right: 10px; padding: 2px 5px; color: #172133; border-radius: 5px; background: linear-gradient(135deg,#fff7c9,#e3b94f); font-size: 8px; font-weight: 1000; letter-spacing: .06em; }
+.star-card .card-position { position: absolute; z-index: 2; top: 13px; right: 10px; padding: 2px 6px; color: #172133; border-radius: 5px; background: #fff2bd; font-size: 8px; font-weight: 1000; letter-spacing: .04em; }
 .star-card .card-player { z-index: 1; width: 100%; height: 132px; margin-top: 8px; object-fit: contain; object-position: center bottom; filter: drop-shadow(0 5px 3px rgba(0,0,0,.28)); }
 .star-card .card-number { position: absolute; z-index: 2; top: 42px; right: 13px; color: rgba(255,255,255,.92); font-size: 18px; font-style: italic; font-weight: 1000; text-shadow: 0 2px 0 rgba(0,0,0,.32); }
 .star-card strong { z-index: 2; font-size: 14px; text-shadow: 0 2px 0 rgba(0,0,0,.3); }
