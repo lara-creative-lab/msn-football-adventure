@@ -20,9 +20,10 @@
 - 小罗庆祝动作继续永久收藏；积分兑换区新增独立小罗球星卡，球星卡总数更新为 9。
 - 游戏主页开始按钮下方的整组说明文字已删除，保留内容整体向下调整。
 - 资产放大页顶部 `ASSET VIEW` 已删除。
-- 十城徽章已生成三版本地概念预览，V3 使用活动页奶油底、深蓝粗边与橙黄框架，并简化右下 2026 美加墨徽章；尚未拆分或接入游戏。
-- `npm test` 已通过。
-- 发布前 Codex Security 标准扫描已完成：覆盖 70/70 文件，0 个可报告问题；报告位于本机 Codex Security 扫描目录，scan id `b38a17b1-bf05-449a-b237-a8fa9c390e14`。
+- 十城徽章已从 V3 方向制作成十枚独立透明 PNG 并接入游戏：各自保留不同异形轮廓，统一为活动页奶油珐琅、深蓝粗边与橙黄蓝点缀；2026 美加墨徽章已进一步减少线条。
+- 资产页“史诗收藏 / 旅程收藏 / 彩蛋收藏”已从深色胶囊改为无底色、不可点击的高对比文字标签。
+- `npm test` 已通过；本地浏览器已检查徽章列表、分类标签和徽章放大页，控制台无错误。
+- 发布前 Codex Security 标准扫描已完成：覆盖 87/87 文件，0 个可报告问题；报告位于本机 Codex Security 扫描目录，scan id `748485c5-3754-4647-85c8-60707ba02b06`。
 
 ## 2026-08-06 发布记录
 
@@ -44,8 +45,7 @@
 
 ## 当前待办
 
-1. 用户确认 V3 徽章概念方向后，将十枚徽章分别制作成独立游戏资产并替换现有通用圆形徽章实现。
-2. 本轮已获得发布授权；发布时仍需核实实际 GitHub 主仓库、Sites 部署结果与公开页面。
+1. 本轮已获得发布授权；发布时仍需核实实际 GitHub 主仓库、Sites 部署结果与公开页面。
 
 ## 参考资料
 
@@ -53,6 +53,8 @@
 - `docs/references/physical-badge-shape-reference.png`：实体珐琅/金属徽章合集，用于异形轮廓、材质和主题构图参考。
 - `docs/references/home-red-box-remove-text.png`、`home-red-box-remove-text-v2.png`：主页红框删除范围。
 - `docs/concepts/city-badges-10-concept-preview-v3-simplified-2026.png`：当前徽章概念预览。
+- `docs/concepts/generated/city-badges-production-master-transparent-2026.png`：十城徽章透明生产母版。
+- `docs/references/asset-page-city-badges-and-labels-feedback.png`：城市徽章未替换与分类标签视觉反馈。
 - `docs/references/README.md`：参考图使用说明。
 
 ## 新任务启动口令

@@ -20,7 +20,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /game-v33\.js\?v=39/);
+  assert.match(html, /style\.css\?v=40/);
+  assert.match(html, /game-v33\.js\?v=40/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);
@@ -179,9 +180,11 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /01 · 积分兑换/);
   assert.match(html, /02 · 冒险收藏/);
   assert.match(game, /十城主题徽章/);
-  assert.match(game, /city-medal-stars/);
-  assert.match(css, /conic-gradient/);
-  assert.match(css, /repeating-conic-gradient/);
+  assert.match(game, /city-medal-image/);
+  assert.doesNotMatch(game, /city-medal-stars|city-badge-emblem/);
+  assert.doesNotMatch(css, /\.city-medal::before|\.city-medal::after/);
+  assert.match(css, /\.rarity-chip \{[^}]*background: none;[^}]*pointer-events: none;/);
+  assert.doesNotMatch(css, /\.rarity-chip \{[^}]*border-radius: 999px/);
   assert.match(game, /永恒之城·桂冠/);
   assert.match(game, /三国同心·终极之战/);
   assert.match(html, /id="assetPreviewScreen"/);
@@ -226,6 +229,10 @@ test("build includes the playable game and worker entrypoint", async () => {
   }
   for (const id of ["ronaldinho", "ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"]) {
     await stat(new URL(`../dist/client/assets/characters/emotes/${id}-celebration.png`, import.meta.url));
+  }
+  for (const file of ["city-badge-1990-rome.png", "city-badge-1994-pasadena.png", "city-badge-1998-paris.png", "city-badge-2002-yokohama.png", "city-badge-2006-berlin.png", "city-badge-2010-cape-town.png", "city-badge-2014-rio.png", "city-badge-2018-moscow.png", "city-badge-2022-doha.png", "city-badge-2026-united.png"]) {
+    assert.match(game, new RegExp(file.replaceAll(".", "\\.")));
+    await stat(new URL(`../dist/client/assets/city-badges/${file}`, import.meta.url));
   }
   await stat(new URL("../dist/client/world-cup-stadium.wav", import.meta.url));
   const worker = await readFile(new URL("../dist/server/index.js", import.meta.url), "utf8");

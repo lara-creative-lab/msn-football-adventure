@@ -20,3 +20,8 @@
 游戏主页截图。红框中的开始按钮下方说明文字需要整段删除；关卡选择、场景选择和开始按钮不在删除范围内。
 
 `home-red-box-remove-text-v2.png` 是同一删除范围的后续清晰截图，并补充要求删除后将保留内容整体下移。
+
+## 资产页城市徽章与分类标签反馈
+
+- `asset-page-city-badges-and-labels-feedback.png`：确认旧版十枚通用圆形徽章仍未替换，并指出右上角收藏分类不应做成像按钮一样的深色胶囊。
+- `asset-label-epic-feedback.png`、`asset-label-journey-feedback.png`、`asset-label-easter-egg-feedback.png`：三种低对比度胶囊标签的局部截图。后续实现应采用无底色、不可点击、高对比文字标签。
