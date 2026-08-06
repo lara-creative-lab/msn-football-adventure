@@ -20,8 +20,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /style\.css\?v=43/);
-  assert.match(html, /game-v33\.js\?v=43/);
+  assert.match(html, /style\.css\?v=44/);
+  assert.match(html, /game-v33\.js\?v=44/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);
@@ -84,7 +84,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /enemy\.type === "ronaldinho" \? \[-245, -95\]/);
   assert.match(game, /小罗始终是敌方球星/);
   assert.match(html, /第7、9、10关固定出现小罗，第6、8关随机增加0–2次彩蛋/);
-  assert.match(html, /击败后内马尔获得4秒无敌冲锋/);
+  assert.match(html, /击败小罗后获得4秒无敌冲锋/);
   assert.match(game, /内马尔保持原形/);
   assert.doesNotMatch(game, /player\.heroForm = "ronaldinho"/);
   assert.doesNotMatch(game, /item\.type === "ronaldinho"/);
@@ -141,7 +141,9 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /C罗会砰砰跳跃连射/);
   assert.match(html, /每关都有阶梯伏击/);
   assert.match(game, /function getMsnBuffs/);
-  assert.match(game, /梅西组织：加速、快射与护盾/);
+  assert.match(game, /梅西加入：加速、快射与护盾/);
+  assert.match(game, /梅西加入 · 护盾/);
+  assert.doesNotMatch(game, /梅西组织/);
   assert.match(game, /MSN连线：每3球强攻/);
   assert.match(game, /const assistShot = Boolean\(buffs\.assistEvery/);
   assert.match(game, /player\.speed \* getMsnBuffs\(\)\.move/);

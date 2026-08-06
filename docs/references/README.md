@@ -29,3 +29,8 @@
 ## `star-card-ranking-labels-feedback.png`
 
 球星卡标签反馈截图。`ICON / GOAT / SAMBA / ELITE / GOLD / LEGEND` 会形成主观的球星高低比较；球星卡右上角应改用客观的场上位置标签。
+
+## 游戏状态文案反馈
+
+- `ronaldinho-helpbar-wording-feedback.png`：帮助栏应写成“击败小罗后获得 4 秒无敌冲锋”，避免“击败后内马尔获得”产生击败对象的歧义。
+- `messi-join-wording-feedback.png`：MSN 二阶段状态应写“梅西加入”，不写“梅西组织”。

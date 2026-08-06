@@ -345,7 +345,7 @@
       return { move: 1.15, ballSpeed: 1.22, cooldown: .72, recovery: 2.5, assistEvery: 3, label: "MSN连线：每3球强攻" };
     }
     if (msnStage === 2) {
-      return { move: 1.1, ballSpeed: 1.13, cooldown: .82, recovery: 2.2, assistEvery: 0, label: "梅西组织：加速、快射与护盾" };
+      return { move: 1.1, ballSpeed: 1.13, cooldown: .82, recovery: 2.2, assistEvery: 0, label: "梅西加入：加速、快射与护盾" };
     }
     return { move: 1, ballSpeed: 1, cooldown: 1, recovery: 1.7, assistEvery: 0, label: "" };
   }
@@ -893,7 +893,7 @@
     msnStage = nextStage;
     if (msnStage === 2) {
       rewardTitle.textContent = "🤝 梅西加入主角队！";
-      rewardDescription.textContent = "梅西组织生效：移速+10%、射门提速+13%、本关首次正面受击自动护盾";
+      rewardDescription.textContent = "梅西加入：移速+10%、射门提速+13%、本关首次正面受击自动护盾";
     } else {
       rewardTitle.textContent = "🔵🔴 MSN组合完成！";
       rewardDescription.textContent = "苏亚雷斯加入：巴萨战袍登场；移速+15%，每3脚触发MSN强攻，继续收集MSN冠军星章";
@@ -1975,7 +1975,7 @@
     if (trophyWon && !celebrating) drawChampionsLeagueTrophy(centerX, bottomY - displayHeight * .31, time);
     ctx.save();
     const celebrationName = PLAYER_META[player.celebrationType]?.name || "球星";
-    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 内马尔·桑巴冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🏆 巴萨MSN合捧欧冠大耳朵杯" : (msnStage === 3 ? "🔵🔴 MSN连线 · 三连强攻" : (msnStage === 2 ? `🤝 梅西组织 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
+    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 内马尔·桑巴冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🏆 巴萨MSN合捧欧冠大耳朵杯" : (msnStage === 3 ? "🔵🔴 MSN连线 · 三连强攻" : (msnStage === 2 ? `🤝 梅西加入 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
     const labelWidth = celebrating ? 154 : (ronaldinhoRush ? 150 : (trophyWon ? 174 : (msnStage === 1 ? 78 : 164)));
     drawRoundedRect(centerX - labelWidth / 2, bottomY - displayHeight - 20, labelWidth, 20, 8, celebrating ? "rgba(255,247,223,.97)" : (trophyWon ? "rgba(233,242,255,.97)" : "rgba(255,255,255,.97)"), celebrating ? celebration.color : "#172133", 2);
     ctx.fillStyle = "#172133"; ctx.font = "900 11px ui-rounded, sans-serif"; ctx.textAlign = "center";
