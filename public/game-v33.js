@@ -109,6 +109,7 @@
   const STAR_CARDS = [
     { id: "neymar", milestone: 200, cities: 1, cost: 200, rating: 91, rarity: "ICON", a: "#f5ce2e", b: "#087b43" },
     { id: "messi", milestone: 400, cities: 2, cost: 400, rating: 94, rarity: "GOAT", a: "#72c9f1", b: "#e8f5ff" },
+    { id: "ronaldinho", milestone: 500, cities: 3, cost: 500, rating: 93, rarity: "SAMBA", a: "#f7d22f", b: "#14834f" },
     { id: "ronaldo", milestone: 600, cities: 3, cost: 600, rating: 94, rarity: "GOAT", a: "#b51d2c", b: "#176b45" },
     { id: "mbappe", milestone: 800, cities: 4, cost: 800, rating: 92, rarity: "ELITE", a: "#243c94", b: "#e24a45" },
     { id: "haaland", milestone: 1000, cities: 5, cost: 1000, rating: 92, rarity: "ELITE", a: "#75d4ee", b: "#152a58" },
@@ -191,6 +192,7 @@
   // A journey is deliberately separate from permanent collection progress.
   // Cards, outfits and city stamps survive, but MSN must reunite again in each run.
   let journeyLevels = new Set();
+  let ronaldinhoLevel = pickRonaldinhoLevel();
   let endingCardDrawnThisRun = false;
   let pendingMsnDraw = null;
   let drawRevealTimer = 0;
@@ -216,6 +218,11 @@
   let platforms = [];
   let coinItems = [];
   let enemies = [];
+
+  function pickRonaldinhoLevel(startLevel = 0) {
+    const firstEligibleLevel = Math.max(5, Math.min(8, startLevel));
+    return firstEligibleLevel + Math.floor(Math.random() * (9 - firstEligibleLevel));
+  }
 
   function makeTreasure(x, y, seed = 0) {
     const roll = seed % 13;
@@ -288,8 +295,8 @@
       const footballers = ["ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
       const onStair = stairEnemyIndices.includes(i);
       const stairSlot = stairEnemyIndices.indexOf(i);
-      // 小罗是敌方球星而不是变身道具：每关安排一名，其余位置轮换其他球星。
-      const type = i === 0 ? "ronaldinho" : (onStair && (index + stairSlot) % 4 === 0 ? "ronaldo" : footballers[(i + index) % footballers.length]);
+      // 小罗是敌方球星而不是变身道具：每轮仅在第6–9关随机一关的主线安排一名。
+      const type = i === 0 && index === ronaldinhoLevel ? "ronaldinho" : (onStair && (index + stairSlot) % 4 === 0 ? "ronaldo" : footballers[(i + index) % footballers.length]);
       const segment = onStair ? stairPlatforms[(i * 2 + index) % stairPlatforms.length] : enemyGround[i % enemyGround.length];
       const laneStart = segment.x + (onStair ? 10 : 95);
       const laneEnd = segment.x + segment.w - (onStair ? 10 : 45);
@@ -384,6 +391,7 @@
     currentLevel = Number(levelSelect.value) || 0;
     totalCoins = 0;
     journeyLevels = new Set();
+    ronaldinhoLevel = pickRonaldinhoLevel(currentLevel);
     endingCardDrawnThisRun = false;
     equippedSkin = "default";
     saveCosmetics();
@@ -417,6 +425,7 @@
     currentLevel = 0;
     totalCoins = 0;
     journeyLevels = new Set();
+    ronaldinhoLevel = pickRonaldinhoLevel();
     endingCardDrawnThisRun = false;
     equippedSkin = "default";
     saveCosmetics();
@@ -775,12 +784,12 @@
 
   function activateRonaldinhoRush() {
     // 小罗始终是敌方球星；击败他只给内马尔加状态，不替换主角形象。
-    player.rushTimer = 8;
-    player.invincible = Math.max(player.invincible, 8.15);
+    player.rushTimer = 4;
+    player.invincible = Math.max(player.invincible, 4.15);
     player.facing = player.facing || 1;
     player.vx = player.facing * player.speed * getMsnBuffs().move * 2.05;
     rewardTitle.textContent = "✨ 击败小罗：桑巴冲锋！";
-    rewardDescription.textContent = "内马尔保持原形，获得8秒无敌冲锋；可撞倒普通敌人并撞击Boss扣血";
+    rewardDescription.textContent = "内马尔保持原形，获得4秒无敌冲锋；可撞倒普通敌人并撞击Boss扣血";
     rewardToast.classList.remove("hidden");
     window.setTimeout(() => rewardToast.classList.add("hidden"), 3000);
     beep(392, .08, "triangle", .04); beep(523, .09, "triangle", .038, .07); beep(659, .1, "triangle", .034, .15); beep(988, .22, "triangle", .03, .24);

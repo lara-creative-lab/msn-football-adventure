@@ -88,6 +88,9 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 
 .overlay.hidden { opacity: 0; pointer-events: none; }
 
+/* 删除长说明后，让保留的开始内容在弹窗中视觉居中并略向下落位。 */
+#startScreen .card { transform: translateY(24px); }
+
 #shopScreen { z-index: 8; }
 .draw-overlay { z-index: 7; overflow: hidden; padding: 0; color: white; background: radial-gradient(circle at 50% 48%, rgba(79,84,166,.72), rgba(8,12,36,.96) 58%, #040714); backdrop-filter: blur(6px); }
 .draw-scene { position: relative; isolation: isolate; display: grid; place-items: center; align-content: center; width: 100%; height: 100%; padding: 18px; text-align: center; }
@@ -316,6 +319,7 @@ kbd { min-width: 26px; padding: 4px 7px; text-align: center; border: 2px solid #
   .actions select { max-width: 132px; font-size: 11px; }
   .helpbar { font-size: 11px; gap: 10px 15px; }
   .card { padding: 18px; }
+  #startScreen .card { transform: translateY(12px); }
   .shop-grid { grid-template-columns: repeat(2, 1fr); }
   .asset-category { padding: 10px; }
   .asset-category-head { align-items: flex-start; flex-direction: column; }
