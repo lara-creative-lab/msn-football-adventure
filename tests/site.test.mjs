@@ -36,8 +36,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(h5Html, /data-code="Space"/);
   assert.match(h5Html, /data-code="KeyF"/);
   assert.match(h5Html, /game-v33\.js\?v=44/);
-  assert.match(h5Html, /h5-controls\.js\?v=1/);
-  assert.match(h5Html, /h5\.css\?v=1/);
+  assert.match(h5Html, /h5-controls\.js\?v=2/);
+  assert.match(h5Html, /h5\.css\?v=2/);
   for (const id of ["gameCanvas", "startScreen", "startButton", "levelSelect", "sceneSelect", "messageScreen", "messageKicker", "messageTitle", "messageText", "messageAssetButton", "playAgainButton", "shopScreen", "walletAmount", "stampCount", "cardCount", "cardGrid", "journeyAssetGrid", "closeShopButton", "soundButton", "restartButton", "firstLevelButton", "shopButton", "bossBadgeButton", "cardDrawScreen", "cardDrawScene", "drawKicker", "drawTitle", "drawHint", "drawCardImage", "drawCardName", "drawCardDetail", "drawStartButton", "drawActions", "drawAssetsButton", "drawNewRoundButton", "assetPreviewScreen", "assetPreviewVisual", "assetPreviewTitle", "assetPreviewDetail", "closeAssetPreviewButton", "rewardToast", "rewardTitle", "rewardDescription"]) {
     assert.match(h5Html, new RegExp(`id="${id}"`));
   }
@@ -51,6 +51,15 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(h5Css, /touch-action: none/);
   assert.match(h5Css, /@media \(orientation: landscape\) and \(max-height: 560px\)/);
   assert.match(h5Css, /@media \(orientation: portrait\)/);
+  assert.match(h5Css, /\.h5-app \{ min-height: 0;/);
+  assert.match(h5Css, /#shopScreen, \.h5-app #cardDrawScreen, \.h5-app \.asset-preview-overlay/);
+  assert.match(h5Css, /\.h5-start-card \.level-picker:nth-of-type\(2\) \{ display: none;/);
+  assert.match(h5Css, /\.touch-controls\.is-hidden \{ opacity: 0; visibility: hidden;/);
+  assert.match(h5Css, /left: calc\(10px \+ var\(--safe-left\)\); width: auto;/);
+  assert.match(h5Css, /\.h5-app \{ min-height: 0;/);
+  assert.match(h5Css, /#shopScreen, \.h5-app #cardDrawScreen, \.h5-app \.asset-preview-overlay/);
+  assert.match(h5Css, /\.h5-start-card \.level-picker:nth-of-type\(2\) \{ display: none;/);
+  assert.match(h5Css, /\.touch-controls\.is-hidden \{ opacity: 0; visibility: hidden;/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);

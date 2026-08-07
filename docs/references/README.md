@@ -34,3 +34,7 @@
 
 - `ronaldinho-helpbar-wording-feedback.png`：帮助栏应写成“击败小罗后获得 4 秒无敌冲锋”，避免“击败后内马尔获得”产生击败对象的歧义。
 - `messi-join-wording-feedback.png`：MSN 二阶段状态应写“梅西加入”，不写“梅西组织”。
+
+## `h5-mobile-layout-feedback.jpg`
+
+首版 H5 在 iPhone 竖屏中的实机反馈：顶部按钮换行拥挤、暂停弹窗占比过大、禁用控制键仍明显可见，且 `100dvh` 把奶油色游戏外框拉到整屏形成大片空白。后续手机布局必须以实机竖屏首屏完整、无横向溢出和弹窗不越出 16:9 游戏区为验收条件。

@@ -60,7 +60,7 @@
     } catch (_) {}
   });
   document.addEventListener("fullscreenchange", () => {
-    if (fullscreenButton) fullscreenButton.textContent = document.fullscreenElement ? "退出全屏" : "全屏";
+    if (fullscreenButton) fullscreenButton.textContent = document.fullscreenElement ? "退出" : "横屏";
   });
   document.addEventListener("visibilitychange", releaseAll);
   window.addEventListener("blur", releaseAll);
