@@ -66,7 +66,7 @@
 
 ## 当前待办
 
-- 独立 H5 手机版已完成实现、构建验证与发布前安全扫描；待提交并发布，原桌面版入口未修改。
+- 独立 H5 手机版已完成并发布；原桌面版入口未修改。
 
 ## 2026-08-07 H5 手机版
 
@@ -78,6 +78,9 @@
 - 回归测试新增 H5 完整 DOM、触控键、移动安全区、横竖屏和桌面入口隔离断言；`npm test`、`npm run build`、JavaScript 语法检查与 `git diff --check` 已通过。
 - 发布前 Codex Security 标准扫描 `4c86beae-ef0a-4765-bf11-ac3baf569a1a` 覆盖 93/93 个源码文件，6 个安全面全部关闭，0 个可报告问题。
 - 安全扫描报告：`/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-33ZXLB/msn-site/0378aabc01458afe0db7ba44ee298e2a71f2a4b3_20260807T065212Z_jxusrfgg/report.md`。
+- 功能提交：`51fc781a50622b4356f1485eb776bf663c783699`。
+- GitHub Pages 工作流 `31156780120` 发布成功；H5 地址 `https://lara-creative-lab.github.io/msn-football-adventure/h5/` 返回 200，并读回 H5 标题、手机版脚本和五个触控键。
+- ChatGPT Sites 版本 35 发布成功；主站地址保持 `https://msn-football-adventure.florapr.chatgpt.site`，H5 入口为 `https://msn-football-adventure.florapr.chatgpt.site/h5/`，访问策略保持原状。
 
 ## 2026-08-06 最终发布前验证
 
