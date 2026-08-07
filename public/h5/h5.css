@@ -1,0 +1,153 @@
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+}
+
+html, body { overscroll-behavior: none; }
+
+.h5-body {
+  min-height: 100dvh;
+  display: block;
+  padding: calc(8px + var(--safe-top)) calc(8px + var(--safe-right)) calc(8px + var(--safe-bottom)) calc(8px + var(--safe-left));
+  overflow-x: hidden;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.h5-app {
+  width: min(100%, 1120px);
+  min-height: calc(100dvh - 16px - var(--safe-top) - var(--safe-bottom));
+  margin: 0 auto;
+  padding: 10px;
+  border-width: 3px;
+  border-radius: 20px;
+  box-shadow: 0 9px 0 rgba(121,52,30,.3), 0 18px 40px rgba(54,33,21,.2);
+}
+
+.h5-topbar { gap: 8px; padding: 0 2px 9px; }
+.h5-brand h1 { font-size: clamp(20px, 5.6vw, 36px); white-space: nowrap; }
+.h5-brand .eyebrow { font-size: 8px; }
+.h5-actions { gap: 6px; }
+.h5-actions button, .desktop-link {
+  min-height: 34px;
+  padding: 7px 9px;
+  border: 2px solid var(--ink);
+  border-radius: 9px;
+  color: var(--ink);
+  font: 800 11px/1 inherit;
+  text-decoration: none;
+  background: white;
+  box-shadow: 0 3px 0 var(--ink);
+}
+
+.h5-actions #soundButton { max-width: 112px; overflow: hidden; text-overflow: ellipsis; }
+.h5-app .stage { border-width: 3px; border-radius: 13px; touch-action: none; }
+.h5-app canvas { touch-action: none; }
+.h5-start-card { width: min(620px, 94%); }
+.h5-intro { margin: 4px auto 12px; }
+
+.touch-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  width: 100%;
+  min-height: 92px;
+  padding: 10px 8px 2px;
+  touch-action: none;
+  transition: opacity .15s ease;
+}
+
+.touch-controls.is-hidden { opacity: .25; pointer-events: none; }
+.touch-cluster { display: flex; align-items: center; gap: 8px; }
+.touch-actions { margin-left: auto; gap: 12px; }
+.touch-key {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 1px;
+  width: clamp(58px, 17vw, 74px);
+  height: clamp(58px, 17vw, 74px);
+  padding: 0;
+  border: 3px solid var(--ink);
+  border-radius: 19px;
+  color: var(--ink);
+  background: linear-gradient(145deg, #fffdf4, #ffe7a5);
+  box-shadow: 0 5px 0 var(--ink), inset 0 2px 0 rgba(255,255,255,.9);
+  touch-action: none;
+}
+
+.touch-key span { font-size: clamp(22px, 7vw, 34px); font-weight: 1000; line-height: .9; }
+.touch-key small { font-size: 9px; font-weight: 900; }
+.touch-shoot { color: #823520; background: linear-gradient(145deg, #fff5ca, #ffbc62); }
+.touch-jump { color: white; background: linear-gradient(145deg, #ff985c, #ec5d33); }
+.touch-key.pressed { transform: translateY(5px) scale(.97); box-shadow: 0 0 0 var(--ink), inset 0 3px 8px rgba(24,33,47,.2); }
+.rotate-hint { display: none; margin: 7px 0 0; color: #667182; font-size: 10px; font-weight: 800; text-align: center; }
+
+.h5-app .shop-card { width: min(1060px, 98%); max-height: 96%; }
+.h5-app .asset-preview-card { max-height: 96%; }
+
+@media (orientation: portrait) {
+  .rotate-hint { display: block; }
+}
+
+@media (max-width: 680px) {
+  .h5-body { padding: calc(5px + var(--safe-top)) calc(5px + var(--safe-right)) calc(5px + var(--safe-bottom)) calc(5px + var(--safe-left)); }
+  .h5-app { min-height: calc(100dvh - 10px - var(--safe-top) - var(--safe-bottom)); padding: 7px; border-radius: 15px; }
+  .h5-topbar { align-items: flex-start; }
+  .h5-brand h1 { font-size: 20px; }
+  .h5-actions { max-width: 190px; }
+  .h5-actions button, .desktop-link { min-height: 29px; padding: 5px 7px; font-size: 9px; }
+  .h5-actions #soundButton { display: none; }
+  .h5-app .overlay { padding: 8px; }
+  .h5-app #startScreen .card { transform: none; }
+  .h5-start-card { padding: 12px; }
+  .h5-start-card .mini-cap { width: 34px; height: 34px; margin-bottom: 3px; font-size: 21px; }
+  .h5-start-card h2 { margin: 3px 0; font-size: clamp(19px, 6vw, 28px); }
+  .h5-start-card .h5-intro { display: none; }
+  .h5-start-card .level-picker { gap: 5px; margin: 7px auto; }
+  .h5-start-card .level-picker > span { min-width: 92px; font-size: 10px; }
+  .h5-start-card select { min-width: 0; padding: 7px 8px; border-width: 2px; font-size: 10px; }
+  .h5-start-card #startButton { min-width: 150px; margin-top: 5px; padding: 9px; }
+  .touch-controls { gap: 8px; min-height: 77px; padding-inline: 2px; }
+  .touch-cluster { gap: 5px; }
+  .touch-actions { gap: 7px; }
+  .touch-key { width: clamp(50px, 15.5vw, 66px); height: clamp(50px, 15.5vw, 66px); border-radius: 16px; }
+  .touch-key small { font-size: 8px; }
+  .h5-app .reward-toast { top: 8px; min-width: min(92%, 310px); }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  .h5-body { padding: var(--safe-top) var(--safe-right) var(--safe-bottom) var(--safe-left); background: #18212f; }
+  .h5-app { position: relative; width: 100%; min-height: 100dvh; padding: 0; border: 0; border-radius: 0; box-shadow: none; background: #18212f; }
+  .h5-topbar { position: absolute; z-index: 12; top: calc(5px + var(--safe-top)); right: calc(7px + var(--safe-right)); left: calc(7px + var(--safe-left)); pointer-events: none; }
+  .h5-brand { padding: 5px 9px; border: 2px solid var(--ink); border-radius: 11px; background: rgba(255,247,223,.9); backdrop-filter: blur(4px); }
+  .h5-brand .eyebrow { display: none; }
+  .h5-brand h1 { font-size: 17px; }
+  .h5-actions { pointer-events: auto; }
+  .h5-actions button, .desktop-link { min-height: 30px; background: rgba(255,255,255,.92); }
+  .h5-actions #soundButton, .h5-actions #restartButton, .h5-actions #firstLevelButton, .desktop-link { display: none; }
+  .h5-app .stage { width: min(100vw, calc(100dvh * 16 / 9)); height: min(100dvh, calc(100vw * 9 / 16)); margin: 0 auto; border: 0; border-radius: 0; }
+  .touch-controls { position: absolute; z-index: 10; right: calc(10px + var(--safe-right)); bottom: calc(9px + var(--safe-bottom)); left: calc(10px + var(--safe-left)); min-height: 0; padding: 0; pointer-events: none; }
+  .touch-controls .touch-key { width: clamp(48px, 10.5vh, 66px); height: clamp(48px, 10.5vh, 66px); border-color: rgba(24,33,47,.92); background-color: rgba(255,255,255,.88); opacity: .9; pointer-events: auto; }
+  .touch-controls.is-hidden { opacity: 0; }
+  .touch-key span { font-size: clamp(20px, 5vh, 30px); }
+  .rotate-hint { display: none; }
+  .h5-app .overlay { padding: 5px; }
+  .h5-app #startScreen .card { transform: none; }
+  .h5-start-card { width: min(580px, 82%); padding: 9px 16px; }
+  .h5-start-card .mini-cap, .h5-start-card .h5-intro { display: none; }
+  .h5-start-card .kicker { margin-bottom: 1px; }
+  .h5-start-card h2 { margin: 1px 0 3px; font-size: 21px; }
+  .h5-start-card .level-picker { margin: 5px auto; }
+  .h5-start-card select { padding: 6px 8px; border-width: 2px; font-size: 10px; }
+  .h5-start-card #startButton { margin-top: 3px; padding: 8px 22px; }
+  .h5-app .shop-card { max-height: 98%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .touch-controls, .touch-key { transition: none; }
+}

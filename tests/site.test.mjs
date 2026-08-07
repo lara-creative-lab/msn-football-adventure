@@ -6,6 +6,9 @@ test("build includes the playable game and worker entrypoint", async () => {
   const html = await readFile(new URL("../dist/client/index.html", import.meta.url), "utf8");
   const game = await readFile(new URL("../dist/client/game-v33.js", import.meta.url), "utf8");
   const css = await readFile(new URL("../dist/client/style.css", import.meta.url), "utf8");
+  const h5Html = await readFile(new URL("../dist/client/h5/index.html", import.meta.url), "utf8");
+  const h5Css = await readFile(new URL("../dist/client/h5/h5.css", import.meta.url), "utf8");
+  const h5Controls = await readFile(new URL("../dist/client/h5/h5-controls.js", import.meta.url), "utf8");
   assert.match(html, /MSN球星大冒险/);
   assert.match(html, /音乐：世界杯荣耀曲/);
   assert.match(html, /🇮🇹 1990 意大利·罗马斗兽场/);
@@ -22,6 +25,32 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /no-cache, no-store, must-revalidate/);
   assert.match(html, /style\.css\?v=44/);
   assert.match(html, /game-v33\.js\?v=44/);
+  assert.doesNotMatch(html, /id="touchControls"|h5-controls\.js|H5 手机版/);
+  assert.match(h5Html, /H5手机版/);
+  assert.match(h5Html, /viewport-fit=cover/);
+  assert.match(h5Html, /<base href="\.\.\/"/);
+  assert.match(h5Html, /id="touchControls"/);
+  assert.match(h5Html, /data-code="ArrowLeft"/);
+  assert.match(h5Html, /data-code="ArrowRight"/);
+  assert.match(h5Html, /data-code="ArrowDown"/);
+  assert.match(h5Html, /data-code="Space"/);
+  assert.match(h5Html, /data-code="KeyF"/);
+  assert.match(h5Html, /game-v33\.js\?v=44/);
+  assert.match(h5Html, /h5-controls\.js\?v=1/);
+  assert.match(h5Html, /h5\.css\?v=1/);
+  for (const id of ["gameCanvas", "startScreen", "startButton", "levelSelect", "sceneSelect", "messageScreen", "messageKicker", "messageTitle", "messageText", "messageAssetButton", "playAgainButton", "shopScreen", "walletAmount", "stampCount", "cardCount", "cardGrid", "journeyAssetGrid", "closeShopButton", "soundButton", "restartButton", "firstLevelButton", "shopButton", "bossBadgeButton", "cardDrawScreen", "cardDrawScene", "drawKicker", "drawTitle", "drawHint", "drawCardImage", "drawCardName", "drawCardDetail", "drawStartButton", "drawActions", "drawAssetsButton", "drawNewRoundButton", "assetPreviewScreen", "assetPreviewVisual", "assetPreviewTitle", "assetPreviewDetail", "closeAssetPreviewButton", "rewardToast", "rewardTitle", "rewardDescription"]) {
+    assert.match(h5Html, new RegExp(`id="${id}"`));
+  }
+  assert.match(h5Controls, /new KeyboardEvent\(type/);
+  assert.match(h5Controls, /activePointers = new Map\(\)/);
+  assert.match(h5Controls, /setPointerCapture/);
+  assert.match(h5Controls, /pointercancel/);
+  assert.match(h5Controls, /MutationObserver\(syncControls\)/);
+  assert.match(h5Controls, /requestFullscreen/);
+  assert.match(h5Css, /env\(safe-area-inset-bottom/);
+  assert.match(h5Css, /touch-action: none/);
+  assert.match(h5Css, /@media \(orientation: landscape\) and \(max-height: 560px\)/);
+  assert.match(h5Css, /@media \(orientation: portrait\)/);
   assert.match(html, /id="restartButton"[^>]*>重玩本关<\/button>/);
   assert.match(html, /id="firstLevelButton"[^>]*>从第1关开始<\/button>/);
   assert.doesNotMatch(html, /game\.js\?v=/);

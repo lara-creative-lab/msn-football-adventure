@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="theme-color" content="#ff9e54" />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <base href="../" />
+    <title>MSN球星大冒险 · H5手机版</title>
+    <link rel="stylesheet" href="./style.css?v=44" />
+    <link rel="stylesheet" href="./h5/h5.css?v=1" />
+  </head>
+  <body class="h5-body">
+    <main class="game-shell h5-app">
+      <header class="topbar h5-topbar">
+        <div class="h5-brand">
+          <p class="eyebrow">H5 MOBILE GAME</p>
+          <h1>MSN球星大冒险</h1>
+        </div>
+        <div class="actions h5-actions">
+          <button id="soundButton" type="button" aria-label="切换音乐和声音">音乐：世界杯荣耀曲</button>
+          <button id="restartButton" type="button" title="重新挑战当前关卡">重玩本关</button>
+          <button id="firstLevelButton" type="button" title="从第一关重新开始">第1关</button>
+          <button id="shopButton" type="button">资产</button>
+          <button id="mobileFullscreenButton" type="button" aria-label="进入全屏">全屏</button>
+          <a class="desktop-link" href="./">电脑版</a>
+        </div>
+      </header>
+
+      <section class="stage" aria-label="手机游戏区域">
+        <canvas id="gameCanvas" width="960" height="540"></canvas>
+        <div id="startScreen" class="overlay">
+          <div class="card h5-start-card">
+            <span class="mini-cap" aria-hidden="true">ϟ</span>
+            <p class="kicker">H5 手机版</p>
+            <h2>指尖开启世界杯冒险</h2>
+            <p class="h5-intro">使用屏幕按键移动、二段跳、踢球与进入水管，横屏体验更佳。</p>
+            <label class="level-picker">
+              <span>选择起始关卡</span>
+              <select id="levelSelect">
+                <option value="0">1 · 🇮🇹 1990 意大利·罗马斗兽场</option>
+                <option value="1">2 · 🇺🇸 1994 美国·玫瑰碗</option>
+                <option value="2">3 · 🇫🇷 1998 法国·巴黎铁塔</option>
+                <option value="3">4 · 🇰🇷 🇯🇵 2002 韩日·横滨港</option>
+                <option value="4">5 · 🇩🇪 2006 德国·勃兰登堡门</option>
+                <option value="5">6 · 🇿🇦 2010 南非·开普桌山</option>
+                <option value="6">7 · 🇧🇷 2014 巴西·里约热内卢</option>
+                <option value="7">8 · 🇷🇺 2018 俄罗斯·圣瓦西里</option>
+                <option value="8">9 · 🇶🇦 2022 卡塔尔·多哈海滨</option>
+                <option value="9">10 · 🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典</option>
+              </select>
+            </label>
+            <label class="level-picker">
+              <span>选择起始场景</span>
+              <select id="sceneSelect">
+                <option value="main">罗马地标主线</option>
+                <option value="forest">罗马历史街区</option>
+                <option value="beach">罗马城市广场</option>
+                <option value="snow">罗马球迷庆典</option>
+              </select>
+            </label>
+            <button id="startButton" type="button">开始冒险</button>
+          </div>
+        </div>
+
+        <div id="messageScreen" class="overlay hidden">
+          <div class="card">
+            <p id="messageKicker" class="kicker">漂亮！</p>
+            <h2 id="messageTitle">关卡完成</h2>
+            <p id="messageText"></p>
+            <button id="messageAssetButton" class="hidden" type="button">去资产页查看奖励</button>
+            <button id="playAgainButton" type="button">再玩一次</button>
+          </div>
+        </div>
+
+        <div id="cardDrawScreen" class="overlay draw-overlay hidden" aria-label="MSN经典时刻卡抽取仪式">
+          <div id="cardDrawScene" class="draw-scene">
+            <div class="draw-stars" aria-hidden="true"></div>
+            <div class="draw-comet" aria-hidden="true"></div>
+            <div class="draw-summon-ring" aria-hidden="true"></div>
+            <div class="draw-flash" aria-hidden="true"></div>
+            <p id="drawKicker" class="draw-kicker">冠军星轨</p>
+            <h2 id="drawTitle">一张经典时刻正在等待揭晓</h2>
+            <p id="drawHint">启动星轨，召唤本轮通关卡牌</p>
+            <div class="draw-card-shell" aria-live="polite">
+              <div class="draw-card-back"><span>⚽</span><strong>MSN</strong><small>CLASSIC MOMENT</small></div>
+              <div class="draw-card-front">
+                <img id="drawCardImage" src="./assets/msn-classics/msn-classic-01-goal.png" alt="待揭晓的MSN经典时刻卡">
+                <div class="draw-card-copy"><span>★★★★★</span><strong id="drawCardName">经典时刻</strong><small id="drawCardDetail">冠军典藏</small></div>
+              </div>
+            </div>
+            <button id="drawStartButton" type="button">启动冠军抽卡</button>
+            <div id="drawActions" class="draw-actions hidden">
+              <button id="drawAssetsButton" type="button">收下并查看资产</button>
+              <button id="drawNewRoundButton" type="button">开启新一轮</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="shopScreen" class="overlay hidden">
+          <div class="card shop-card">
+            <p class="kicker">MSN ASSET CLUB</p>
+            <h2>MSN冠军资产中心</h2>
+            <p class="wallet">宝藏钱包：<strong id="walletAmount">0</strong> · 本轮城市徽章：<strong id="stampCount">0 / 10</strong> · 球星卡：<strong id="cardCount">0 / 9</strong></p>
+            <section class="asset-category redeem-category">
+              <div class="asset-category-head"><div><span>01 · 积分兑换</span><h3>冠军装备与球星卡</h3><p>使用宝藏积分兑换，可立即装备或永久收藏。</p></div><b>兑换资产</b></div>
+              <h4 class="asset-subtitle">冠军装备</h4>
+              <div class="shop-grid">
+                <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="冠军金靴套装" data-preview-detail="速度与射门兼备的冠军装备"><span>👟</span><strong>冠军金靴套装</strong><small>500 宝藏</small><button type="button" data-skin="starlight" data-cost="500">购买并装备</button></article>
+                <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="冠军金球奖章" data-preview-detail="属于MSN核心球员的荣耀奖章"><span>🥇</span><strong>冠军金球奖章</strong><small>1000 宝藏</small><button type="button" data-skin="captain" data-cost="1000">购买并装备</button></article>
+                <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="帅字队长袖标" data-preview-detail="内马尔专属的帅字队长袖标"><span>🏷️</span><strong>内马尔“帅”字队长袖标</strong><small>900 宝藏</small><button type="button" data-skin="ninja" data-cost="900">购买并装备</button></article>
+                <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="闪电护腿" data-preview-detail="强化冲刺节奏的世界杯战斗装备"><span>⚡</span><strong>闪电护腿</strong><small>800 宝藏</small><button type="button" data-skin="spider" data-cost="800">购买并装备</button></article>
+                <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="门神手套" data-preview-detail="守护球门与生命值的冠军手套"><span>🧤</span><strong>门神手套</strong><small>1200 宝藏</small><button type="button" data-skin="hulk" data-cost="1200">购买并装备</button></article>
+                <article class="shop-item asset-zoomable" tabindex="0" role="button" data-preview-title="终极冠军纪念章" data-preview-detail="击败第10关终极Boss后的首胜纪念"><span>🏆</span><strong>终极冠军纪念章</strong><small>Boss首胜奖励 · 1000宝藏加赠</small><button id="bossBadgeButton" type="button" disabled>击败终极Boss解锁</button></article>
+              </div>
+              <h4 class="asset-subtitle">球星卡收藏</h4>
+              <div id="cardGrid" class="card-grid"></div>
+            </section>
+            <section class="asset-category earned-category">
+              <div class="asset-category-head"><div><span>02 · 冒险收藏</span><h3>征程中获得的荣耀</h3><p>只能通过闯关、击败球星与终极抽卡获得。</p></div><b>不可兑换</b></div>
+              <p class="asset-note">按照收藏稀有度依次展示：终极典藏、经典时刻卡、十城主题徽章与庆祝彩蛋。</p>
+              <div id="journeyAssetGrid" class="journey-assets"></div>
+            </section>
+            <button id="closeShopButton" type="button">返回游戏</button>
+          </div>
+        </div>
+
+        <div id="assetPreviewScreen" class="overlay asset-preview-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="assetPreviewTitle">
+          <div class="asset-preview-card">
+            <button id="closeAssetPreviewButton" class="asset-preview-close" type="button" aria-label="关闭资产大图">×</button>
+            <div id="assetPreviewVisual" class="asset-preview-visual"></div>
+            <h2 id="assetPreviewTitle">资产详情</h2>
+            <p id="assetPreviewDetail">点击资产即可放大查看</p>
+          </div>
+        </div>
+
+        <div id="rewardToast" class="reward-toast hidden" role="status">
+          <span>🏆</span>
+          <div><strong id="rewardTitle">特殊奖励解锁！</strong><small id="rewardDescription">内马尔获得新球衣</small></div>
+        </div>
+      </section>
+
+      <div id="touchControls" class="touch-controls is-hidden" aria-label="手机触控操作区">
+        <div class="touch-cluster touch-move">
+          <button class="touch-key" type="button" data-code="ArrowLeft" aria-label="向左移动"><span>←</span><small>左</small></button>
+          <button class="touch-key" type="button" data-code="ArrowDown" aria-label="进入水管"><span>↓</span><small>下管</small></button>
+          <button class="touch-key" type="button" data-code="ArrowRight" aria-label="向右移动"><span>→</span><small>右</small></button>
+        </div>
+        <div class="touch-cluster touch-actions">
+          <button class="touch-key touch-shoot" type="button" data-code="KeyF" aria-label="踢出足球"><span>⚽</span><small>射门</small></button>
+          <button class="touch-key touch-jump" type="button" data-code="Space" aria-label="跳跃，连续点击可以二段跳"><span>↑</span><small>跳跃</small></button>
+        </div>
+      </div>
+      <p class="rotate-hint">旋转为横屏，视野和操作会更舒适</p>
+    </main>
+
+    <script src="./game-v33.js?v=44"></script>
+    <script src="./h5/h5-controls.js?v=1"></script>
+  </body>
+</html>

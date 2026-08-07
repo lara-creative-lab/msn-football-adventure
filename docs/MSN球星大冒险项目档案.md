@@ -62,7 +62,9 @@
 
 - 静态网站，无运行时后端。
 - 页面入口：`public/index.html`
+- 独立 H5 手机入口：`public/h5/index.html`；与桌面版共享游戏逻辑、资产和浏览器本地收藏，但使用独立移动端布局与触控操作层。
 - 当前主逻辑：`public/game-v33.js`
 - 样式：`public/style.css`
+- H5 样式与触控：`public/h5/h5.css`、`public/h5/h5-controls.js`
 - 构建脚本将 `public/` 内容整理到发布目录。
 - 核心回归测试位于 `tests/site.test.mjs`。
