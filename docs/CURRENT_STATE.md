@@ -66,13 +66,19 @@
 
 ## 当前待办
 
-- 第 7、9、10 关固定出现小罗、第 6、8 关随机增加彩蛋的规则已通过测试、构建与发布前安全扫描，正在发布。
+- 第 7、9、10 关固定出现小罗、第 6、8 关随机增加彩蛋及两处最终文案均已完成验证与双平台发布。
 
 ## 2026-08-06 最终发布前验证
 
 - `npm test`、`npm run build` 与 `git diff --check` 全部通过。
 - 文案补充修改后的 Codex Security 标准扫描 `9e6adaa8-b966-4f2e-b767-7784914cc8ac` 覆盖 90/90 个文件，0 个可报告问题。
 - 最终扫描报告：`/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-9vTTkG/msn-site/9cc6a1e2a485b30711deb3b1c21ae56973346976_20260806T151042Z_q9azv1ji/report.md`。
+
+## 2026-08-07 最终文案与小罗规则发布记录
+
+- 功能提交：`6ed7c2e2c6e3c3cf824b93774e16782f75c414df`；目标远程为 `github` 的 `lara-creative-lab/msn-football-adventure` 主分支，以及既有 ChatGPT Sites 源仓库。
+- GitHub Pages：手动发布工作流 `31142554999` 成功；公开地址 `https://lara-creative-lab.github.io/msn-football-adventure/` 返回 200，并读回 `game-v33.js?v=44`、“击败小罗后获得4秒无敌冲锋”和“梅西加入 · 护盾”。
+- ChatGPT Sites：版本 34 发布成功，地址 `https://msn-football-adventure.florapr.chatgpt.site`，访问策略保持仅所有者可见。
 
 ## 参考资料
 
