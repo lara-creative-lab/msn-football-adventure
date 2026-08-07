@@ -66,7 +66,7 @@
 
 ## 当前待办
 
-- H5 手机版已根据真实 iPhone 竖屏反馈完成第二轮布局修正，待重新发布；原桌面版入口未修改。
+- H5 手机版已根据真实 iPhone 竖屏反馈完成第二轮布局修正并重新发布；原桌面版入口未修改。
 
 ## 2026-08-07 H5 手机版
 
@@ -92,6 +92,9 @@
 - 已在 390×844 竖屏和 844×390 横屏视口检查：页面无横向溢出，开始卡、暂停卡和五个触控键全部位于可视区域；资产页覆盖完整手机视口，控制台无错误。
 - 发布前 Codex Security 标准扫描 `4aeb57bb-1d5a-4a95-a526-d341171f78c5` 覆盖 94/94 个源码文件；H5 相关安全面无问题，另记录 1 个不阻断本次发布的低风险 CI 供应链加固项（GitHub Actions 仍使用可变主版本标签）。
 - 安全扫描报告：`/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-33ZXLB/msn-site/3660d8f606847135e0bdd74df03f8e60c8d050c6_20260807T074802Z_nsw9ekfp/report.md`。
+- 样式修正提交：`fedcffa8b628cefed945cb5a20258e06b4860979`。
+- GitHub Pages 工作流 `31160450082` 发布成功；公开 H5 页面返回 200，并读回 `h5.css?v=2`、`h5-controls.js?v=2` 及竖屏收口、全视口弹层和横屏触控宽度修正规则。
+- ChatGPT Sites 版本 36 发布成功；H5 地址保持 `https://msn-football-adventure.florapr.chatgpt.site/h5/`。
 
 ## 2026-08-06 最终发布前验证
 
