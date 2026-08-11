@@ -1259,7 +1259,14 @@
   }
 
   function hurt(fell) {
-    if (player.invincible > 0 || player.celebrationTimer > 0 || finished) return;
+    if (finished || (!fell && (player.invincible > 0 || player.celebrationTimer > 0))) return;
+    if (fell) {
+      // 桑巴无敌只抵挡敌人与足球；坠落必须正常结算并停止自动冲锋。
+      player.rushTimer = 0;
+      player.celebrationTimer = 0;
+      player.celebrationDuration = 0;
+      player.celebrationType = "";
+    }
     if (!fell && msnStage >= 2 && !player.msnShieldUsed) {
       player.msnShieldUsed = true;
       player.invincible = getMsnBuffs().recovery;

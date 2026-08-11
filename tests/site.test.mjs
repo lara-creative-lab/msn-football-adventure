@@ -24,7 +24,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
   assert.match(html, /style\.css\?v=46/);
-  assert.match(html, /game-v33\.js\?v=48/);
+  assert.match(html, /game-v33\.js\?v=49/);
   assert.doesNotMatch(html, /id="touchControls"|h5-controls\.js|H5 手机版/);
   assert.match(h5Html, /H5手机版/);
   assert.match(h5Html, /viewport-fit=cover/);
@@ -35,7 +35,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(h5Html, /data-code="ArrowDown"/);
   assert.match(h5Html, /data-code="Space"/);
   assert.match(h5Html, /data-code="KeyF"/);
-  assert.match(h5Html, /game-v33\.js\?v=48/);
+  assert.match(h5Html, /game-v33\.js\?v=49/);
   assert.match(h5Html, /style\.css\?v=46/);
   assert.match(h5Html, /h5-controls\.js\?v=2/);
   assert.match(h5Html, /h5\.css\?v=2/);
@@ -120,6 +120,9 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(css, /\.star-card \.card-position/);
   assert.doesNotMatch(css, /\.star-card \.rarity/);
   assert.match(game, /player\.rushTimer = 4/);
+  assert.match(game, /if \(finished \|\| \(!fell && \(player\.invincible > 0 \|\| player\.celebrationTimer > 0\)\)\) return/);
+  assert.match(game, /if \(fell\) \{[\s\S]*player\.rushTimer = 0;[\s\S]*player\.celebrationTimer = 0;[\s\S]*player\.celebrationType = "";/);
+  assert.doesNotMatch(game, /if \(player\.invincible > 0 \|\| player\.celebrationTimer > 0 \|\| finished\) return/);
   assert.match(game, /enemy\.isBoss \? 1 : 999/);
   assert.match(game, /击败小罗：桑巴冲锋/);
   assert.match(game, /enemy\.type === "ronaldinho"/);
