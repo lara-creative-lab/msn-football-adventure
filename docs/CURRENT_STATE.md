@@ -57,6 +57,14 @@
 - `npm test`、JavaScript 语法检查和 `git diff --check` 已通过。
 - 发布前 Codex Security 标准扫描 `ee8e54d5-8611-409c-84a7-a700ce5241f4` 已完成：覆盖当前 111 个文件与 8 个安全面，0 个可报告问题；报告位于 `/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-j23m7E/msn-site/6bb55cf7449b697655f5b4efd83c7fe6d48d518f_20260811T083639Z_fztv34ta/report.md`。
 
+## 2026-08-11 冠军典藏卡面发布记录
+
+- 功能提交：`dbefb9f80dc219114d5a7dc944fed6a863a4e272`，已推送到 `github` 远程主分支。
+- GitHub Pages 工作流 `31475376103` 发布成功。
+- 桌面公开页、H5 公开页和 `game-v33.js?v=47` 均返回 200；线上脚本已读回新版“黄金连线”和正脸版“迈阿密重聚”，并确认第 10 关抽卡弹窗继续读取同一 `drawResult.card.image`。
+- 两张线上 PNG 均返回 200，SHA-256 与本地发布资产完全一致。
+- 本次按用户指令只发布 GitHub / GitHub Pages，未同步 ChatGPT Sites。
+
 ## 2026-08-06 本轮实现
 
 - 小罗出现规则按用户最新指令具体化：完整十关旅程固定在第 7、9、10 关出现，并从第 6、8 关随机增加 0–2 次彩蛋，因此每轮共出现 3–5 名；第 10 关小罗与终极 Boss 同关出现。
