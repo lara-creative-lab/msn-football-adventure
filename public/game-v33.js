@@ -125,10 +125,11 @@
   ];
   const MSN_CLASSIC_CARDS = [
     { id: "goal", name: "三箭齐发", detail: "经典进球庆祝", image: "msn-classic-01-goal.png" },
-    { id: "embrace", name: "黄金连线", detail: "三人默契传跑连线", image: "msn-classic-02-golden-link.png" },
+    { id: "golden-link-v2", name: "黄金连线", detail: "三人默契传跑连线", image: "msn-classic-02-golden-link.png" },
     { id: "trophy", name: "粉色世俱之巅", detail: "终极Boss后·三人共捧世俱杯", image: "msn-classic-03-miami-club-world-cup.png" },
-    { id: "awards", name: "迈阿密重聚", detail: "粉色战袍·三人并肩入场", image: "msn-classic-04-miami-reunion-front.png" },
+    { id: "miami-reunion-front-v2", name: "迈阿密重聚", detail: "粉色战袍·三人并肩入场", image: "msn-classic-04-miami-reunion-front.png" },
   ];
+  const MSN_CLASSIC_CARD_IDS = new Set(MSN_CLASSIC_CARDS.map((card) => card.id));
 
   let running = false;
   let finished = false;
@@ -183,7 +184,7 @@
   try {
     bestScore = Number(localStorage.getItem("hat-adventure-best-score")) || 0;
     ownedCards = new Set(JSON.parse(localStorage.getItem("hat-adventure-cards") || "[]"));
-    ownedMsnCards = new Set(JSON.parse(localStorage.getItem("hat-adventure-msn-classic-cards") || "[]"));
+    ownedMsnCards = new Set(JSON.parse(localStorage.getItem("hat-adventure-msn-classic-cards") || "[]").filter((id) => MSN_CLASSIC_CARD_IDS.has(id)));
     ownedCelebrationEmotes = new Set(JSON.parse(localStorage.getItem("hat-adventure-celebration-emotes") || "[]").filter((id) => CELEBRATION_EMOTE_IDS.includes(id)));
     lastMsnCardId = localStorage.getItem("hat-adventure-msn-last-card") || "";
   } catch (_) {}
@@ -1171,15 +1172,21 @@
     const cityBadges = LEVELS.map((level, index) => {
       const unlocked = journeyLevels.has(index);
       const year = level.name.slice(0, 4);
-      return `<article class="city-badge asset-zoomable ${unlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${unlocked ? `${year} ${level.badge.title}城市徽章` : `${year}城市徽章待解锁`}" data-preview-detail="${unlocked ? `${level.badge.detail} · ${level.hosts}世界杯纪念` : "完成对应关卡后加入本轮冒险收藏"}">
-        <span class="city-medal"><img class="city-medal-image" src="./assets/city-badges/${level.badge.image}" alt="${year} ${level.badge.title}主题徽章" loading="lazy"><span class="city-badge-year">${year}</span></span>
+      const previewAttributes = unlocked
+        ? `tabindex="0" role="button" data-preview-title="${year} ${level.badge.title}城市徽章" data-preview-detail="${level.badge.detail} · ${level.hosts}世界杯纪念"`
+        : `aria-label="第${index + 1}城徽章待解锁"`;
+      return `<article class="city-badge ${unlocked ? "asset-zoomable" : "locked"}" ${previewAttributes}>
+        <span class="city-medal ${unlocked ? "" : "is-masked"}"><img class="city-medal-image" src="./assets/city-badges/${level.badge.image}" alt="${unlocked ? `${year} ${level.badge.title}主题徽章` : "未解锁的城市徽章"}" loading="lazy"><span class="city-badge-year">${year}</span></span>
         <strong>${unlocked ? level.badge.title : `第${index + 1}城待解锁`}</strong><small>${unlocked ? level.badge.detail : "完成关卡点亮徽章"}</small><span class="city-badge-flags">${level.flags.join(" ")}</span>
       </article>`;
     }).join("");
     const classicCards = MSN_CLASSIC_CARDS.map((card, index) => {
       const owned = ownedMsnCards.has(card.id);
-      return `<article class="msn-classic-card asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? card.name : `经典时刻 ${index + 1}待解锁`}" data-preview-detail="${owned ? card.detail : "第10关胜利后随机获得"}">
-        <img src="./assets/msn-classics/${card.image}" alt="${owned ? card.name : `未解锁的MSN经典时刻卡${index + 1}`}" loading="lazy">
+      const previewAttributes = owned
+        ? `tabindex="0" role="button" data-preview-title="${card.name}" data-preview-detail="${card.detail}"`
+        : `aria-label="经典时刻 ${index + 1}待解锁"`;
+      return `<article class="msn-classic-card ${owned ? "asset-zoomable" : "locked"}" ${previewAttributes}>
+        <span class="msn-classic-visual ${owned ? "" : "is-masked"}"><img src="./assets/msn-classics/${card.image}" alt="${owned ? card.name : "未解锁的冠军典藏卡面"}" loading="lazy"></span>
         <strong>${owned ? card.name : `经典时刻 ${index + 1}`}</strong>
         <small>${owned ? card.detail : "第10关胜利后随机获得 · 不可兑换"}</small>
       </article>`;
@@ -1188,8 +1195,11 @@
       const owned = ownedCelebrationEmotes.has(id);
       const meta = PLAYER_META[id];
       const celebration = NEYMAR_CELEBRATIONS[id];
-      return `<article class="celebration-asset asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? `${meta.name} · ${celebration.label}` : "庆祝表情待解锁"}" data-preview-detail="${owned ? `${celebration.detail} · 击败${meta.name}获得的永久资产` : `用足球击败${meta.name}后永久收藏`}">
-        <img src="./assets/characters/emotes/${id}-celebration.png" alt="${owned ? `${meta.name}${celebration.label}庆祝表情` : "未解锁庆祝表情"}" loading="lazy">
+      const previewAttributes = owned
+        ? `tabindex="0" role="button" data-preview-title="${meta.name} · ${celebration.label}" data-preview-detail="${celebration.detail} · 击败${meta.name}获得的永久资产"`
+        : `aria-label="击败${meta.name}后解锁庆祝表情"`;
+      return `<article class="celebration-asset ${owned ? "asset-zoomable" : "locked"}" ${previewAttributes}>
+        <span class="celebration-visual ${owned ? "" : "is-masked"}"><img src="./assets/characters/emotes/${id}-celebration.png" alt="${owned ? `${meta.name}${celebration.label}庆祝表情` : "未解锁的庆祝表情"}" loading="lazy"></span>
         <strong>${owned ? meta.name : "神秘球星"}</strong>
         <small>${owned ? celebration.label : `击败${meta.name}解锁`}</small>
       </article>`;

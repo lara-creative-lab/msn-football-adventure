@@ -211,6 +211,9 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .city-badge-flags { margin-top: 2px; font-size: 11px; filter: saturate(.78); }
 .city-badge strong { margin-top: 8px; overflow: hidden; max-width: 100%; color: #233047; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
 .city-badge small { min-height: 12px; color: #596575; font-size: 8px; }
+.city-badge.locked { cursor: default; }
+.city-badge.locked .city-medal-image { opacity: .12; filter: blur(12px) grayscale(1) brightness(.24); transform: scale(1.1); }
+.city-medal.is-masked .city-badge-year { opacity: 0; }
 .tier-note { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
 .journey-assets .locked { filter: grayscale(.8); opacity: .52; }
 .asset-section-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
@@ -220,19 +223,25 @@ canvas { display: block; width: 100%; height: 100%; image-rendering: pixelated; 
 .classic-set > p { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
 .msn-card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; }
 .msn-classic-card { overflow: hidden; display: grid; gap: 4px; padding: 7px; text-align: center; color: #fff; border: 3px solid #1d2435; border-radius: 14px; background: linear-gradient(145deg, #152b5b, #711e35); box-shadow: inset 0 0 0 1px rgba(255,220,120,.68); }
-.msn-classic-card img { width: 100%; aspect-ratio: 1; padding: 3px; object-fit: contain; object-position: center; border-radius: 8px; background: #101a39; }
+.msn-classic-visual { position: relative; display: block; overflow: hidden; aspect-ratio: 1; border-radius: 8px; background: #101a39; }
+.msn-classic-card img { width: 100%; height: 100%; padding: 3px; object-fit: contain; object-position: center; border-radius: inherit; background: #101a39; }
 .msn-classic-card strong { font-size: 12px; }
 .msn-classic-card small { min-height: 28px; color: #f8e9bb; font-size: 9px; }
-.msn-classic-card.locked img { filter: blur(6px) grayscale(1) brightness(.46); }
+.msn-classic-card.locked { cursor: default; background: linear-gradient(145deg, #222839, #3b3140); }
+.msn-classic-card.locked img { opacity: .16; filter: blur(14px) grayscale(1) brightness(.22); transform: scale(1.12); }
+.msn-classic-visual.is-masked::after { content: "🔒\A待解锁"; position: absolute; inset: 3px; display: grid; place-content: center; color: #fff4cf; border: 2px solid rgba(255,244,207,.4); border-radius: 7px; background: linear-gradient(145deg, rgba(12,20,39,.82), rgba(42,30,50,.9)); box-shadow: inset 0 0 28px rgba(0,0,0,.5); white-space: pre; font-size: 13px; font-weight: 1000; line-height: 1.7; letter-spacing: .08em; }
 
 .celebration-set { padding: 11px; border: 3px solid #283247; border-radius: 14px; background: linear-gradient(135deg, #eef5ff, #fff2c8); }
 .celebration-set > p { margin: -3px 0 9px !important; color: #596575; font-size: 10px; }
 .celebration-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .celebration-asset { display: grid; gap: 3px; place-items: center; min-width: 0; padding: 7px 5px; text-align: center; border: 2px solid #283247; border-radius: 12px; background: linear-gradient(145deg, #ffffff, #dceaff); box-shadow: 0 4px 0 rgba(35,43,64,.14); }
-.celebration-asset img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: radial-gradient(circle, #fff8d2, #cfdfff); }
+.celebration-visual { position: relative; display: block; overflow: hidden; width: 100%; aspect-ratio: 1; border-radius: 8px; background: #19243c; }
+.celebration-asset img { width: 100%; height: 100%; object-fit: contain; border-radius: inherit; background: radial-gradient(circle, #fff8d2, #cfdfff); }
 .celebration-asset strong { font-size: 10px; }
 .celebration-asset small { color: #596575; font-size: 8px; }
-.celebration-asset.locked img { filter: blur(5px) grayscale(1) brightness(.55); }
+.celebration-asset.locked { cursor: default; background: linear-gradient(145deg, #d6d9df, #bdc4d0); }
+.celebration-asset.locked img { opacity: .14; filter: blur(12px) grayscale(1) brightness(.24); transform: scale(1.1); }
+.city-medal.is-masked::after, .celebration-visual.is-masked::after { content: "🔒\A待解锁"; position: absolute; inset: 4px; display: grid; place-content: center; color: #fff4cf; border: 2px solid rgba(255,244,207,.42); border-radius: 9px; background: linear-gradient(145deg, rgba(12,20,39,.84), rgba(42,30,50,.92)); box-shadow: inset 0 0 28px rgba(0,0,0,.5); white-space: pre; text-align: center; font-size: 12px; font-weight: 1000; line-height: 1.7; letter-spacing: .06em; }
 .earned-tier { box-shadow: 0 5px 0 rgba(35,43,64,.1); }
 .rarity-chip { padding: 1px 0 1px 8px; color: #344159 !important; border-left: 3px solid currentColor; border-radius: 0; background: none; box-shadow: none; font-size: 9px !important; font-weight: 1000; letter-spacing: .04em; pointer-events: none; }
 .rarity-chip.epic { color: #5d3d7d !important; }
