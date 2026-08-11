@@ -24,7 +24,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
   assert.match(html, /style\.css\?v=46/);
-  assert.match(html, /game-v33\.js\?v=49/);
+  assert.match(html, /game-v33\.js\?v=50/);
   assert.doesNotMatch(html, /id="touchControls"|h5-controls\.js|H5 手机版/);
   assert.match(h5Html, /H5手机版/);
   assert.match(h5Html, /viewport-fit=cover/);
@@ -35,7 +35,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(h5Html, /data-code="ArrowDown"/);
   assert.match(h5Html, /data-code="Space"/);
   assert.match(h5Html, /data-code="KeyF"/);
-  assert.match(h5Html, /game-v33\.js\?v=49/);
+  assert.match(h5Html, /game-v33\.js\?v=50/);
   assert.match(h5Html, /style\.css\?v=46/);
   assert.match(h5Html, /h5-controls\.js\?v=2/);
   assert.match(h5Html, /h5\.css\?v=2/);
@@ -94,6 +94,11 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /粉色MSN合捧世俱杯/);
   assert.match(game, /function drawChampionsLeagueTrophy/);
   assert.match(game, /function drawClubWorldCupTrophy/);
+  assert.match(game, /drawClubWorldCupTrophy\(centerX, bottomY - displayHeight \* \.25, time\)/);
+  assert.match(game, /ctx\.scale\(\.6, \.6\)/);
+  assert.match(game, /双臂支架/);
+  assert.match(game, /ctx\.fillText\("CWC", 0, 27\.6\)/);
+  assert.match(game, /ctx\.textBaseline = "middle";\n    ctx\.fillText\(teamLabel, centerX, bottomY - displayHeight - 10\)/);
   assert.match(game, /two oversized open handles/);
   assert.doesNotMatch(game, /drawWorldCupTrophy|巴萨MSN合捧大力神杯/);
   assert.match(game, /球迷助威围巾/);

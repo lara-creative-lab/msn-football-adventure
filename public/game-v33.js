@@ -1992,14 +1992,14 @@
     ctx.restore();
     if (celebrating) drawCelebrationEmote(player.celebrationType, centerX, bottomY, displayHeight, elapsed, player.celebrationDuration);
     const trophyWon = hasClubWorldCupTrophy();
-    if (trophyWon && !celebrating) drawClubWorldCupTrophy(centerX, bottomY - displayHeight * .31, time);
+    if (trophyWon && !celebrating) drawClubWorldCupTrophy(centerX, bottomY - displayHeight * .25, time);
     ctx.save();
     const celebrationName = PLAYER_META[player.celebrationType]?.name || "球星";
     const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 内马尔·桑巴冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🩷 粉色MSN合捧世俱杯" : (msnStage === 3 ? "🔵🔴 巴萨MSN · 三连强攻" : (msnStage === 2 ? `🔵🔴 梅西加入 · 巴萨双人组 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
     const labelWidth = celebrating ? 154 : (ronaldinhoRush ? 150 : (trophyWon ? 184 : (msnStage === 1 ? 78 : (msnStage === 2 ? 244 : 174))));
     drawRoundedRect(centerX - labelWidth / 2, bottomY - displayHeight - 20, labelWidth, 20, 8, celebrating ? "rgba(255,247,223,.97)" : (trophyWon ? "rgba(233,242,255,.97)" : "rgba(255,255,255,.97)"), celebrating ? celebration.color : "#172133", 2);
-    ctx.fillStyle = "#172133"; ctx.font = "900 11px ui-rounded, sans-serif"; ctx.textAlign = "center";
-    ctx.fillText(teamLabel, centerX, bottomY - displayHeight - 6);
+    ctx.fillStyle = "#172133"; ctx.font = "900 11px ui-rounded, sans-serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+    ctx.fillText(teamLabel, centerX, bottomY - displayHeight - 10);
     ctx.restore();
   }
 
@@ -2088,14 +2088,14 @@
   }
 
   function drawClubWorldCupTrophy(x, y, time) {
-    const sway = Math.sin(time * 2.4) * .45;
+    const sway = Math.sin(time * 2.4) * .32;
     ctx.save();
-    ctx.translate(x, y - 4 + sway);
-    ctx.scale(.72, .72);
+    ctx.translate(x, y + sway);
+    ctx.scale(.6, .6);
     ctx.lineCap = "round";
     ctx.lineJoin = "round";
-    ctx.shadowColor = "rgba(255,210,65,.72)";
-    ctx.shadowBlur = 9;
+    ctx.shadowColor = "rgba(255,210,65,.65)";
+    ctx.shadowBlur = 7;
 
     const gold = ctx.createLinearGradient(-30, -32, 31, 31);
     gold.addColorStop(0, "#fff2a6");
@@ -2105,54 +2105,61 @@
     gold.addColorStop(.82, "#f7c94c");
     gold.addColorStop(1, "#7d4400");
 
+    // 先画双臂支架，让圆盘与底座真正连成一座奖杯，而不是悬浮金币。
     ctx.strokeStyle = "#573307";
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 6;
     ctx.beginPath();
-    ctx.arc(0, -9, 27, 0, Math.PI * 2);
+    ctx.moveTo(-7, 19); ctx.bezierCurveTo(-10, 10, -18, 5, -20, -5);
+    ctx.moveTo(7, 19); ctx.bezierCurveTo(10, 10, 18, 5, 20, -5);
     ctx.stroke();
     ctx.strokeStyle = gold;
+    ctx.lineWidth = 3.4;
+    ctx.beginPath();
+    ctx.moveTo(-7, 19); ctx.bezierCurveTo(-10, 10, -18, 5, -20, -5);
+    ctx.moveTo(7, 19); ctx.bezierCurveTo(10, 10, 18, 5, 20, -5);
+    ctx.stroke();
+
+    ctx.strokeStyle = "#573307";
     ctx.lineWidth = 7;
     ctx.beginPath();
-    ctx.arc(0, -9, 27, 0, Math.PI * 2);
+    ctx.arc(0, -9, 26, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.strokeStyle = gold;
+    ctx.lineWidth = 4.2;
+    ctx.beginPath();
+    ctx.arc(0, -9, 26, 0, Math.PI * 2);
     ctx.stroke();
 
     ctx.strokeStyle = gold;
-    ctx.lineWidth = 5.5;
+    ctx.lineWidth = 3.2;
     ctx.beginPath();
-    ctx.ellipse(0, -9, 24, 15, -.48, 0, Math.PI * 2);
+    ctx.ellipse(0, -9, 23, 14, -.48, 0, Math.PI * 2);
     ctx.stroke();
-    ctx.lineWidth = 3.8;
+    ctx.lineWidth = 2.5;
     ctx.beginPath();
-    ctx.ellipse(0, -9, 22, 10.5, .55, 0, Math.PI * 2);
+    ctx.ellipse(0, -9, 21, 9.5, .55, 0, Math.PI * 2);
     ctx.stroke();
 
     ctx.fillStyle = gold;
     ctx.strokeStyle = "#6d430b";
-    ctx.lineWidth = 1.6;
+    ctx.lineWidth = 1.4;
     ctx.beginPath();
-    ctx.arc(0, -9, 12.5, 0, Math.PI * 2);
+    ctx.arc(0, -9, 7.5, 0, Math.PI * 2);
     ctx.fill();
     ctx.stroke();
-    ctx.strokeStyle = "rgba(92,53,4,.7)";
-    ctx.lineWidth = 1.2;
-    for (let spoke = 0; spoke < 8; spoke += 1) {
-      const angle = spoke * Math.PI / 4 + time * .04;
-      ctx.beginPath();
-      ctx.moveTo(Math.cos(angle) * 3.5, -9 + Math.sin(angle) * 3.5);
-      ctx.lineTo(Math.cos(angle) * 10, -9 + Math.sin(angle) * 10);
-      ctx.stroke();
-    }
     ctx.fillStyle = "#fff1a0";
-    ctx.font = "900 8px sans-serif";
+    ctx.font = "900 7px sans-serif";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
     ctx.fillText("✦", 0, -9);
 
     ctx.shadowBlur = 0;
-    drawRoundedRect(-11, 21, 22, 8, 3, "#151a24", "#8f650d", 1.5);
-    drawRoundedRect(-15, 28, 30, 6, 2, "#202631", "#b98518", 1.5);
-    ctx.fillStyle = "#f2c34a";
-    ctx.fillRect(-4, 19, 8, 5);
+    drawRoundedRect(-8, 16, 16, 9, 3, gold, "#6d430b", 1.4);
+    drawRoundedRect(-13, 24, 26, 7, 2, "#202631", "#b98518", 1.5);
+    drawRoundedRect(-17, 30, 34, 5, 2, "#151a24", "#d3a12a", 1.4);
+    ctx.fillStyle = "#f8d866";
+    ctx.font = "900 5.5px sans-serif";
+    ctx.fillText("CWC", 0, 27.6);
     ctx.restore();
   }
 
