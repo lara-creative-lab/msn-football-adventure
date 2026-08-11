@@ -74,6 +74,8 @@
 - 桌面版和 H5 的缓存版本更新为 `game-v33.js?v=48` 与 `style.css?v=46`。
 - `npm test`、JavaScript 语法检查和 `git diff --check` 已通过；本地页面实测为冠军典藏 4 张、城市徽章 10 枚、庆祝表情 8 个全部正确显示锁定蒙层，冒险收藏区域未解锁资产的可放大数量为 0。
 - 发布前 Codex Security 标准扫描已完成：scan id `ec6748fd-7a23-4d65-aa15-6949d0a74734`，覆盖 111 个文件、8 个攻击面，0 个可报告问题；报告位于 `/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-j23m7E/msn-site/2f3b4727f1f06d2e136ad637d4d3f0c72d258fea_20260811T092524Z_dfhjyysn/report.md`。
+- 功能提交 `0639bd03f6b55533f22791b373f93e53a0e2cfc1` 已推送至 GitHub `main`；GitHub Pages 工作流 `31478703478` 发布成功。
+- 桌面公开页和 H5 公开页均已回读 `game-v33.js?v=48`、`style.css?v=46`；线上脚本确认三个板块分别输出 `msn-classic-visual`、`city-medal`、`celebration-visual` 的 `is-masked` 状态，线上样式确认显示“待解锁”锁定蒙层。
 
 ## 2026-08-06 本轮实现
 
