@@ -1176,9 +1176,6 @@
         <strong>${unlocked ? level.badge.title : `第${index + 1}城待解锁`}</strong><small>${unlocked ? level.badge.detail : "完成关卡点亮徽章"}</small><span class="city-badge-flags">${level.flags.join(" ")}</span>
       </article>`;
     }).join("");
-    const trophyUnlocked = hasClubWorldCupTrophy();
-    const photoUnlocked = ownedMsnCards.size > 0;
-    const latestCard = MSN_CLASSIC_CARDS.find((card) => card.id === lastMsnCardId && ownedMsnCards.has(card.id));
     const classicCards = MSN_CLASSIC_CARDS.map((card, index) => {
       const owned = ownedMsnCards.has(card.id);
       return `<article class="msn-classic-card asset-zoomable ${owned ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${owned ? card.name : `经典时刻 ${index + 1}待解锁`}" data-preview-detail="${owned ? card.detail : "第10关胜利后随机获得"}">
@@ -1198,12 +1195,7 @@
       </article>`;
     }).join("");
     journeyAssetGrid.innerHTML = `
-      <section class="featured-asset-set"><div class="asset-section-heading"><h4>冠军典藏</h4><span>点击任意资产放大查看</span></div><div class="featured-asset-grid">
-        <section class="round-trophy asset-zoomable ${trophyUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${trophyUnlocked ? "MSN世俱杯" : "世俱杯尚未解锁"}" data-preview-detail="${trophyUnlocked ? "第10关终极Boss已击败，粉色MSN共同捧杯" : "MSN齐聚后，在第10关击败终极Boss解锁"}"><div class="featured-media"><span>🏆</span></div><div class="asset-card-copy"><span class="asset-type">终极荣誉</span><strong>${trophyUnlocked ? "MSN世俱杯" : "世俱杯尚未解锁"}</strong><small>${trophyUnlocked ? "第10关终极Boss已击败，三人换上粉色球衣共同捧杯" : "MSN齐聚后，在第10关击败因凡蒂诺解锁"}</small></div></section>
-        <section class="victory-photo asset-zoomable ${photoUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${photoUnlocked ? "粉色MSN世俱杯合影" : "世俱杯合影待解锁"}" data-preview-detail="${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}"><div class="featured-media"><img src="./assets/msn-classics/msn-ending-photo-miami.png" alt="粉色MSN世俱杯冠军合影"></div><div class="asset-card-copy"><span class="asset-type">结局合影 · 非卡牌</span><strong>${photoUnlocked ? "粉色MSN世俱杯合影" : "世俱杯合影待解锁"}</strong><small>${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}</small></div></section>
-        <section class="latest-draw asset-zoomable ${latestCard ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${latestCard?.name || "等待第10关抽卡"}" data-preview-detail="${latestCard ? latestCard.detail : "完成第10关后启动冠军星轨"}"><div class="featured-media"><img src="./assets/msn-classics/${latestCard?.image || MSN_CLASSIC_CARDS[0].image}" alt="${latestCard ? `最近抽中的${latestCard.name}卡` : "尚未抽中的MSN经典时刻卡"}"></div><div class="asset-card-copy"><span class="asset-type">最近抽中的卡</span><strong>${latestCard?.name || "等待第10关抽卡"}</strong><small>${latestCard ? `${latestCard.detail} · 与下方收藏卡为同一卡面` : "完成第10关后启动冠军星轨"}</small></div></section>
-      </div></section>
-      <section class="classic-set earned-tier"><div class="asset-section-heading"><h4>MSN经典时刻卡 ${ownedMsnCards.size}/${MSN_CLASSIC_CARDS.length}</h4><span class="rarity-chip epic">史诗收藏</span></div><p>每轮第10关胜利抽一张未收藏卡，四轮必定集齐；仅通关获得，不开放兑换。</p><div class="msn-card-grid">${classicCards}</div></section>
+      <section class="classic-set earned-tier"><div class="asset-section-heading"><h4>冠军典藏 ${ownedMsnCards.size}/${MSN_CLASSIC_CARDS.length}</h4><span class="rarity-chip epic">史诗收藏</span></div><p>每轮第10关胜利抽一张未收藏卡，四轮必定集齐；仅通关获得，不开放兑换。</p><div class="msn-card-grid">${classicCards}</div></section>
       <section class="round-assets earned-tier"><div class="asset-section-heading"><h4>十城主题徽章 ${journeyLevels.size}/${LEVELS.length}</h4><span class="rarity-chip rare">旅程收藏</span></div><p class="tier-note">每届世界杯均采用举办城市的地标、花卉或文化符号设计。</p><div class="city-badge-grid">${cityBadges}</div></section>
       <section class="celebration-set earned-tier"><div class="asset-section-heading"><h4>庆祝表情收藏 ${ownedCelebrationEmotes.size}/${CELEBRATION_EMOTE_IDS.length}</h4><span class="rarity-chip fun">彩蛋收藏</span></div><p>用足球击败对应球星即可永久收藏；头顶气泡出现时仍可自由移动、跳跃和射球。</p><div class="celebration-grid">${celebrationCards}</div></section>`;
   }

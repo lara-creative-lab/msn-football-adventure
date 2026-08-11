@@ -23,8 +23,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /🇺🇸 🇨🇦 🇲🇽 2026 美加墨·联合盛典/);
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
-  assert.match(html, /style\.css\?v=44/);
-  assert.match(html, /game-v33\.js\?v=45/);
+  assert.match(html, /style\.css\?v=45/);
+  assert.match(html, /game-v33\.js\?v=46/);
   assert.doesNotMatch(html, /id="touchControls"|h5-controls\.js|H5 手机版/);
   assert.match(h5Html, /H5手机版/);
   assert.match(h5Html, /viewport-fit=cover/);
@@ -35,7 +35,8 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(h5Html, /data-code="ArrowDown"/);
   assert.match(h5Html, /data-code="Space"/);
   assert.match(h5Html, /data-code="KeyF"/);
-  assert.match(h5Html, /game-v33\.js\?v=45/);
+  assert.match(h5Html, /game-v33\.js\?v=46/);
+  assert.match(h5Html, /style\.css\?v=45/);
   assert.match(h5Html, /h5-controls\.js\?v=2/);
   assert.match(h5Html, /h5\.css\?v=2/);
   for (const id of ["gameCanvas", "startScreen", "startButton", "levelSelect", "sceneSelect", "messageScreen", "messageKicker", "messageTitle", "messageText", "messageAssetButton", "playAgainButton", "shopScreen", "walletAmount", "stampCount", "cardCount", "cardGrid", "journeyAssetGrid", "closeShopButton", "soundButton", "restartButton", "firstLevelButton", "shopButton", "bossBadgeButton", "cardDrawScreen", "cardDrawScene", "drawKicker", "drawTitle", "drawHint", "drawCardImage", "drawCardName", "drawCardDetail", "drawStartButton", "drawActions", "drawAssetsButton", "drawNewRoundButton", "assetPreviewScreen", "assetPreviewVisual", "assetPreviewTitle", "assetPreviewDetail", "closeAssetPreviewButton", "rewardToast", "rewardTitle", "rewardDescription"]) {
@@ -146,7 +147,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /x: goalX - 430/);
   assert.match(game, /msn-classic-03-miami-club-world-cup\.png/);
   assert.match(game, /msn-classic-04-miami-reunion\.png/);
-  assert.match(game, /msn-ending-photo-miami\.png/);
+  assert.doesNotMatch(game, /msn-ending-photo-miami\.png/);
   assert.match(game, /const stamps = journeyLevels\.size/);
   assert.match(game, /function journeyScore\(score = totalCoins \+ coins\) \{\s+return score;/);
   assert.doesNotMatch(game, /return Math\.max\(bestScore, score\)/);
@@ -230,8 +231,9 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.doesNotMatch(html, /第10关必须击败因凡蒂诺终极Boss/);
   assert.match(html, /id="messageAssetButton"/);
   assert.match(html, /id="journeyAssetGrid"/);
-  assert.match(game, /featured-asset-grid/);
-  assert.match(game, /冠军典藏/);
+  assert.doesNotMatch(game, /featured-asset-set|featured-asset-grid|最近抽中的卡|与下方收藏卡为同一卡面/);
+  assert.match(game, /冠军典藏 \$\{ownedMsnCards\.size\}\/\$\{MSN_CLASSIC_CARDS\.length\}/);
+  assert.doesNotMatch(game, /<h4>MSN经典时刻卡/);
   assert.match(html, /01 · 积分兑换/);
   assert.match(html, /02 · 冒险收藏/);
   assert.match(game, /十城主题徽章/);
@@ -262,8 +264,6 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /启动冠军抽卡/);
   assert.match(html, /CLASSIC MOMENT/);
   assert.match(game, /drawCardImage\.src = `\.\/assets\/msn-classics\/\$\{drawResult\.card\.image\}`/);
-  assert.match(game, /最近抽中的卡/);
-  assert.match(game, /与下方收藏卡为同一卡面/);
   assert.match(game, /重复卡自动转化为200宝藏/);
   assert.match(css, /@keyframes champion-comet/);
   assert.match(css, /@keyframes card-summon/);
