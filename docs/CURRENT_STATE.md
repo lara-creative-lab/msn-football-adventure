@@ -85,6 +85,8 @@
 - 桌面版和 H5 的脚本缓存版本更新为 `game-v33.js?v=49`。
 - `npm test`、JavaScript 语法检查和 `git diff --check` 已通过。
 - 发布前 Codex Security 标准扫描 `1576587d-c413-4240-818a-c8388923e50c` 已完成：覆盖 111 个文件、8 个安全面，0 个可报告问题；报告位于 `/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-j23m7E/msn-site/7e0257a46946397a3d5ff9d5fa9b345e45ce8876_20260811T100751Z_3iw1qa86/report.md`。
+- 功能提交 `23bfc8c1a0516d8b2e3e8f5119f65b6f17ecba25` 已推送至 GitHub `main`；GitHub Pages 工作流 `31481881247` 发布成功。
+- 桌面公开页和 H5 公开页均已回读 `game-v33.js?v=49`；线上脚本确认坠落会绕过桑巴无敌判断，并清除冲锋计时和庆祝状态。
 
 ## 2026-08-06 本轮实现
 
