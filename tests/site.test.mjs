@@ -24,7 +24,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
   assert.match(html, /style\.css\?v=44/);
-  assert.match(html, /game-v33\.js\?v=44/);
+  assert.match(html, /game-v33\.js\?v=45/);
   assert.doesNotMatch(html, /id="touchControls"|h5-controls\.js|H5 手机版/);
   assert.match(h5Html, /H5手机版/);
   assert.match(h5Html, /viewport-fit=cover/);
@@ -35,7 +35,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(h5Html, /data-code="ArrowDown"/);
   assert.match(h5Html, /data-code="Space"/);
   assert.match(h5Html, /data-code="KeyF"/);
-  assert.match(h5Html, /game-v33\.js\?v=44/);
+  assert.match(h5Html, /game-v33\.js\?v=45/);
   assert.match(h5Html, /h5-controls\.js\?v=2/);
   assert.match(h5Html, /h5\.css\?v=2/);
   for (const id of ["gameCanvas", "startScreen", "startButton", "levelSelect", "sceneSelect", "messageScreen", "messageKicker", "messageTitle", "messageText", "messageAssetButton", "playAgainButton", "shopScreen", "walletAmount", "stampCount", "cardCount", "cardGrid", "journeyAssetGrid", "closeShopButton", "soundButton", "restartButton", "firstLevelButton", "shopButton", "bossBadgeButton", "cardDrawScreen", "cardDrawScene", "drawKicker", "drawTitle", "drawHint", "drawCardImage", "drawCardName", "drawCardDetail", "drawStartButton", "drawActions", "drawAssetsButton", "drawNewRoundButton", "assetPreviewScreen", "assetPreviewVisual", "assetPreviewTitle", "assetPreviewDetail", "closeAssetPreviewButton", "rewardToast", "rewardTitle", "rewardDescription"]) {
@@ -85,10 +85,14 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.doesNotMatch(html, /musicSelect|Dai Dai|火影|海贼王/);
   assert.doesNotMatch(html, /1000分＋6城苏亚雷斯加入并换巴萨战袍/);
   assert.match(game, /BARCA_CHARACTER_IMAGES/);
+  assert.match(game, /MIAMI_CHARACTER_IMAGES/);
   assert.match(game, /barcaNumber: 11/);
-  assert.match(game, /msnStage === 3 \? "barca"/);
-  assert.match(game, /巴萨MSN合捧欧冠大耳朵杯/);
+  assert.match(game, /msnStage >= 2 \? "barca"/);
+  assert.match(game, /finalBossDefeated \? "miami"/);
+  assert.match(game, /梅西加入 · 巴萨双人组/);
+  assert.match(game, /粉色MSN合捧世俱杯/);
   assert.match(game, /function drawChampionsLeagueTrophy/);
+  assert.match(game, /function drawClubWorldCupTrophy/);
   assert.match(game, /two oversized open handles/);
   assert.doesNotMatch(game, /drawWorldCupTrophy|巴萨MSN合捧大力神杯/);
   assert.match(game, /球迷助威围巾/);
@@ -101,9 +105,9 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /const bonusCount = Math\.min\(bonusLevels\.length, Math\.floor\(Math\.random\(\) \* 3\)\)/);
   assert.match(game, /return new Set\(\[\.\.\.fixedLevels, \.\.\.bonusLevels\.slice\(0, bonusCount\)\]\)/);
   assert.match(game, /i === 0 && ronaldinhoLevels\.has\(index\) \? "ronaldinho"/);
-  assert.match(game, /const LEVEL_TIME_LIMIT = 20/);
+  assert.match(game, /const LEVEL_TIME_LIMIT = 30/);
   assert.match(game, /finish\(false, "timeout"\)/);
-  assert.doesNotMatch(html, /每关20秒限时挑战/);
+  assert.match(html, /每关30秒/);
   assert.doesNotMatch(html, /← → \/ A D 移动/);
   assert.doesNotMatch(html, /冠军进阶：MSN三人齐聚/);
   assert.doesNotMatch(html, /ASSET VIEW/);
@@ -137,8 +141,12 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /hat-adventure-city-stamps/);
   assert.match(game, /progressScore >= 1000 && stamps >= 6/);
   assert.match(game, /progressScore >= 500 && stamps >= 3/);
-  assert.match(game, /function hasChampionsLeagueTrophy/);
+  assert.match(game, /function hasClubWorldCupTrophy/);
   assert.match(game, /currentLevel === LEVELS\.length - 1 && finalBossDefeated/);
+  assert.match(game, /x: goalX - 430/);
+  assert.match(game, /msn-classic-03-miami-club-world-cup\.png/);
+  assert.match(game, /msn-classic-04-miami-reunion\.png/);
+  assert.match(game, /msn-ending-photo-miami\.png/);
   assert.match(game, /const stamps = journeyLevels\.size/);
   assert.match(game, /function journeyScore\(score = totalCoins \+ coins\) \{\s+return score;/);
   assert.doesNotMatch(game, /return Math\.max\(bestScore, score\)/);
@@ -180,7 +188,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(html, /每关都有阶梯伏击/);
   assert.match(game, /function getMsnBuffs/);
   assert.match(game, /梅西加入：加速、快射与护盾/);
-  assert.match(game, /梅西加入 · 护盾/);
+  assert.match(game, /梅西加入 · 巴萨双人组/);
   assert.doesNotMatch(game, /梅西组织/);
   assert.match(game, /MSN连线：每3球强攻/);
   assert.match(game, /const assistShot = Boolean\(buffs\.assistEvery/);
@@ -269,9 +277,12 @@ test("build includes the playable game and worker entrypoint", async () => {
   await stat(new URL("../dist/client/assets/characters/neymar-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/messi-barca.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/suarez-barca.png", import.meta.url));
+  await stat(new URL("../dist/client/assets/characters/neymar-miami.png", import.meta.url));
+  await stat(new URL("../dist/client/assets/characters/messi-miami.png", import.meta.url));
+  await stat(new URL("../dist/client/assets/characters/suarez-miami.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/infantino-boss.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/ronaldinho.png", import.meta.url));
-  for (const file of ["msn-classic-01-goal.png", "msn-classic-02-embrace.png", "msn-classic-03-trophy.png", "msn-classic-04-award.png", "msn-ending-photo.png"]) {
+  for (const file of ["msn-classic-01-goal.png", "msn-classic-02-embrace.png", "msn-classic-03-miami-club-world-cup.png", "msn-classic-04-miami-reunion.png", "msn-ending-photo-miami.png"]) {
     await stat(new URL(`../dist/client/assets/msn-classics/${file}`, import.meta.url));
   }
   for (const id of ["ronaldinho", "ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"]) {

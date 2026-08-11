@@ -1,6 +1,6 @@
 # 当前状态与下一步
 
-更新时间：2026-08-06
+更新时间：2026-08-11
 
 ## 当前仓库状态
 
@@ -13,6 +13,18 @@
   - `github`: 历史地址为 `https://github.com/danbaishi62/msn-football-adventure.git`，GitHub 当前已迁移/重定向到 `https://github.com/lara-creative-lab/msn-football-adventure.git`。
   - `sites`: ChatGPT Sites 源仓库
 - 2026-08-06 已通过远程 HEAD 与公开 Pages 双重读回确认，真实公开仓库为 `lara-creative-lab/msn-football-adventure`。
+
+## 2026-08-11 粉色 MSN 世俱杯终局
+
+- 全部关卡倒计时由 20 秒调整为 30 秒。
+- MSN 二阶段改为 Messi 加入时，Neymar 与 Messi 立即一起换上巴萨球衣；Suárez 加入后继续使用巴萨三人造型。
+- 第 10 关终极 Boss 被击败后，三人才切换为带迈阿密国际队徽的粉色球衣，并在游戏内共同捧起金色圆盘结构的世俱杯。
+- 四张经典时刻卡的后两张替换为用户确认的粉色世俱杯卡面；终局合影同步使用确认图，旧的中间人物压缩草案不接入。
+- 第 10 关 Boss 初始位置与巡逻区整体向前移动 200 像素，双血条和三球连射保持不变。
+- 桌面版和 `/h5/` 继续共用同一 `game-v33.js`，上述玩法与资产同时生效；原有开场 Neymar 造型不变。
+- 发布前 `npm test`、`npm run build`、JavaScript 语法检查和 `git diff --check` 已通过。
+- Codex Security 标准扫描 `cfa15105-92ce-4d5b-8d16-630bd3dca427` 已完成：覆盖当前完整发布快照，8 个安全面全部关闭，0 个可报告问题；GitHub Actions SHA 固定与旧版公开脚本清理仅记录为后续纵深加固建议，不阻断本次发布。
+- 安全扫描报告：`/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-poLtQ9/msn-site/79b26f42da75db6a289991025befbd4704b57fd1_20260811T045433Z_qd6k2h_w/report.md`。
 
 ## 2026-08-06 本轮实现
 
@@ -56,7 +68,7 @@
 ## 已完成且必须保留
 
 - MSN 球星大冒险基础玩法与 10 关世界杯旅程。
-- 20 秒关卡计时。
+- 30 秒关卡计时。
 - MSN 成长和巴萨战袍阶段。
 - 第 10 关 Infantino 双血条、三球连射 Boss。
 - 庆祝气泡非阻塞。

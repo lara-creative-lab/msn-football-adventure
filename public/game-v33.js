@@ -42,7 +42,7 @@
   const H = canvas.height;
   const FLOOR_Y = 468;
   const GRAVITY = 2100;
-  const LEVEL_TIME_LIMIT = 20;
+  const LEVEL_TIME_LIMIT = 30;
   const keys = new Set();
 
   const LEVELS = [
@@ -97,6 +97,12 @@
     image.src = `./assets/characters/${id}-barca.png`;
     BARCA_CHARACTER_IMAGES[id] = image;
   }
+  const MIAMI_CHARACTER_IMAGES = {};
+  for (const id of ["neymar", "messi", "suarez"]) {
+    const image = new Image();
+    image.src = `./assets/characters/${id}-miami.png`;
+    MIAMI_CHARACTER_IMAGES[id] = image;
+  }
   const CELEBRATION_EMOTE_IDS = ["ronaldinho", "ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"];
   const CELEBRATION_EMOTE_IMAGES = {};
   for (const id of CELEBRATION_EMOTE_IDS) {
@@ -120,8 +126,8 @@
   const MSN_CLASSIC_CARDS = [
     { id: "goal", name: "三箭齐发", detail: "经典进球庆祝", image: "msn-classic-01-goal.png" },
     { id: "embrace", name: "黄金连线", detail: "助攻后的三人拥抱", image: "msn-classic-02-embrace.png" },
-    { id: "trophy", name: "冠军之夜", detail: "三人共同举起大耳朵杯", image: "msn-classic-03-trophy.png" },
-    { id: "awards", name: "荣耀领奖台", detail: "金牌、金球与冠军合影", image: "msn-classic-04-award.png" },
+    { id: "trophy", name: "粉色世俱之巅", detail: "终极Boss后·三人共捧世俱杯", image: "msn-classic-03-miami-club-world-cup.png" },
+    { id: "awards", name: "迈阿密重聚", detail: "粉色战袍·世俱杯冠军合影", image: "msn-classic-04-miami-reunion.png" },
   ];
 
   let running = false;
@@ -320,8 +326,8 @@
     }
     if (index === LEVELS.length - 1) {
       enemies.push({
-        x: goalX - 230, y: FLOOR_Y - 102, w: 72, h: 102,
-        minX: goalX - 292, maxX: goalX - 82, vx: -88,
+        x: goalX - 430, y: FLOOR_Y - 102, w: 72, h: 102,
+        minX: goalX - 492, maxX: goalX - 282, vx: -88,
         alive: true, type: "infantino", isBoss: true,
         hp: 24, maxHp: 24, barHp: 12, phase: 1, flash: 0, shotCooldown: 1.1,
       });
@@ -354,7 +360,7 @@
     return Math.min(3, Math.max(0, journeyLevels.size - 6));
   }
 
-  function hasChampionsLeagueTrophy() {
+  function hasClubWorldCupTrophy() {
     return msnStage === 3 && currentLevel === LEVELS.length - 1 && finalBossDefeated;
   }
 
@@ -773,8 +779,8 @@
     updateShopUI();
     rewardTitle.textContent = firstClear ? "👑 终极Boss首胜！" : "👑 终极Boss再次击破！";
     rewardDescription.textContent = firstClear
-      ? "获得1000宝藏与冠军纪念章；MSN三人捧出大耳朵杯，终点旗门已解锁"
-      : "获得250宝藏巡回奖励；MSN三人再次捧杯，终点旗门已解锁";
+      ? "获得1000宝藏与冠军纪念章；MSN换上迈阿密粉色战袍并捧出世俱杯，终点旗门已解锁"
+      : "获得250宝藏巡回奖励；粉色MSN再次捧起世俱杯，终点旗门已解锁";
     rewardToast.classList.remove("hidden");
     window.setTimeout(() => rewardToast.classList.add("hidden"), 5200);
     beep(262, .12, "square", .05); beep(392, .12, "triangle", .05, .1); beep(523, .14, "triangle", .045, .2); beep(784, .22, "triangle", .04, .32); beep(1047, .5, "triangle", .035, .48);
@@ -1170,7 +1176,7 @@
         <strong>${unlocked ? level.badge.title : `第${index + 1}城待解锁`}</strong><small>${unlocked ? level.badge.detail : "完成关卡点亮徽章"}</small><span class="city-badge-flags">${level.flags.join(" ")}</span>
       </article>`;
     }).join("");
-    const trophyUnlocked = hasChampionsLeagueTrophy();
+    const trophyUnlocked = hasClubWorldCupTrophy();
     const photoUnlocked = ownedMsnCards.size > 0;
     const latestCard = MSN_CLASSIC_CARDS.find((card) => card.id === lastMsnCardId && ownedMsnCards.has(card.id));
     const classicCards = MSN_CLASSIC_CARDS.map((card, index) => {
@@ -1193,8 +1199,8 @@
     }).join("");
     journeyAssetGrid.innerHTML = `
       <section class="featured-asset-set"><div class="asset-section-heading"><h4>冠军典藏</h4><span>点击任意资产放大查看</span></div><div class="featured-asset-grid">
-        <section class="round-trophy asset-zoomable ${trophyUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${trophyUnlocked ? "MSN大耳朵杯" : "大耳朵杯尚未解锁"}" data-preview-detail="${trophyUnlocked ? "第10关终极Boss已击败，MSN三人共同捧杯" : "MSN齐聚后，在第10关击败终极Boss解锁"}"><div class="featured-media"><span>🏆</span></div><div class="asset-card-copy"><span class="asset-type">终极荣誉</span><strong>${trophyUnlocked ? "MSN大耳朵杯" : "大耳朵杯尚未解锁"}</strong><small>${trophyUnlocked ? "第10关终极Boss已击败，MSN三人共同捧杯" : "MSN齐聚后，在第10关击败因凡蒂诺解锁"}</small></div></section>
-        <section class="victory-photo asset-zoomable ${photoUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${photoUnlocked ? "MSN冠军合影" : "冠军合影待解锁"}" data-preview-detail="${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}"><div class="featured-media"><img src="./assets/msn-classics/msn-ending-photo.png" alt="MSN冠军合影"></div><div class="asset-card-copy"><span class="asset-type">结局合影 · 非卡牌</span><strong>${photoUnlocked ? "MSN冠军合影" : "冠军合影待解锁"}</strong><small>${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}</small></div></section>
+        <section class="round-trophy asset-zoomable ${trophyUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${trophyUnlocked ? "MSN世俱杯" : "世俱杯尚未解锁"}" data-preview-detail="${trophyUnlocked ? "第10关终极Boss已击败，粉色MSN共同捧杯" : "MSN齐聚后，在第10关击败终极Boss解锁"}"><div class="featured-media"><span>🏆</span></div><div class="asset-card-copy"><span class="asset-type">终极荣誉</span><strong>${trophyUnlocked ? "MSN世俱杯" : "世俱杯尚未解锁"}</strong><small>${trophyUnlocked ? "第10关终极Boss已击败，三人换上粉色球衣共同捧杯" : "MSN齐聚后，在第10关击败因凡蒂诺解锁"}</small></div></section>
+        <section class="victory-photo asset-zoomable ${photoUnlocked ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${photoUnlocked ? "粉色MSN世俱杯合影" : "世俱杯合影待解锁"}" data-preview-detail="${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}"><div class="featured-media"><img src="./assets/msn-classics/msn-ending-photo-miami.png" alt="粉色MSN世俱杯冠军合影"></div><div class="asset-card-copy"><span class="asset-type">结局合影 · 非卡牌</span><strong>${photoUnlocked ? "粉色MSN世俱杯合影" : "世俱杯合影待解锁"}</strong><small>${photoUnlocked ? "首次通关第10关后永久收藏" : "击败第10关终极Boss后获得"}</small></div></section>
         <section class="latest-draw asset-zoomable ${latestCard ? "" : "locked"}" tabindex="0" role="button" data-preview-title="${latestCard?.name || "等待第10关抽卡"}" data-preview-detail="${latestCard ? latestCard.detail : "完成第10关后启动冠军星轨"}"><div class="featured-media"><img src="./assets/msn-classics/${latestCard?.image || MSN_CLASSIC_CARDS[0].image}" alt="${latestCard ? `最近抽中的${latestCard.name}卡` : "尚未抽中的MSN经典时刻卡"}"></div><div class="asset-card-copy"><span class="asset-type">最近抽中的卡</span><strong>${latestCard?.name || "等待第10关抽卡"}</strong><small>${latestCard ? `${latestCard.detail} · 与下方收藏卡为同一卡面` : "完成第10关后启动冠军星轨"}</small></div></section>
       </div></section>
       <section class="classic-set earned-tier"><div class="asset-section-heading"><h4>MSN经典时刻卡 ${ownedMsnCards.size}/${MSN_CLASSIC_CARDS.length}</h4><span class="rarity-chip epic">史诗收藏</span></div><p>每轮第10关胜利抽一张未收藏卡，四轮必定集齐；仅通关获得，不开放兑换。</p><div class="msn-card-grid">${classicCards}</div></section>
@@ -1298,11 +1304,11 @@
     }
     messageAssetButton.classList.toggle("hidden", !won);
     messageKicker.textContent = won ? (finalVictory ? "冠军之夜" : "太棒了！") : (reason === "timeout" ? "时间到！" : "别灰心");
-    messageTitle.textContent = won ? (finalVictory ? "第 10 关通关！" : `第 ${currentLevel + 1} 关完成`) : (reason === "timeout" ? "20秒挑战结束" : "冒险暂停");
+    messageTitle.textContent = won ? (finalVictory ? "第 10 关通关！" : `第 ${currentLevel + 1} 关完成`) : (reason === "timeout" ? `${LEVEL_TIME_LIMIT}秒挑战结束` : "冒险暂停");
     if (won) {
       messageText.textContent = `本关获得 ${coins} 点宝藏与${stampAdded ? "一枚新城市徽章" : "已到访城市记录"}，奖励已存入资产页。`;
     } else messageText.textContent = reason === "timeout"
-      ? `本关获得 ${coins} 点宝藏；重试后倒计时恢复为20秒，永久收藏不会清除。`
+      ? `本关获得 ${coins} 点宝藏；重试后倒计时恢复为${LEVEL_TIME_LIMIT}秒，永久收藏不会清除。`
       : `本关获得 ${coins} 点宝藏；重新挑战不会清除永久收藏。`;
     document.querySelector("#playAgainButton").textContent = won && !finalLevel
       ? "进入下一关"
@@ -1731,7 +1737,9 @@
   }
 
   function drawCollectibleFigure(id, centerX, bottomY, displayHeight, facing = 1, form = "default", opacity = 1) {
-    const image = form === "barca" ? (BARCA_CHARACTER_IMAGES[id] || CHARACTER_IMAGES[id]) : CHARACTER_IMAGES[id];
+    const image = form === "miami"
+      ? (MIAMI_CHARACTER_IMAGES[id] || BARCA_CHARACTER_IMAGES[id] || CHARACTER_IMAGES[id])
+      : (form === "barca" ? (BARCA_CHARACTER_IMAGES[id] || CHARACTER_IMAGES[id]) : CHARACTER_IMAGES[id]);
     const meta = PLAYER_META[id] || PLAYER_META.neymar;
     const ready = image && image.complete && image.naturalWidth > 0;
     const displayWidth = ready ? displayHeight * image.naturalWidth / image.naturalHeight : displayHeight * .55;
@@ -1768,7 +1776,7 @@
     const displayNumber = form === "barca" ? (meta.barcaNumber || meta.number) : meta.number;
     ctx.strokeStyle = form === "barca" ? "rgba(33,28,72,.92)" : "rgba(255,255,255,.88)";
     ctx.strokeText(String(displayNumber), 0, -displayHeight * .41);
-    ctx.fillStyle = form === "barca" ? "#f1c94f" : meta.numberColor;
+    ctx.fillStyle = form === "barca" ? "#f1c94f" : (form === "miami" ? "#151b2b" : meta.numberColor);
     ctx.fillText(String(displayNumber), 0, -displayHeight * .41);
     if (form === "legend") {
       ctx.save();
@@ -1943,8 +1951,11 @@
     const displayHeight = Math.max(108, player.h * 1.9);
     const centerX = x + player.w / 2;
     const bottomY = player.y + player.h + bounce;
-    const msnOutfit = msnStage === 3 ? "barca" : "default";
-    const neymarOutfit = activeForm === "black" ? "black" : (activeForm === "legend" ? "legend" : (msnStage === 3 ? "barca" : activeForm));
+    // 梅西加入后两人立即穿巴萨球衣；终极Boss击败后，三人只在终局切换为迈阿密粉色球衣。
+    const msnOutfit = finalBossDefeated ? "miami" : (msnStage >= 2 ? "barca" : "default");
+    const neymarOutfit = finalBossDefeated
+      ? "miami"
+      : (msnStage >= 2 ? "barca" : (activeForm === "black" ? "black" : (activeForm === "legend" ? "legend" : activeForm)));
     const celebration = player.celebrationTimer > 0 ? NEYMAR_CELEBRATIONS[player.celebrationType] : null;
     const celebrating = Boolean(celebration);
     const elapsed = celebrating ? Math.max(0, player.celebrationDuration - player.celebrationTimer) : 0;
@@ -1955,7 +1966,7 @@
       rotation = Math.sin(elapsed * 7) * .018;
     }
     if (msnStage >= 2) drawCollectibleFigure("messi", centerX - 33, bottomY + 1, displayHeight * .82, player.facing, msnOutfit, .96);
-    if (msnStage >= 3) drawCollectibleFigure("suarez", centerX + 34, bottomY + 1, displayHeight * .82, player.facing, "barca", .96);
+    if (msnStage >= 3) drawCollectibleFigure("suarez", centerX + 34, bottomY + 1, displayHeight * .82, player.facing, msnOutfit, .96);
     if (ronaldinhoRush) {
       ctx.save();
       const direction = player.facing || 1;
@@ -1971,12 +1982,12 @@
     drawCollectibleFigure("neymar", 0, 0, displayHeight, player.facing, neymarOutfit, 1);
     ctx.restore();
     if (celebrating) drawCelebrationEmote(player.celebrationType, centerX, bottomY, displayHeight, elapsed, player.celebrationDuration);
-    const trophyWon = hasChampionsLeagueTrophy();
-    if (trophyWon && !celebrating) drawChampionsLeagueTrophy(centerX, bottomY - displayHeight * .31, time);
+    const trophyWon = hasClubWorldCupTrophy();
+    if (trophyWon && !celebrating) drawClubWorldCupTrophy(centerX, bottomY - displayHeight * .31, time);
     ctx.save();
     const celebrationName = PLAYER_META[player.celebrationType]?.name || "球星";
-    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 内马尔·桑巴冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🏆 巴萨MSN合捧欧冠大耳朵杯" : (msnStage === 3 ? "🔵🔴 MSN连线 · 三连强攻" : (msnStage === 2 ? `🤝 梅西加入 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
-    const labelWidth = celebrating ? 154 : (ronaldinhoRush ? 150 : (trophyWon ? 174 : (msnStage === 1 ? 78 : 164)));
+    const teamLabel = celebrating ? `🎭 ${celebrationName} · ${celebration.label}` : (ronaldinhoRush ? `✨ 内马尔·桑巴冲锋 ${player.rushTimer.toFixed(1)}s` : (trophyWon ? "🩷 粉色MSN合捧世俱杯" : (msnStage === 3 ? "🔵🔴 巴萨MSN · 三连强攻" : (msnStage === 2 ? `🔵🔴 梅西加入 · 巴萨双人组 · 护盾${player.msnShieldUsed ? "已用" : "就绪"}` : "内马尔 · 10"))));
+    const labelWidth = celebrating ? 154 : (ronaldinhoRush ? 150 : (trophyWon ? 184 : (msnStage === 1 ? 78 : (msnStage === 2 ? 244 : 174))));
     drawRoundedRect(centerX - labelWidth / 2, bottomY - displayHeight - 20, labelWidth, 20, 8, celebrating ? "rgba(255,247,223,.97)" : (trophyWon ? "rgba(233,242,255,.97)" : "rgba(255,255,255,.97)"), celebrating ? celebration.color : "#172133", 2);
     ctx.fillStyle = "#172133"; ctx.font = "900 11px ui-rounded, sans-serif"; ctx.textAlign = "center";
     ctx.fillText(teamLabel, centerX, bottomY - displayHeight - 6);
@@ -2067,6 +2078,75 @@
     ctx.restore();
   }
 
+  function drawClubWorldCupTrophy(x, y, time) {
+    const sway = Math.sin(time * 2.4) * .45;
+    ctx.save();
+    ctx.translate(x, y - 4 + sway);
+    ctx.scale(.72, .72);
+    ctx.lineCap = "round";
+    ctx.lineJoin = "round";
+    ctx.shadowColor = "rgba(255,210,65,.72)";
+    ctx.shadowBlur = 9;
+
+    const gold = ctx.createLinearGradient(-30, -32, 31, 31);
+    gold.addColorStop(0, "#fff2a6");
+    gold.addColorStop(.18, "#c88312");
+    gold.addColorStop(.42, "#ffe477");
+    gold.addColorStop(.64, "#9a5905");
+    gold.addColorStop(.82, "#f7c94c");
+    gold.addColorStop(1, "#7d4400");
+
+    ctx.strokeStyle = "#573307";
+    ctx.lineWidth = 10;
+    ctx.beginPath();
+    ctx.arc(0, -9, 27, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.strokeStyle = gold;
+    ctx.lineWidth = 7;
+    ctx.beginPath();
+    ctx.arc(0, -9, 27, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.strokeStyle = gold;
+    ctx.lineWidth = 5.5;
+    ctx.beginPath();
+    ctx.ellipse(0, -9, 24, 15, -.48, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.lineWidth = 3.8;
+    ctx.beginPath();
+    ctx.ellipse(0, -9, 22, 10.5, .55, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = gold;
+    ctx.strokeStyle = "#6d430b";
+    ctx.lineWidth = 1.6;
+    ctx.beginPath();
+    ctx.arc(0, -9, 12.5, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    ctx.strokeStyle = "rgba(92,53,4,.7)";
+    ctx.lineWidth = 1.2;
+    for (let spoke = 0; spoke < 8; spoke += 1) {
+      const angle = spoke * Math.PI / 4 + time * .04;
+      ctx.beginPath();
+      ctx.moveTo(Math.cos(angle) * 3.5, -9 + Math.sin(angle) * 3.5);
+      ctx.lineTo(Math.cos(angle) * 10, -9 + Math.sin(angle) * 10);
+      ctx.stroke();
+    }
+    ctx.fillStyle = "#fff1a0";
+    ctx.font = "900 8px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("✦", 0, -9);
+
+    ctx.shadowBlur = 0;
+    drawRoundedRect(-11, 21, 22, 8, 3, "#151a24", "#8f650d", 1.5);
+    drawRoundedRect(-15, 28, 30, 6, 2, "#202631", "#b98518", 1.5);
+    ctx.fillStyle = "#f2c34a";
+    ctx.fillRect(-4, 19, 8, 5);
+    ctx.restore();
+  }
+
   function drawFlag() {
     const level = LEVELS[currentLevel];
     const x = goalX - cameraX;
@@ -2098,7 +2178,7 @@
     const rewardScore = totalCoins + coins;
     const progressScore = journeyScore(rewardScore);
     const stampCount = journeyLevels.size;
-    const trophyWon = hasChampionsLeagueTrophy();
+    const trophyWon = hasClubWorldCupTrophy();
     const boss = enemies.find((enemy) => enemy.isBoss && enemy.alive);
     drawRoundedRect(18, 17, 560, 78, 15, "rgba(255,247,223,.93)", "#18212f", 3);
     ctx.fillStyle = "#18212f"; ctx.font = "900 19px ui-rounded, sans-serif"; ctx.textAlign = "left";
@@ -2129,7 +2209,7 @@
     const trophyStatus = boss
       ? `👑 Boss×2 ${boss.hp}/${boss.maxHp}`
       : (trophyWon
-        ? "🏆 MSN大耳朵杯"
+        ? "🏆 MSN世俱杯"
         : (currentLevel === LEVELS.length - 1 && finalBossDefeated ? "✓ Boss已击破" : (msnStage === 3 ? `✦ 冠军星章 ${championEmblemCount()}/3` : `📍 城市 ${stampCount}/10`)));
     ctx.fillText(trophyStatus, trophyBoxX + trophyBoxW / 2, 41);
     ctx.fillStyle = trophyWon ? "#45658f" : "#475264"; ctx.font = "900 13px ui-rounded, sans-serif";
