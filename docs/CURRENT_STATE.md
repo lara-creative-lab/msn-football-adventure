@@ -97,6 +97,8 @@
 - 桌面版和 H5 的脚本缓存版本更新为 `game-v33.js?v=50`。
 - `npm test`、JavaScript 语法检查和 `git diff --check` 已通过。
 - 发布前 Codex Security 标准扫描 `13c339c2-765e-4c49-8ae9-c5f30ef0def6` 已完成：覆盖 111 个文件、8 个安全面，0 个可报告问题；报告位于 `/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-j23m7E/msn-site/a9afed48b78993cf3afb15e3df464ec1e3e75393_20260811T105255Z_herrtryn/report.md`。
+- 功能提交 `644377bfc5946e11a01abc7285ee72f4d6ab7925` 已推送至 GitHub `main`；GitHub Pages 工作流 `31485001713` 发布成功。
+- 桌面公开页和 H5 公开页均已回读 `game-v33.js?v=50`；线上脚本确认奖杯缩放、下移、双臂支架、`CWC` 铭牌与状态文案垂直居中全部生效。
 
 ## 2026-08-06 本轮实现
 
