@@ -24,7 +24,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.doesNotMatch(html, /北美三国|北美3国/);
   assert.match(html, /no-cache, no-store, must-revalidate/);
   assert.match(html, /style\.css\?v=45/);
-  assert.match(html, /game-v33\.js\?v=46/);
+  assert.match(html, /game-v33\.js\?v=47/);
   assert.doesNotMatch(html, /id="touchControls"|h5-controls\.js|H5 手机版/);
   assert.match(h5Html, /H5手机版/);
   assert.match(h5Html, /viewport-fit=cover/);
@@ -35,7 +35,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(h5Html, /data-code="ArrowDown"/);
   assert.match(h5Html, /data-code="Space"/);
   assert.match(h5Html, /data-code="KeyF"/);
-  assert.match(h5Html, /game-v33\.js\?v=46/);
+  assert.match(h5Html, /game-v33\.js\?v=47/);
   assert.match(h5Html, /style\.css\?v=45/);
   assert.match(h5Html, /h5-controls\.js\?v=2/);
   assert.match(h5Html, /h5\.css\?v=2/);
@@ -146,7 +146,10 @@ test("build includes the playable game and worker entrypoint", async () => {
   assert.match(game, /currentLevel === LEVELS\.length - 1 && finalBossDefeated/);
   assert.match(game, /x: goalX - 430/);
   assert.match(game, /msn-classic-03-miami-club-world-cup\.png/);
-  assert.match(game, /msn-classic-04-miami-reunion\.png/);
+  assert.match(game, /msn-classic-02-golden-link\.png/);
+  assert.match(game, /msn-classic-04-miami-reunion-front\.png/);
+  assert.match(game, /三人默契传跑连线/);
+  assert.match(game, /粉色战袍·三人并肩入场/);
   assert.doesNotMatch(game, /msn-ending-photo-miami\.png/);
   assert.match(game, /const stamps = journeyLevels\.size/);
   assert.match(game, /function journeyScore\(score = totalCoins \+ coins\) \{\s+return score;/);
@@ -282,7 +285,7 @@ test("build includes the playable game and worker entrypoint", async () => {
   await stat(new URL("../dist/client/assets/characters/suarez-miami.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/infantino-boss.png", import.meta.url));
   await stat(new URL("../dist/client/assets/characters/ronaldinho.png", import.meta.url));
-  for (const file of ["msn-classic-01-goal.png", "msn-classic-02-embrace.png", "msn-classic-03-miami-club-world-cup.png", "msn-classic-04-miami-reunion.png", "msn-ending-photo-miami.png"]) {
+  for (const file of ["msn-classic-01-goal.png", "msn-classic-02-golden-link.png", "msn-classic-03-miami-club-world-cup.png", "msn-classic-04-miami-reunion-front.png", "msn-ending-photo-miami.png"]) {
     await stat(new URL(`../dist/client/assets/msn-classics/${file}`, import.meta.url));
   }
   for (const id of ["ronaldinho", "ronaldo", "haaland", "mbappe", "dembele", "vinicius", "bellingham", "kane"]) {

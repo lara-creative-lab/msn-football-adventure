@@ -125,9 +125,9 @@
   ];
   const MSN_CLASSIC_CARDS = [
     { id: "goal", name: "三箭齐发", detail: "经典进球庆祝", image: "msn-classic-01-goal.png" },
-    { id: "embrace", name: "黄金连线", detail: "助攻后的三人拥抱", image: "msn-classic-02-embrace.png" },
+    { id: "embrace", name: "黄金连线", detail: "三人默契传跑连线", image: "msn-classic-02-golden-link.png" },
     { id: "trophy", name: "粉色世俱之巅", detail: "终极Boss后·三人共捧世俱杯", image: "msn-classic-03-miami-club-world-cup.png" },
-    { id: "awards", name: "迈阿密重聚", detail: "粉色战袍·世俱杯冠军合影", image: "msn-classic-04-miami-reunion.png" },
+    { id: "awards", name: "迈阿密重聚", detail: "粉色战袍·三人并肩入场", image: "msn-classic-04-miami-reunion-front.png" },
   ];
 
   let running = false;

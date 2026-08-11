@@ -60,6 +60,7 @@
 - 用户提供的实体徽章参考保存在 `docs/references/physical-badge-shape-reference.png`。
 - 球星卡标签反馈保存在 `docs/references/star-card-ranking-labels-feedback.png`。
 - 迈阿密粉色球衣参考保存在 `docs/references/miami-pink-kit-reference.jpg`；已确认的终局图稿保存在 `docs/previews/miami-final/`。
+- 用户最终确认的“黄金连线”与正脸版“迈阿密重聚”卡面保存在 `docs/previews/card-redraw-final/`；背影和额外手臂草案均不属于项目资产。
 
 ## 技术基线
 
