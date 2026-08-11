@@ -42,6 +42,9 @@
 - `npm test`、`npm run build`、JavaScript 语法检查和 `git diff --check` 已通过。
 - 发布前 Codex Security 标准扫描 `2c43950e-68ab-480d-ad03-1f067500479f` 已完成：覆盖当前 107 个发布快照文件，8 个安全面全部关闭，0 个可报告问题。
 - 安全扫描报告：`/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-j23m7E/msn-site/43362938ab7c8306729e5c0310f0168b221f434a_20260811T073753Z_n2zscgul/report.md`。
+- 功能提交：`a76d75dcd7d5f657b1c7c241651899580f5a2fd1`，已推送到 `github` 远程主分支。
+- GitHub Pages 工作流 `31470356165` 发布成功；桌面版、H5 和 `game-v33.js?v=46` 均返回 200，线上脚本已确认只保留“冠军典藏”四卡栏，重复三卡模块及旧标题不存在。
+- 本次只发布 GitHub / GitHub Pages，未同步 ChatGPT Sites。
 
 ## 2026-08-06 本轮实现
 
