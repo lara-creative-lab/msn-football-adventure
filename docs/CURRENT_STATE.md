@@ -26,6 +26,14 @@
 - Codex Security 标准扫描 `cfa15105-92ce-4d5b-8d16-630bd3dca427` 已完成：覆盖当前完整发布快照，8 个安全面全部关闭，0 个可报告问题；GitHub Actions SHA 固定与旧版公开脚本清理仅记录为后续纵深加固建议，不阻断本次发布。
 - 安全扫描报告：`/private/var/folders/mm/dw525dws0p395yymhmgs1czh0000gn/T/codex-security-scans-poLtQ9/msn-site/79b26f42da75db6a289991025befbd4704b57fd1_20260811T045433Z_qd6k2h_w/report.md`。
 
+## 2026-08-11 粉色 MSN 世俱杯终局发布记录
+
+- 功能提交：`fc2c07d03e143bdc8cd8dd3646cb5ed800e4e8bd`，已推送到 `github` 远程的 `lara-creative-lab/msn-football-adventure` 主分支。
+- GitHub Pages 工作流 `31462234266` 发布成功。
+- 桌面公开页 `https://lara-creative-lab.github.io/msn-football-adventure/` 与 H5 公开页 `https://lara-creative-lab.github.io/msn-football-adventure/h5/` 均返回 200，并读回 `game-v33.js?v=45`。
+- 线上脚本已读回全关 30 秒、Messi 加入后巴萨双人造型、Boss 击败后迈阿密粉色造型、第 10 关 Boss 前移 200 像素及世俱杯绘制逻辑；新粉色世俱杯卡面返回 200，文件尺寸与本地发布资产一致。
+- 本次按用户指令只发布 GitHub / GitHub Pages，未同步 ChatGPT Sites。
+
 ## 2026-08-06 本轮实现
 
 - 小罗出现规则按用户最新指令具体化：完整十关旅程固定在第 7、9、10 关出现，并从第 6、8 关随机增加 0–2 次彩蛋，因此每轮共出现 3–5 名；第 10 关小罗与终极 Boss 同关出现。
